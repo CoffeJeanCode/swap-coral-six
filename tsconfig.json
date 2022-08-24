@@ -1,7 +1,65 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@Config/*": [
+        "config/*"
+      ],
+      "@GraphQl/*": [
+        "graphql/*",
+      ],
+      "@Assets/*": [
+        "assets/*"
+      ],
+      "@Atoms/*": [
+        "components/Atoms/*"
+      ],
+      "@Apollo/*": [
+        "apollo/*"
+      ],
+      "@Whil/*": [
+        "lib/@Whil/*"
+      ],
+      "@Auth/*": [
+        "auth/*"
+      ],
+      "@Store/*": [
+        "store/*"
+      ],
+      "@Utils/*": [
+        "utils/*"
+      ],
+      "@Redux/*": [
+        "redux/*"
+      ],
+      "@Firebase/*": [
+        "firebase/*"
+      ],
+      "@Services/*": [
+        "services/*"
+      ],
+      "@Components/*": [
+        "components/*"
+      ],
+      "@Helpers/*": [
+        "helpers/*"
+      ],
+      "@Hooks/*": [
+        "hooks/*"
+      ],
+      "@Styles/*": [
+        "styles/*"
+      ],
+      "@Types/*": [
+        "types/*"
+      ],
+    },
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,6 +73,18 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "emotion.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/pages/_app.tsx",
+    "src/components/Atoms/Image/index.xts",
+    "src/pages/api/auth/[...nextauth].ts",
+    "src/pages/api/graphql.js"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
 }

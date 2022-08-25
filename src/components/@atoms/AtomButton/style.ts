@@ -80,11 +80,28 @@ export interface AtomButtonTypes {
   customCSS?: SerializedStyles;
   form?: string;
   refObject?: RefObject<any>;
+  flexDirection?: 'column' | 'row' | 'row-reverse' | 'column-reverse';
+  alignItems?: 'center' | 'flex-start' | 'flex-end';
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
+  flexWrap?: 'nowrap' | 'wrap';
+  gap?: string;
 }
 
 const ButtonStyled = styled.button<AtomButtonTypes>`
+  display: flex;
   width: ${({ width }) => width || `max-content`};
+  gap: ${({ gap }) => gap || '0px'};
   height: ${({ height }) => height || `max-content`};
+  justify-content: ${({ justifyContent }) => justifyContent || 'center'};
+  align-items: ${({ alignItems }) => alignItems || 'center'};
+  flex-wrap: ${({ flexWrap }) => flexWrap || 'wrap'};
+  flex-direction: ${({ flexDirection }) => flexDirection || 'column'};
   color: ${({ color }) => color || `#ffffff`};
   background-color: ${({ backgroundColor }) => backgroundColor || `#0072FF`};
   background-image: ${({ backgroundImage }) => backgroundImage || `none`};

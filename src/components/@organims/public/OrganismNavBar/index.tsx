@@ -90,13 +90,10 @@ const OrganismNavbar: FC = () => {
               key={section.id}
               padding="0px"
               backgroundColor="transparent"
-              customCSS={css`
-                gap: 20px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-              `}
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="flex-start"
+              gap="20px"
               onClick={() => {
                 router
                   .push({

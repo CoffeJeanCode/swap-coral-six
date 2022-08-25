@@ -1,7 +1,7 @@
 import AtomLoader from '@Components/@atoms/AtomLoader';
 import { css } from '@emotion/react';
 import { FC } from 'react';
-import { AtomButtonTypes, ButtonStyled } from './style';
+import ButtonStyled, { AtomButtonTypes } from './style';
 
 const Animation = {
   whileHover: { scale: 1.02, transition: { duration: 0.3 } },

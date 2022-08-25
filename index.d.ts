@@ -1,4 +1,5 @@
-import { PropsLayout } from '@Components/layout';
+import { PropsLayout } from 'layout';
+
 /* eslint-disable no-unused-vars */
 declare module 'redux-persist/es/persistStore' {
   import { Action, AnyAction, Store } from 'redux';

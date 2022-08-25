@@ -19,7 +19,7 @@ export type AtomLinkProps = AtomTextTypes & {
 
 export const TextStyle = (props: AtomTextTypes) => css`
   line-height: 150%;
-  font-family: ${props?.font || `'Montserrat', sans-serif`};
+  font-family: ${props?.font || `'Open Sans', sans-serif`};
   color: ${props?.color || `#202124`};
   text-align: ${props?.align || `left`};
   padding: ${props?.padding || `0px 0px 0px 0px`};

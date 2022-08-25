@@ -39,13 +39,16 @@ export const PlaceholderIcon = styled(motion.div)<AtomIconTypes>`
   height: ${({ height }) => height || `34px`};
 `;
 
-const Icon: FC<AtomIconTypes> = (props) => {
+const AtomIcon: FC<AtomIconTypes> = (props) => {
   const { icon } = props;
   const [getIcon, setGetIcon] = useState(``);
 
   useEffect(() => {
     const fetchIcon = () =>
-      fetch(icon || '')
+      fetch(
+        icon ||
+          'https://res.cloudinary.com/whil/image/upload/v1661402006/Group_101_a4dcb6.svg'
+      )
         .then((response) => response.text())
         .then((res) => res && setGetIcon(res));
     fetchIcon();
@@ -66,4 +69,4 @@ const Icon: FC<AtomIconTypes> = (props) => {
   );
 };
 
-export default Icon;
+export default AtomIcon;

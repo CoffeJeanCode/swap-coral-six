@@ -1,8 +1,7 @@
 import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
-import { motion, MotionProps } from 'framer-motion';
+import { MotionProps } from 'framer-motion';
 import { Ref } from 'react';
-import { TextStyle } from '../AtomLink';
 
 type TagsTexts =
   | 'h1'
@@ -204,6 +203,22 @@ export type AtomTextTypes = MotionProps & {
   dangerouslySetInnerHTML?: { __html: string };
 };
 
-export const TextStyledDefault = styled(motion.span)<AtomTextTypes>`
-  ${(props) => TextStyle(props)}
+export const AtomText = styled.span<AtomTextTypes>`
+  line-height: 150%;
+  font-family: ${(props) => props?.font || `'Open Sans', sans-serif`};
+  color: ${(props) => props?.color || `#202124`};
+  text-align: ${(props) => props?.align || `left`};
+  padding: ${(props) => props?.padding || `0px 0px 0px 0px`};
+  margin: ${(props) => props?.margin || `0px 0px 0px 0px`};
+  width: ${(props) => props?.width || `max-content`};
+  max-width: ${(props) => props?.maxWidth || `100%`};
+  font-size: ${(props) => props?.fontSize || `14px`};
+  font-weight: ${(props) => props?.fontWeight || 500};
+  text-decoration: ${(props) => props?.textDecoration || `none`};
+  cursor: ${(props) => props?.cursor || `pointer`};
+  * {
+    cursor: ${(props) => props?.cursor || `pointer`};
+  }
+
+  ${(props) => props?.customCSS};
 `;

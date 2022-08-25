@@ -1,8 +1,7 @@
-import { css, SerializedStyles } from '@emotion/react';
+import { SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
-import { motion, MotionProps } from 'framer-motion';
+import { MotionProps } from 'framer-motion';
 import { PointerEventHandler, RefObject, UIEventHandler } from 'react';
-
 export interface AtomWrapperTypes extends MotionProps {
   id?: string;
   onClick?: PointerEventHandler<any>;
@@ -102,38 +101,19 @@ export interface AtomWrapperTypes extends MotionProps {
   dangerouslySetInnerHTML?: { __html: string };
 }
 
-const AtomWrapperStyled = (props: AtomWrapperTypes) => css`
+export const AtomWrapper = styled.div<AtomWrapperTypes>`
   display: flex;
-  width: ${props?.width || `100%`};
-  max-width: ${props?.maxWidth || `100%`};
-  border: ${props?.border || `none`};
-  outline: ${props?.outline || `none`};
-  min-height: ${props?.minHeight || `initial`};
-  gap: ${props?.gap || `0`};
-  max-height: ${props?.maxHeight || `initial`};
-  height: ${props?.height || `max-content`};
-  flex-direction: ${props?.flexDirection || `column`};
-  justify-content: ${props?.justifyContent || `center`};
-  align-items: ${props?.alignItems || `flex-start`};
-  background-image: ${props?.backgroundImage};
-  background-color: ${props?.backgroundColor || `transparent`};
-  background-position: center;
-  background-size: ${props?.backgroundSize || `cover`};
-  padding: ${props?.padding || `0px 0px 0px 0px`};
-  margin: ${props?.margin || `0px 0px 0px 0px`};
-  flex-wrap: ${props?.flexWrap || `nowrap`};
-  ${props?.shadow && `box-shadow: 0px 10px 20px #00000029`};
-  border-radius: ${props?.borderRadius || `0px`};
-  ${`overflow-x:${props?.overflowX}`};
-  z-index: ${props?.zIndex || `0`};
-  position: ${props?.position || `static`};
-  cursor: ${props?.cursor || `default`};
-  mix-blend-mode: ${props?.mixBlendMode || `normal`};
-
-  ${props?.customCSS};
+  height: ${(props) => props.height ?? 'auto'};
+  width: ${(props) => props.width ?? 'auto'};
+  gap: ${(props) => props.gap ?? '0px'};
+  margin: ${(props) => props.margin ?? '0px'};
+  max-width: ${(props) => props.maxWidth ?? 'none'};
+  background-color: ${(props) => props.backgroundColor ?? 'transparent'};
+  flex-wrap: ${(props) => props.flexWrap ?? 'wrap'};
+  flex-direction: ${(props) => props.flexDirection ?? 'column'};
+  align-items: ${(props) => props.alignItems ?? 'none'};
+  justify-content: ${(props) => props.justifyContent ?? 'none'};
+  padding: ${(props) => props.padding ?? '0px'};
+  ${(props) => props?.customCSS};
 `;
-export const AtomWrapperDefaultStyled = styled(motion.div)<AtomWrapperTypes>`
-  ${(props) => AtomWrapperStyled(props)};
-`;
-
-export default AtomWrapperDefaultStyled;
+export default AtomWrapper;

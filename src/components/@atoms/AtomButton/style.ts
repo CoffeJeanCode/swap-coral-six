@@ -1,9 +1,8 @@
 import { css, SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
-import { motion, MotionProps } from 'framer-motion';
 import { PointerEventHandler, RefObject } from 'react';
 
-export interface AtomButtonTypes extends MotionProps {
+export interface AtomButtonTypes {
   color?: string;
   width?: string;
   height?: string;
@@ -17,7 +16,7 @@ export interface AtomButtonTypes extends MotionProps {
   onHoverEnd?: (() => void) & React.MouseEventHandler<HTMLButtonElement>;
   padding?: string;
   margin?: string;
-  backgroundColor?: string;
+  backgroundColor?: 'transparent' | string;
   backgroundImage?: string;
   fontSize?: string;
   font?: string;
@@ -83,18 +82,18 @@ export interface AtomButtonTypes extends MotionProps {
   refObject?: RefObject<any>;
 }
 
-export const ButtonStyled = styled(motion.button)<AtomButtonTypes>`
+const ButtonStyled = styled.button<AtomButtonTypes>`
   width: ${({ width }) => width || `max-content`};
   height: ${({ height }) => height || `max-content`};
   color: ${({ color }) => color || `#ffffff`};
-  background-color: ${({ backgroundColor }) => backgroundColor || `#fe6a6a`};
+  background-color: ${({ backgroundColor }) => backgroundColor || `#0072FF`};
   background-image: ${({ backgroundImage }) => backgroundImage || `none`};
   padding: ${({ padding }) => padding || `8px 30px`};
   margin: ${({ margin }) => margin || `0px 0px 0px 0px`};
   cursor: ${({ cursor }) => cursor || `pointer`};
   text-shadow: ${({ textShadow }) => textShadow || `none`};
   font-size: ${({ fontSize }) => fontSize || `12px`};
-  font-family: ${({ font }) => font || `'Montserrat', sans-serif`};
+  font-family: ${({ font }) => font || `'Open Sans', sans-serif`};
   font-weight: ${({ fontWeight }) => fontWeight || '600'};
   border: ${({ border }) => border || `none`};
   border-radius: ${({ borderRadius }) => borderRadius || `4px`};
@@ -108,3 +107,4 @@ export const ButtonStyled = styled(motion.button)<AtomButtonTypes>`
 
   ${({ customCSS }) => customCSS};
 `;
+export default ButtonStyled;

@@ -81,7 +81,8 @@
     "src/pages/_app.tsx",
     "src/components/Atoms/Image/index.xts",
     "src/pages/api/auth/[...nextauth].ts",
-    "src/pages/api/graphql.js"
+    "src/pages/api/graphql.js",
+    "src/components/@atoms/Atomwrapper/index.tx"
   ],
   "exclude": [
     "node_modules",

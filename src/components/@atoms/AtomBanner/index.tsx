@@ -45,8 +45,10 @@ const typeBanners = {
           justifyContent="flex-start"
           width="1440px"
           gap="20px"
+          padding="0px 90px"
           customCSS={css`
             @media (max-width: 980px) {
+              padding: 0px 30px;
               flex-direction: column;
               width: auto;
               padding: 0;
@@ -75,6 +77,8 @@ const typeBanners = {
               @media (max-width: 980px) {
                 width: auto;
                 margin: 0 10px;
+                display: flex;
+                align-items: center;
               }
             `}
           >

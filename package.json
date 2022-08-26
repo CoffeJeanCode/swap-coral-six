@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "vercel-build": "yarn global add node-gyp",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

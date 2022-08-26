@@ -201,6 +201,7 @@ export type AtomTextTypes = MotionProps & {
     | 'custom';
   customCSS?: SerializedStyles;
   dangerouslySetInnerHTML?: { __html: string };
+  opacity?: string;
 };
 
 export const AtomText = styled.span<AtomTextTypes>`
@@ -209,6 +210,7 @@ export const AtomText = styled.span<AtomTextTypes>`
   color: ${(props) => props?.color || `#202124`};
   text-align: ${(props) => props?.align || `left`};
   padding: ${(props) => props?.padding || `0px 0px 0px 0px`};
+  opacity: ${({ opacity }) => opacity ?? '1'};
   margin: ${(props) => props?.margin || `0px 0px 0px 0px`};
   width: ${(props) => props?.width || `max-content`};
   max-width: ${(props) => props?.maxWidth || `100%`};

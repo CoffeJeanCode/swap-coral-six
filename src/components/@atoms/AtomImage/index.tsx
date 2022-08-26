@@ -29,13 +29,14 @@ export interface AtomImageTypes extends MotionProps {
   objectPosition?: string;
   zIndex?: string;
   customCSS?: SerializedStyles;
+  borderRadius?: string;
 }
 
 export interface AtomImageProps extends AtomNextImageTypes, AtomImageTypes {
   isNextImage?: boolean;
 }
 
-export const AtomImageStyled = styled(motion.div)<AtomImageTypes>`
+const AtomImageStyled = styled(motion.div)<AtomImageTypes>`
   width: ${({ width }) => width || `100%`};
   max-width: ${({ maxWidth }) => maxWidth || `initial`};
   height: ${({ height }) => height || `100%`};
@@ -50,32 +51,36 @@ export const AtomImageStyled = styled(motion.div)<AtomImageTypes>`
     object-fit: ${({ objectFit }) => objectFit || `cover`};
     object-position: ${({ objectPosition }) =>
       objectPosition || `center center`};
+    border-radius: ${({ borderRadius }) => borderRadius ?? '0px'};
   }
   z-index: ${({ zIndex }) => zIndex || `initial`};
 
   ${({ customCSS }) => customCSS};
 `;
 
-export const AtomImageWrapperStyled = styled.div<AtomImageTypes>`
+const AtomImageWrapperStyled = styled.div<AtomImageTypes>`
   width: 100%;
   height: 100%;
   position: relative;
 `;
 
-export const AtomImageImgStyled = styled.img<AtomImageTypes>`
+const AtomImageImgStyled = styled.img<AtomImageTypes>`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
-const Image: FC<AtomImageProps> = (props) => {
+const DEFAULTIMG =
+  'https://res.cloudinary.com/whil/image/upload/v1661401537/gallery-slash2_dwpvpx.jpg';
+
+const AtomImage: FC<AtomImageProps> = (props) => {
   const { src, alt, isNextImage } = props;
   return (
     <AtomImageStyled {...{ ...props, src: undefined }}>
       {isNextImage ? (
         <AtomImageWrapperStyled>
           <NextImage
-            src={src}
+            src={src ?? DEFAULTIMG}
             alt={`${alt}image`}
             layout="fill"
             placeholder="blur"
@@ -83,10 +88,10 @@ const Image: FC<AtomImageProps> = (props) => {
           />
         </AtomImageWrapperStyled>
       ) : (
-        <AtomImageImgStyled src={src} alt={alt} />
+        <AtomImageImgStyled src={src ?? DEFAULTIMG} alt={alt} />
       )}
     </AtomImageStyled>
   );
 };
 
-export default Image;
+export default AtomImage;

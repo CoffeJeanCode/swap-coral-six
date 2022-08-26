@@ -10,8 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 const Sections = [
   {
     id: uuidv4(),
-    name: 'Home',
-    path: '/public',
+    name: 'Feed',
+    path: '/public/feed',
     icon: 'https://res.cloudinary.com/whil/image/upload/v1661401537/group_otfmxi.svg'
   },
   {

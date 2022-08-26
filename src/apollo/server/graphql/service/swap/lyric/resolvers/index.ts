@@ -1,5 +1,5 @@
 import { CONFIG_SPOTIFY } from '@Config/spotify';
-import { getColor } from '@Hooks/useColor';
+import getColorImage from '@Hooks/useColor/extractColors';
 import lyricsFinder from 'lyrics-finder';
 import { v4 as uuidv4 } from 'uuid';
 import { ContextRoot } from '../../types';
@@ -24,7 +24,7 @@ const getArtistByLyrc = async (
       await CONFIG_SPOTIFY.SPOTIFY_API.getArtist(iterator.id)
     ).body;
 
-    const colorByArtist = await getColor(artistBySpotify.images[0].url);
+    const colorByArtist = await getColorImage(artistBySpotify.images?.[0].url);
     result.push({
       id: artistBySpotify.id,
       name: artistBySpotify.name,

@@ -12,10 +12,6 @@ import AtomImage from '../AtomImage';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
 
-// type PropsWithTypes<T> = T & {
-//   color: string;
-// };
-
 const typeBanners = {
   artist: (props: AtomProps) => {
     const color = UseColor(props.artist?.images?.[0]?.url as string);
@@ -25,8 +21,8 @@ const typeBanners = {
         justifyContent="center"
         customCSS={css`
           min-height: 500px;
+          align-items: flex-start;
           display: flex;
-          align-items: center;
           transition: all 0.3s ease;
           background: linear-gradient(
               180deg,
@@ -138,10 +134,9 @@ const typeBanners = {
       <AtomWrapper
         id="background-dynamic-color"
         justifyContent="center"
+        alignItems="flex-start"
         customCSS={css`
           min-height: 500px;
-          display: flex;
-          align-items: center;
           transition: all 0.3s ease;
           background: linear-gradient(
               180deg,
@@ -151,6 +146,8 @@ const typeBanners = {
             ${color?.[0]?.hex};
           @media (max-width: 980px) {
             justify-content: center;
+            align-items: center;
+
             width: 100%;
             height: 600px;
             padding: 0;
@@ -246,6 +243,11 @@ const typeBanners = {
                     padding="0px"
                     fontSize="16px"
                     fontWeight="bold"
+                    customCSS={css`
+                      &:hover {
+                        text-decoration: underline;
+                      }
+                    `}
                     onClick={() => {
                       router.push({
                         pathname: '/public/artist/[id]',
@@ -259,7 +261,8 @@ const typeBanners = {
                   </AtomButton>
                 ))}{' '}
               </AtomWrapper>
-              <AtomText color="white" fontSize="16px" fontWeight="bold">
+              <AtomText color="white" fontSize="16px">
+                -{' '}
                 {convertDateWithOptions(
                   props?.album?.release_date as string,
                   'en-US',
@@ -286,8 +289,6 @@ type AtomProps = {
   album?: IAlbumType;
 };
 
-const AtomBanner: FC<AtomProps> = (props) => {
-  return typeBanners[props.type as keyof typeof typeBanners](props);
-};
+const AtomBanner: FC<AtomProps> = (props) => typeBanners[props.type](props);
 
 export default AtomBanner;

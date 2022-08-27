@@ -23,7 +23,6 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
         flexDirection="row"
         flexWrap="wrap"
         customCSS={css`
-          display: flex;
           gap: 10px;
           @media (max-width: 980px) {
             padding: 0px 30px;

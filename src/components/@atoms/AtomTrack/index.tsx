@@ -38,7 +38,7 @@ const typeTracks = {
         `}
         key={props?.album?.id}
       >
-        <AtomPlayTrack position={props?.album?.position} />
+        <AtomPlayTrack trackNumber={props?.album?.track_number} />
         <AtomWrapper
           customCSS={css`
             grid-column: 2;

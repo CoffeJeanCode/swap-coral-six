@@ -15,6 +15,7 @@ export const albumByID = gql`
           id
           name
           duration_ms
+          track_number
         }
         limit
       }

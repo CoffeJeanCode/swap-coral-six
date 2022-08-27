@@ -7,7 +7,7 @@ import AtomIcon from '../AtomIcon';
 import { AtomText } from '../AtomText';
 
 type Props = {
-  position: number;
+  trackNumber?: number;
 };
 
 const AtomPlayTrack: FC<Props> = (props) => {
@@ -43,7 +43,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
           }
         `}
       >
-        {props.position + 1}
+        {props?.trackNumber as number}
       </AtomText>
       <AtomIcon
         customCSS={css`
@@ -60,11 +60,6 @@ const AtomPlayTrack: FC<Props> = (props) => {
         height="30px"
         color={colors?.[0]?.hex}
         icon="https://res.cloudinary.com/whil/image/upload/v1661401539/play_obtqfo.svg"
-        // icon={
-        //   controls?.player?.currentTrack?.name === props?.name && playPlayer
-        //     ? 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/ZZEV3WD/icons/pause.svg'
-        //     : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/ZZEV3WD/icons/play.svg'
-        // }
       />
     </AtomButton>
   );

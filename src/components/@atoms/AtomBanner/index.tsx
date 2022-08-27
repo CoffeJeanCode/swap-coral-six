@@ -3,7 +3,9 @@ import { css } from '@emotion/react';
 import UseColor from '@Hooks/useColor';
 import { IAlbumType, IArtist } from '@Types/index';
 import convertWithCommas from '@Utils/numberWithCommas';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
+import AtomButton from '../AtomButton';
 import AtomImage from '../AtomImage';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
@@ -128,6 +130,7 @@ const typeBanners = {
     );
   },
   album: (props: AtomProps) => {
+    const router = useRouter();
     const color = UseColor(props?.album?.images?.[0]?.url as string);
     return (
       <AtomWrapper
@@ -173,7 +176,7 @@ const typeBanners = {
             width="260px"
             height="260px"
             alt={props?.album?.name as string}
-            borderRadius="50%"
+            borderRadius="10px"
           />
           <AtomWrapper
             customCSS={css`
@@ -206,7 +209,7 @@ const typeBanners = {
                 }
               `}
             >
-              {props?.type?.toUpperCase()}
+              {props?.album?.album_type?.toUpperCase()}
             </AtomText>
             <AtomText
               as="h1"
@@ -231,6 +234,21 @@ const typeBanners = {
             >
               {props?.album?.name}
             </AtomText>
+            {props?.album?.artists?.map((item) => (
+              <AtomButton
+                key={item?.id}
+                onClick={() => {
+                  router.push({
+                    pathname: '/public/artist/[id]',
+                    query: {
+                      id: item?.id
+                    }
+                  });
+                }}
+              >
+                {item?.name} {item?.id}
+              </AtomButton>
+            ))}
             {/* {props?.album?. && (
               <AtomText as="p" color="white" opacity="0.5" fontSize="18px">
                 {convertWithCommas(props?.artist?.followers?.total as number)}

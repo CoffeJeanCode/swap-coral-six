@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 const PublicArtist: NextPageFC<{ id: string }> = (props) => {
   const router = useRouter();
   const { data } = useQuery<IQueryFilter<'artistById'>>(ARTISTBYID, {
+    fetchPolicy: 'cache-and-network',
     skip: !props.id,
     variables: {
       id: props?.id

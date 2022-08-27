@@ -32,6 +32,7 @@ const typeBanners = {
             ${color?.[0]?.hex};
           @media (max-width: 980px) {
             justify-content: center;
+            align-items: center;
             width: 100%;
             height: 600px;
             padding: 0;
@@ -143,11 +144,10 @@ const typeBanners = {
               rgba(100, 100, 100, 0) 0%,
               #121216 100%
             ),
-            ${color?.[0]?.hex};
+            ${color?.[1]?.hex ?? color?.[0]?.hex};
           @media (max-width: 980px) {
             justify-content: center;
             align-items: center;
-
             width: 100%;
             height: 600px;
             padding: 0;

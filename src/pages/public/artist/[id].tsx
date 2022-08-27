@@ -36,13 +36,16 @@ const PublicArtist: NextPageFC<{ id: string }> = (props) => {
     <AtomWrapper>
       <AtomBanner type="artist" artist={data?.artistById ?? {}} />
       <AtomWrapper
-        padding="25px"
+        padding="45px 90px"
         maxWidth="1440px"
         flexDirection="row"
         flexWrap="wrap"
         customCSS={css`
           display: flex;
           gap: 10px;
+          @media (max-width: 980px) {
+            padding: 0px 30px;
+          }
         `}
       >
         {ListAlbumsByArtist?.listAlbums?.map((item) => (

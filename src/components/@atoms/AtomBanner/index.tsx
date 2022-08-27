@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { css } from '@emotion/react';
 import UseColor from '@Hooks/useColor';
-import { IAlbumType, IArtist } from '@Types/index';
+import useTime from '@Hooks/useTime';
+import { IAlbumType, IArtist, ISong } from '@Types/index';
+import convertDateWithOptions from '@Utils/convertDateWithOptions';
 import convertWithCommas from '@Utils/numberWithCommas';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -218,6 +220,7 @@ const typeBanners = {
               fontWeight="bold"
               fontSize="26px"
               customCSS={css`
+                cursor: text;
                 margin: 0;
                 font-size: 48px;
                 @media (max-width: 1440px) {
@@ -234,26 +237,42 @@ const typeBanners = {
             >
               {props?.album?.name}
             </AtomText>
-            {props?.album?.artists?.map((item) => (
-              <AtomButton
-                key={item?.id}
-                onClick={() => {
-                  router.push({
-                    pathname: '/public/artist/[id]',
-                    query: {
-                      id: item?.id
-                    }
-                  });
-                }}
-              >
-                {item?.name} {item?.id}
-              </AtomButton>
-            ))}
-            {/* {props?.album?. && (
-              <AtomText as="p" color="white" opacity="0.5" fontSize="18px">
-                {convertWithCommas(props?.artist?.followers?.total as number)}
+            <AtomWrapper flexDirection="row" gap="5px">
+              <AtomWrapper flexDirection="row">
+                {props?.album?.artists?.map((item, index) => (
+                  <AtomButton
+                    key={item?.id}
+                    backgroundColor="transparent"
+                    padding="0px"
+                    fontSize="16px"
+                    fontWeight="bold"
+                    onClick={() => {
+                      router.push({
+                        pathname: '/public/artist/[id]',
+                        query: {
+                          id: item?.id
+                        }
+                      });
+                    }}
+                  >
+                    {index === 0 ? item?.name : `, ${item?.name}`}
+                  </AtomButton>
+                ))}{' '}
+              </AtomWrapper>
+              <AtomText color="white" fontSize="16px" fontWeight="bold">
+                {convertDateWithOptions(
+                  props?.album?.release_date as string,
+                  'en-US',
+                  {
+                    year: 'numeric'
+                  }
+                )}{' '}
+                • {props?.album?.total_tracks || 0} Tracks -{' '}
+                {useTime({
+                  tracks: props?.album?.tracks?.items as ISong[]
+                })}
               </AtomText>
-            )} */}
+            </AtomWrapper>
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>

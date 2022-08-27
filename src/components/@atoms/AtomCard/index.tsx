@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react';
+import convertDateWithOptions from '@Utils/convertDateWithOptions';
 import { FC } from 'react';
 import AtomButton from '../AtomButton';
 import AtomImage from '../AtomImage';
@@ -10,6 +11,7 @@ type Card = {
   type?: string;
   image?: string;
   name?: string;
+  release_date?: string;
   onClick?: () => void;
 };
 const ImageTypes = ['track', 'playlist', 'single', 'compilation', 'album'];
@@ -107,6 +109,15 @@ const AtomCard: FC<Card> = (props) => {
       <AtomText color="white" opacity="0.5">
         {(props?.type?.charAt(0)?.toUpperCase() as string) +
           props?.type?.slice(1)}
+        {props?.release_date
+          ? ` • ${convertDateWithOptions(
+              props?.release_date as string,
+              'en-US',
+              {
+                year: 'numeric'
+              }
+            )}`
+          : ''}
       </AtomText>
     </AtomButton>
   );

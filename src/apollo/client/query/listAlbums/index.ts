@@ -11,6 +11,7 @@ export const LISTALBUMSBYARTISTID = gql`
         url
       }
       album_type
+      release_date
     }
   }
 `;

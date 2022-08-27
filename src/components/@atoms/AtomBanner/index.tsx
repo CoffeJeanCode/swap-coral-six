@@ -12,6 +12,47 @@ import AtomImage from '../AtomImage';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
 
+const sizeFontByTitle = (title: string) => {
+  const lengthTitle = title?.length;
+  if (lengthTitle >= 60) {
+    return css`
+      font-size: 30px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: Ellipsis;
+      word-wrap: break-word;
+      @media (max-width: 980px) {
+        text-align: center;
+      }
+    `;
+  }
+
+  if (lengthTitle >= 50) {
+    return css`
+      font-size: 32px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: Ellipsis;
+      word-wrap: break-word;
+      @media (max-width: 980px) {
+        text-align: center;
+      }
+    `;
+  }
+  if (lengthTitle <= 50) {
+    return css`
+      font-size: 32px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: Ellipsis;
+      word-wrap: break-word;
+      @media (max-width: 980px) {
+        text-align: center;
+      }
+    `;
+  }
+};
+
 const typeBanners = {
   artist: (props: AtomProps) => {
     const color = UseColor(props.artist?.images?.[0]?.url as string);
@@ -43,7 +84,7 @@ const typeBanners = {
           flexDirection="row"
           alignItems="center"
           justifyContent="flex-start"
-          width="1440px"
+          maxWidth="1440px"
           gap="20px"
           padding="0px 90px"
           customCSS={css`
@@ -158,7 +199,7 @@ const typeBanners = {
           flexDirection="row"
           alignItems="center"
           justifyContent="flex-start"
-          width="1440px"
+          maxWidth="1440px"
           gap="20px"
           padding="0px 90px"
           customCSS={css`
@@ -194,6 +235,7 @@ const typeBanners = {
                 margin: 0 10px;
                 display: flex;
                 align-items: center;
+                justify-content: center;
               }
             `}
           >
@@ -230,11 +272,21 @@ const typeBanners = {
                   font-size: 22px;
                   text-align: center;
                 }
+                ${sizeFontByTitle(props?.album?.name as string)}
               `}
             >
               {props?.album?.name}
             </AtomText>
-            <AtomWrapper flexDirection="row" gap="5px">
+            <AtomWrapper
+              flexDirection="row"
+              gap="5px"
+              customCSS={css`
+                @media (max-width: 980px) {
+                  justify-content: center;
+                  align-items: center;
+                }
+              `}
+            >
               <AtomWrapper flexDirection="row">
                 {props?.album?.artists?.map((item, index) => (
                   <AtomButton

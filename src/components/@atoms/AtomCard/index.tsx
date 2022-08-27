@@ -12,7 +12,7 @@ type Card = {
   name?: string;
   onClick?: () => void;
 };
-const ImageTypes = ['album', 'track', 'playlist'];
+const ImageTypes = ['track', 'playlist', 'single', 'compilation', 'album'];
 
 const AtomCard: FC<Card> = (props) => {
   return (

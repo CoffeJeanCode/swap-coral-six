@@ -1,22 +1,66 @@
 import { useQuery } from '@apollo/client';
 import { ARTISTBYID } from '@Apollo/client/query/artistById';
+import { LISTALBUMSBYARTISTID } from '@Apollo/client/query/listAlbums';
 import AtomBanner from '@Components/@atoms/AtomBanner';
+import AtomCard from '@Components/@atoms/AtomCard';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
+import { css } from '@emotion/react';
 import { IQueryFilter } from '@Types/index';
 import { NextPageContext, NextPageFC } from 'next';
+import { useRouter } from 'next/router';
 
 const PublicArtist: NextPageFC<{ id: string }> = (props) => {
+  const router = useRouter();
   const { data } = useQuery<IQueryFilter<'artistById'>>(ARTISTBYID, {
     skip: !props.id,
     variables: {
       id: props?.id
     }
   });
+  const { data: ListAlbumsByArtist } = useQuery<IQueryFilter<'listAlbums'>>(
+    LISTALBUMSBYARTISTID,
+    {
+      skip: !props.id,
+      variables: {
+        filter: {
+          artist: {
+            id: props?.id
+          }
+        }
+      }
+    }
+  );
 
   return (
     <AtomWrapper>
       <AtomBanner type="artist" artist={data?.artistById ?? {}} />
-      <h1>PublicArtist</h1>
+      <AtomWrapper
+        padding="25px"
+        maxWidth="1440px"
+        flexDirection="row"
+        flexWrap="wrap"
+        customCSS={css`
+          display: flex;
+          gap: 10px;
+        `}
+      >
+        {ListAlbumsByArtist?.listAlbums?.map((item) => (
+          <AtomCard
+            key={item?.id}
+            {...item}
+            image={item?.images?.[0]?.url as string}
+            type={item?.album_type}
+            onClick={() => {
+              router.push({
+                pathname: '/public/album/[id]',
+                query: {
+                  id: item?.id
+                }
+              });
+            }}
+          />
+        ))}
+      </AtomWrapper>
     </AtomWrapper>
   );
 };

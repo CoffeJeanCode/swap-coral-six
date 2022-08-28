@@ -1,3 +1,4 @@
+import AtomPlayer from '@Components/@atoms/AtomPlayer';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import OrganismNavbar from '@Components/@organims/public/OrganismNavBar';
 import { css } from '@emotion/react';
@@ -64,6 +65,7 @@ const PublicLayout: FC = (props) => {
           {props?.children}
         </AtomWrapper>
       </AtomWrapper>
+      <AtomPlayer />
     </AtomWrapper>
   );
 };

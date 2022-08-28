@@ -1,0 +1,397 @@
+import { css } from '@emotion/react';
+import { COLORS_ATOM } from '@Hooks/useColor';
+import { useAtomValue } from 'jotai';
+import { useRouter } from 'next/router';
+import { FC } from 'react';
+import AtomButton from '../AtomButton';
+import AtomIcon from '../AtomIcon';
+import AtomPlayerProgressBar from '../AtomPlayerProgressBar';
+import AtomPlayPlayer from '../AtomPlayPlayer';
+import AtomVolumenPlayer from '../AtomVolumenPlayer';
+import AtomWrapper from '../Atomwrapper';
+
+const AtomPlayer: FC = () => {
+  const colors = useAtomValue(COLORS_ATOM);
+  //   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+  const router = useRouter();
+
+  return (
+    <AtomWrapper
+      customCSS={css`
+        padding: 10px;
+        grid-column: 1 / -1;
+        grid-row: 2;
+        background-color: #191922;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        gap: 10px;
+        @media (max-width: 980px) {
+          grid-template-columns: 1fr auto;
+          grid-template-rows: auto auto;
+          padding: 0 15px 15px 15px;
+        }
+      `}
+    >
+      <AtomWrapper
+        customCSS={css`
+          grid-column: 1 / 2;
+          display: grid;
+          grid-template-rows: 40px 40px;
+          grid-template-columns: auto 1fr;
+          grid-column-gap: 10px;
+          @media (max-width: 980px) {
+            grid-template-rows: auto;
+            grid-row: 2;
+            grid-column: 1 / 2;
+          }
+        `}
+      >
+        {false && (
+          <AtomWrapper
+            customCSS={css`
+              width: 80px;
+              grid-row: 1 /-1;
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
+          >
+            <AtomButton
+              padding="0px"
+              width="100%"
+              height="100%"
+              onClick={() => {
+                // dispatch({
+                //   type: 'VIEWIMAGESIDEBAR',
+                //   payload: {
+                //     view: !controls.view,
+                //     image: controls?.player?.currentTrack?.image
+                //   }
+                // });
+              }}
+            >
+              {/* <AtomImage
+                src={controls?.player?.currentTrack?.image as string}
+                alt={controls?.player?.currentTrack?.name as string}
+                borderRadius="10px"
+                id="IMAGE"
+                width="100%"
+                height="100%"
+                css={css`
+                  grid-row: 1 / -1;
+                `}
+              /> */}
+            </AtomButton>
+          </AtomWrapper>
+        )}
+        {/* <AtomWrapper
+          customCSS={css`
+            grid-column: ${controls.view ? '1' : '2'};
+            grid-row: 1;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+          `}
+        >
+          <AtomButton
+            width="max-content"
+            customCSS={css`
+              &:hover {
+                text-decoration: underline;
+              }
+            `}
+            onClick={() => {
+              router
+                .push({
+                  pathname: `/swap/album/[id]`,
+                  query: {
+                    id: controls?.player?.currentTrack?.album.id
+                  }
+                })
+                .then(() => {
+                  document?.getElementById('view')?.scroll({
+                    top: 0
+                  });
+                });
+            }}
+          >
+            <AtomText
+              fontWeight="700"
+              as="p"
+              css={css`
+                grid-column: 2;
+                grid-row: 1;
+                align-self: center;
+                @media (max-width: 980px) {
+                  grid-row: 1;
+                  grid-column: 1;
+                  font-size: 1rem;
+                }
+              `}
+            >
+              {controls?.player?.currentTrack?.name}
+            </AtomText>
+          </AtomButton>
+          <AtomButton
+            onClick={() => {
+              router.push({
+                pathname: `/swap/video/[id]`,
+                query: {
+                  id: controls?.player?.currentTrack?.idTrack
+                }
+              });
+            }}
+          >
+            <AtomIcon
+              width="20px"
+              height="20px"
+              icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/to.svg"
+            />
+          </AtomButton>
+        </AtomWrapper> */}
+        <AtomWrapper
+          customCSS={css`
+            grid-row: 2;
+            align-self: center;
+            @media (max-width: 980px) {
+              grid-column: 2;
+              grid-row: 1;
+            }
+          `}
+        >
+          <AtomWrapper flexDirection="row" justifyContent="flex-start">
+            {/* {controls?.player?.currentTrack?.artists?.map((item, index) => (
+              <AtomButton
+                key={item.id && item?.id}
+                customCSS={css`
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                `}
+                onClick={() => {
+                  router
+                    .push({
+                      pathname: `/swap/artist/[id]`,
+                      query: {
+                        id: item.id
+                      }
+                    })
+                    .then(() => {
+                      document?.getElementById('view')?.scroll({
+                        top: 0,
+                        behavior: 'smooth'
+                      });
+                    });
+                }}
+              >
+                <AtomText
+                  as="p"
+                  css={css`
+                    opacity: 0.5;
+                    @media (max-width: 980px) {
+                      font-size: 0.8rem;
+                    }
+                  `}
+                  key={item.id}
+                >
+                  {index === 0 ? item.name : `, ${item.name}`}
+                </AtomText>
+              </AtomButton>
+            ))} */}
+          </AtomWrapper>
+        </AtomWrapper>
+      </AtomWrapper>
+      <AtomWrapper justifyContent="center">
+        <AtomWrapper
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <AtomButton
+            backgroundColor="transparent"
+            padding="0px"
+            customCSS={css`
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
+          >
+            <AtomIcon
+              icon="https://res.cloudinary.com/whil/image/upload/v1661632351/aleatory_fql0tl.svg"
+              width="22px"
+              height="22px"
+              customCSS={css`
+                svg {
+                  path {
+                    stroke: white;
+                  }
+                }
+              `}
+            />
+          </AtomButton>
+          <AtomButton
+            backgroundColor="transparent"
+            padding="0px"
+            customCSS={css`
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
+          >
+            <AtomIcon
+              icon="https://res.cloudinary.com/whil/image/upload/v1661401539/previous_sqclao.svg"
+              width="22px"
+              height="22px"
+              customCSS={css`
+                svg {
+                  path {
+                    stroke: white;
+                  }
+                }
+              `}
+            />
+          </AtomButton>
+          <AtomPlayPlayer />
+          <AtomButton
+            backgroundColor="transparent"
+            padding="0px"
+            onClick={() => {}}
+            customCSS={css`
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
+          >
+            <AtomIcon
+              icon="https://res.cloudinary.com/whil/image/upload/v1661401538/next_mudtaa.svg"
+              width="22px"
+              height="22px"
+              customCSS={css`
+                svg {
+                  path {
+                    stroke: white;
+                  }
+                }
+              `}
+            />
+          </AtomButton>
+          <AtomButton
+            backgroundColor="transparent"
+            padding="0px"
+            onClick={() => {
+              //   dispatch({
+              //     type: 'REPEAT',
+              //     payload: {
+              //       repeat: !controls.repeat
+              //     }
+              //   });
+            }}
+            customCSS={css`
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
+          >
+            <AtomIcon
+              icon="https://res.cloudinary.com/whil/image/upload/v1661401540/repeatt_yet17i.svg"
+              width="22px"
+              height="22px"
+              customCSS={css`
+                svg {
+                  path {
+                    stroke: white;
+                  }
+                }
+              `}
+            />
+          </AtomButton>
+        </AtomWrapper>
+        <AtomPlayerProgressBar />
+      </AtomWrapper>
+      <AtomWrapper
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="flex-end"
+        customCSS={css`
+          grid-column: 3 / 4;
+          gap: 15px;
+          @media (max-width: 980px) {
+            display: none;
+          }
+        `}
+      >
+        <AtomButton
+          backgroundColor="transparent"
+          padding="0px"
+
+          //   onClick={() => {
+          //     router?.asPath?.includes('/lyric')
+          //       ? router.back()
+          //       : router
+          //           ?.push({
+          //             pathname: '/swap/lyric/[id]',
+          //             query: {
+          //               id: controls?.player?.currentTrack?.idTrack
+          //             }
+          //           })
+          //           .then(() => {
+          //             document?.getElementById('view')?.scroll({
+          //               top: 0,
+          //               behavior: 'smooth'
+          //             });
+          //           });
+          //   }}
+        >
+          <AtomIcon
+            icon="https://res.cloudinary.com/whil/image/upload/v1661655095/microphone_pnd062.svg"
+            width="22px"
+            height="22px"
+            color={
+              router?.asPath?.includes('/lyric')
+                ? (colors[0]?.hex as string)
+                : 'white'
+            }
+          />
+        </AtomButton>
+        <AtomButton
+          padding="0px"
+          backgroundColor="transparent"
+          onClick={() => {
+            router.asPath.includes('/queue')
+              ? router.back()
+              : router.push('/swap/queue').then(() => {
+                  document?.getElementById('view')?.scroll({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
+                });
+          }}
+          customCSS={css`
+            @media (max-width: 980px) {
+              display: none;
+            }
+          `}
+        >
+          <AtomIcon
+            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/ZZEV3WD/icons/music-filter.svg"
+            width="22px"
+            height="22px"
+            customCSS={css`
+              svg {
+                path {
+                  stroke: white;
+                }
+              }
+            `}
+          />
+        </AtomButton>
+        <AtomVolumenPlayer />
+        {/* <BarVolumen /> */}
+      </AtomWrapper>
+    </AtomWrapper>
+  );
+};
+
+export default AtomPlayer;

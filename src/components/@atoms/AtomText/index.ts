@@ -4,6 +4,7 @@ import { MotionProps } from 'framer-motion';
 import { Ref } from 'react';
 
 type TagsTexts =
+  | 'htmlFor'
   | 'h1'
   | 'h2'
   | 'h3'
@@ -199,6 +200,7 @@ export type AtomTextTypes = MotionProps & {
     | 'grab'
     | 'grabbing'
     | 'custom';
+  htmlFor?: string;
   customCSS?: SerializedStyles;
   dangerouslySetInnerHTML?: { __html: string };
   opacity?: string;

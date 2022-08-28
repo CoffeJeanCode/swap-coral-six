@@ -2,13 +2,13 @@
 import { SetStateAction } from 'jotai';
 import { MutableRefObject, useEffect } from 'react';
 
-const useSetRef = <T>(
-  ref: MutableRefObject<T>,
+const useSetRef = <T = any>(
+  ref: MutableRefObject<T | any>,
   set: (e: SetStateAction<T>) => void
 ) => {
   useEffect(() => {
     if (ref.current as MutableRefObject<T | any>) {
-      set(ref as T);
+      set(ref as any);
     }
   }, [ref, set]);
 };

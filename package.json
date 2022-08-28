@@ -24,7 +24,6 @@
     "@vibrant/image": "^3.2.1-alpha.1",
     "apollo-server-core": "^3.10.1",
     "apollo-server-micro": "^3.9.0",
-    "aws4": "^1.11.0",
     "axios": "^0.26.1",
     "canvas": "^2.9.3",
     "color-thief-node": "^1.0.4",

@@ -3,7 +3,7 @@ import { COLORS_ATOM } from '@Hooks/useColor';
 import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { REDUCER_PLAYER, REDUCER_PLAYER_ATOM } from '_jotai/player/reducer';
+import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomImage from '../AtomImage';
@@ -12,9 +12,6 @@ import AtomPlayPlayer from '../AtomPlayPlayer';
 import { AtomText } from '../AtomText';
 import AtomVolumenPlayer from '../AtomVolumenPlayer';
 import AtomWrapper from '../Atomwrapper';
-
-export const CONTROLS_PLAYER_WITH_REDUCER_ATOM =
-  REDUCER_PLAYER_ATOM(REDUCER_PLAYER);
 
 const AtomPlayer: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
@@ -234,6 +231,17 @@ const AtomPlayer: FC = () => {
           <AtomButton
             backgroundColor="transparent"
             padding="0px"
+            onClick={() => {
+              dispatch({
+                type: 'CHANGE_TRACK',
+                payload: {
+                  currentTrack: {
+                    track_number:
+                      (controls?.currentTrack?.track_number as number) - 1
+                  }
+                }
+              });
+            }}
             customCSS={css`
               @media (max-width: 980px) {
                 display: none;
@@ -257,7 +265,17 @@ const AtomPlayer: FC = () => {
           <AtomButton
             backgroundColor="transparent"
             padding="0px"
-            onClick={() => {}}
+            onClick={() => {
+              dispatch({
+                type: 'CHANGE_TRACK',
+                payload: {
+                  currentTrack: {
+                    track_number:
+                      (controls?.currentTrack?.track_number as number) + 1
+                  }
+                }
+              });
+            }}
             customCSS={css`
               @media (max-width: 980px) {
                 display: none;

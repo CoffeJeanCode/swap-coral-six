@@ -1,13 +1,14 @@
 import { useQuery } from '@apollo/client';
 import { albumByID } from '@Apollo/client/query/albumByID';
 import AtomBanner from '@Components/@atoms/AtomBanner';
-import { CONTROLS_PLAYER_WITH_REDUCER_ATOM } from '@Components/@atoms/AtomPlayer';
+
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
 import { IImage, IQueryFilter, ISong } from '@Types/index';
 import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
+import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 
 const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
   const dispatch = useSetAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
@@ -32,7 +33,7 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
           }
         `}
       >
-        {data?.albumById?.tracks?.items?.map((item, index) => (
+        {data?.albumById?.tracks?.items?.map((item) => (
           <AtomTrack
             type="album"
             key={item?.id}
@@ -51,8 +52,7 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
             }}
             album={{
               ...item,
-              artists: data?.albumById?.artists,
-              position: index
+              artists: data?.albumById?.artists
             }}
           />
         ))}

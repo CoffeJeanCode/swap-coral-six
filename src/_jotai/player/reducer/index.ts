@@ -39,7 +39,31 @@ const typesReducers: typesReducers = {
     ...STATE,
     currentTrack: PAYLOAD.currentTrack,
     context: PAYLOAD.context
-  })
+  }),
+  CHANGE_TRACK: (STATE, PAYLOAD) => {
+    const TRACKNUMBER = PAYLOAD?.currentTrack?.track_number as number;
+    const isValidTrackNumber = STATE?.context?.some(
+      (item) => item.track_number === TRACKNUMBER
+    );
+    if (isValidTrackNumber) {
+      return {
+        ...STATE,
+        currentTrack: STATE?.context?.find(
+          (item) => item.track_number === TRACKNUMBER
+        )
+      };
+    }
+    if (TRACKNUMBER <= 0) {
+      return {
+        ...STATE,
+        currentTrack: STATE?.context?.[STATE?.context.length - 1]
+      };
+    }
+    return {
+      ...STATE,
+      currentTrack: STATE?.context?.[0]
+    };
+  }
 };
 
 export type ActionPlayer = {
@@ -71,3 +95,7 @@ export const REDUCER_PLAYER_ATOM = (
   );
   return CREATENEWATOM;
 };
+
+const CONTROLS_PLAYER_WITH_REDUCER_ATOM = REDUCER_PLAYER_ATOM(REDUCER_PLAYER);
+
+export default CONTROLS_PLAYER_WITH_REDUCER_ATOM;

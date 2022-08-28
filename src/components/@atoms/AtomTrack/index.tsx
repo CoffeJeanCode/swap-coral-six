@@ -9,11 +9,11 @@ import AtomPlayTrack from '../AtomPlayTrack';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
 
-type PropsWithTypes<T> = T & {
-  position: number;
-};
+// type PropsWithTypes<T> = T & {
+//   position: number;
+// };
 
-type AlbumProps = PropsWithTypes<ISong>;
+type AlbumProps = ISong;
 
 const typeTracks = {
   album: (props: AtomTrack) => {

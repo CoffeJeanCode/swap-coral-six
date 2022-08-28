@@ -23,10 +23,19 @@ const AtomPlayTrack: FC<Props> = (props) => {
   return (
     <AtomButton
       onClick={() => {
-        props?.onPlay && props?.onPlay();
-        if (audio.current) {
-          setPlayPlayer((prev) => !prev);
-          play ? audio.current.pause() : audio.current.play();
+        if (controls?.currentTrack?.id === props?.id) {
+          props?.onPlay && props?.onPlay();
+          if (audio.current) {
+            setPlayPlayer((prev) => !prev);
+            play ? audio.current.pause() : audio.current.play();
+          }
+        }
+        if (controls?.currentTrack?.id !== props?.id) {
+          props?.onPlay && props?.onPlay();
+          if (audio.current) {
+            setPlayPlayer(true);
+            audio.current.play();
+          }
         }
       }}
       backgroundColor="transparent"

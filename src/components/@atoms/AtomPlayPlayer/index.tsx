@@ -5,14 +5,9 @@ import { AUDIOREF_ATOM } from '_jotai/player';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 
-type Props = {
-  width?: string;
-  height?: string;
-};
-
 export const PLAY_TRACK_ATOM = atom(false);
 
-const AtomPlayPlayer: FC<Props> = (props) => {
+const AtomPlayPlayer: FC = () => {
   const [play, setPlayPlayer] = useAtom(PLAY_TRACK_ATOM);
   const audio = useAtomValue(AUDIOREF_ATOM);
   return (
@@ -22,13 +17,14 @@ const AtomPlayPlayer: FC<Props> = (props) => {
       onClick={() => {
         if (audio.current) {
           setPlayPlayer((prev) => !prev);
+          // audio.current.play();
           play ? audio.current.pause() : audio.current.play();
         }
       }}
     >
       <AtomIcon
-        width={props.width}
-        height={props.height}
+        width="45px"
+        height="45px"
         customCSS={css`
           svg {
             path {

@@ -7,7 +7,7 @@ const useSetRef = <T>(
   set: (e: SetStateAction<T>) => void
 ) => {
   useEffect(() => {
-    if (ref.current as MutableRefObject<T>) {
+    if (ref.current as MutableRefObject<T | any>) {
       set(ref as T);
     }
   }, [ref, set]);

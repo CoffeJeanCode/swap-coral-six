@@ -20,8 +20,8 @@ const AtomPlayerProgressBar: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
   const [currentTime, setCurrentTime] = useAtom(PROGRESSBAR_ATOM);
   const audio = useRef<HTMLAudioElement>();
-  const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-  //   const setPlayPlayer = useSetAtom(PLAY_TRACK_ATOM);
+  const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+  const setPlayPlayer = useSetAtom(PLAY_TRACK_ATOM);
   const playerPlayer = useAtomValue(PLAY_TRACK_ATOM);
   //   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   //   const video = useAtomValue(videoRefAtom);
@@ -189,7 +189,7 @@ const AtomPlayerProgressBar: FC = () => {
       <audio
         id="AUDIOPLAYER"
         ref={audio as LegacyRef<HTMLAudioElement>}
-        // loop={controls.repeat}
+        loop={controls?.controls?.repeatByOne}
         src={data?.audioById?.audio?.urls?.[0]?.url}
         autoPlay={playerPlayer}
         onPlaying={() => {
@@ -200,7 +200,21 @@ const AtomPlayerProgressBar: FC = () => {
           }
         }}
         onEnded={() => {
-          // setPlayPlayer(false);
+          if (controls?.controls?.repeat) {
+            if (audio.current) {
+              dispatch({
+                type: 'CHANGE_TRACK',
+                payload: {
+                  currentTrack: {
+                    track_number:
+                      (controls?.currentTrack?.track_number as number) + 1
+                  }
+                }
+              });
+              setPlayPlayer(true);
+              audio.current.play();
+            }
+          }
         }}
       ></audio>
 

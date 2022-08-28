@@ -14,6 +14,7 @@ export type InitialState = {
   controls?: {
     aleatory: boolean;
     repeat: boolean;
+    repeatByOne: boolean;
   };
   context?: PropsWithTypes<ISong>[];
 };
@@ -26,7 +27,8 @@ export const initialState: InitialState = {
   },
   controls: {
     aleatory: false,
-    repeat: false
+    repeat: false,
+    repeatByOne: false
   },
   context: []
 };
@@ -64,7 +66,21 @@ const typesReducers: typesReducers = {
       ...STATE,
       currentTrack: STATE?.context?.[0]
     };
-  }
+  },
+  SET_REPEAT: (STATE, PAYLOAD) => ({
+    ...STATE,
+    controls: {
+      ...STATE.controls,
+      repeat: !STATE.controls?.repeat as boolean
+    } as any
+  }),
+  SET_REPEATBYONE: (STATE, PAYLOAD) => ({
+    ...STATE,
+    controls: {
+      ...STATE.controls,
+      repeatByOne: !STATE.controls?.repeatByOne as boolean
+    } as any
+  })
 };
 
 export type ActionPlayer = {

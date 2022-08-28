@@ -81,7 +81,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
             }
             svg {
               path {
-                stroke: ${colors?.[1]?.hex ?? colors?.[0]?.hex};
+                stroke: ${colors?.[0]?.hex};
               }
             }
           `}
@@ -103,7 +103,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
         `}
         width="30px"
         height="30px"
-        color={colors?.[1]?.hex ?? colors?.[0]?.hex}
+        color={colors?.[0]?.hex}
         icon={
           controls?.currentTrack?.id === props?.id && play
             ? 'https://res.cloudinary.com/whil/image/upload/v1661401538/pause_he3p5p.svg'

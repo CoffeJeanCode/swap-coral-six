@@ -316,12 +316,10 @@ const AtomPlayer: FC = () => {
             backgroundColor="transparent"
             padding="0px"
             onClick={() => {
-              //   dispatch({
-              //     type: 'REPEAT',
-              //     payload: {
-              //       repeat: !controls.repeat
-              //     }
-              //   });
+              dispatch({
+                type: 'SET_REPEAT',
+                payload: {}
+              });
             }}
             customCSS={css`
               @media (max-width: 980px) {
@@ -336,7 +334,9 @@ const AtomPlayer: FC = () => {
               customCSS={css`
                 svg {
                   path {
-                    stroke: white;
+                    stroke: ${controls.controls?.repeat
+                      ? colors?.[0]?.hex
+                      : 'white'};
                   }
                 }
               `}

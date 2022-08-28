@@ -31,7 +31,7 @@ const LyricByID: NextPageFC<{ id: string }> = ({ id }) => {
     <AtomWrapper
       padding="45px"
       backgroundColor={colorBackground?.[0]?.hex as string}
-      height={loading ? '89.5%' : 'auto'}
+      height={loading ? '100vh' : 'auto'}
       customCSS={css`
         display: flex;
         flex-direction: ${loading ? 'row' : 'column'};
@@ -43,9 +43,21 @@ const LyricByID: NextPageFC<{ id: string }> = ({ id }) => {
         <AtomLoader type="small" colorLoading="white" isLoading />
       ) : (
         <>
-          <AtomText fontWeight="bold" fontSize="30px">
-            {/* Lyrics - {controls?.player?.currentTrack?.name} */}
-          </AtomText>
+          <AtomWrapper flexDirection="row" alignItems="center" gap="10px">
+            {data?.lyricByTrackId?.artists?.map((item, index) => (
+              <AtomText
+                key={item?.id}
+                fontWeight="bold"
+                fontSize="30px"
+                color="white"
+              >
+                {index === 0 ? item?.name : `, ${item?.name}`}
+              </AtomText>
+            ))}
+            <AtomText fontWeight="bold" fontSize="30px" color="white">
+              {data?.lyricByTrackId?.name}
+            </AtomText>
+          </AtomWrapper>
 
           {data?.lyricByTrackId?.lyrics?.map((item) => (
             <AtomWrapper

@@ -17,7 +17,6 @@ const AtomPlayer: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const router = useRouter();
-  console.log(controls);
 
   return (
     <AtomWrapper

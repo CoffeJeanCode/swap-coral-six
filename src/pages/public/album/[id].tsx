@@ -12,6 +12,7 @@ import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 
 const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
   const dispatch = useSetAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+
   const { data } = useQuery<IQueryFilter<'albumById'>>(albumByID, {
     skip: !id,
     variables: {

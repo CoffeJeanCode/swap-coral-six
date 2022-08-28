@@ -10,7 +10,7 @@ type Props = {
   height?: string;
 };
 
-const PLAY_TRACK_ATOM = atom(false);
+export const PLAY_TRACK_ATOM = atom(false);
 
 const AtomPlayPlayer: FC<Props> = (props) => {
   const [play, setPlayPlayer] = useAtom(PLAY_TRACK_ATOM);

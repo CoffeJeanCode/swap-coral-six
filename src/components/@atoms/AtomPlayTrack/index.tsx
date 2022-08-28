@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { FC } from 'react';
+import { AUDIOREF_ATOM } from '_jotai/player';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
+import { PLAY_TRACK_ATOM } from '../AtomPlayPlayer';
 import { AtomText } from '../AtomText';
 
 type Props = {
@@ -13,9 +15,17 @@ type Props = {
 
 const AtomPlayTrack: FC<Props> = (props) => {
   const colors = useAtomValue(COLORS_ATOM);
+  const [play, setPlayPlayer] = useAtom(PLAY_TRACK_ATOM);
+  const audio = useAtomValue(AUDIOREF_ATOM);
   return (
     <AtomButton
-      onClick={props?.onPlay}
+      onClick={() => {
+        props?.onPlay && props?.onPlay();
+        if (audio.current) {
+          setPlayPlayer((prev) => !prev);
+          play ? audio.current.pause() : audio.current.play();
+        }
+      }}
       backgroundColor="transparent"
       customCSS={css`
         grid-column: 1;

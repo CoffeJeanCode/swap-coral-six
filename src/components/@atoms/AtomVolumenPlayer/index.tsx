@@ -4,6 +4,7 @@ import { COLORS_ATOM } from '@Hooks/useColor';
 import { useAtom, useAtomValue } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { ChangeEvent, FC, useState } from 'react';
+import { AUDIOREF_ATOM } from '_jotai/player';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomInput from '../AtomInput';
@@ -13,7 +14,7 @@ export const VOLUMEN_ATOM = atomWithStorage('VOLUMENSWAP', 0 as number);
 const AtomVolumenPlayer: FC = () => {
   const [volumen, setvolumen] = useAtom(VOLUMEN_ATOM);
   const colors = useAtomValue(COLORS_ATOM);
-  //   const audio = useAtomValue(audioRefAtom);
+  const audio = useAtomValue(AUDIOREF_ATOM);
   const [storeVolumen, setStoreVolumen] = useState(0);
 
   return (
@@ -22,14 +23,14 @@ const AtomVolumenPlayer: FC = () => {
         padding="0px"
         backgroundColor="transparent"
         onClick={() => {
-          if (true) {
+          if (audio.current) {
             if (volumen === 0) {
               setvolumen(storeVolumen * 100);
-              // audio.current.volume = storeVolumen;
+              audio.current.volume = storeVolumen;
             } else {
               setStoreVolumen(volumen / 100);
               setvolumen(0);
-              // audio.current.volume = 0;
+              audio.current.volume = 0;
             }
           }
         }}
@@ -62,15 +63,15 @@ const AtomVolumenPlayer: FC = () => {
         min="0"
         value={volumen}
         onBlur={(e: ChangeEvent<HTMLInputElement>) => {
-          //   if (audio.current) {
-          //     audio.current.volume = Number(e.target.value) / 100;
-          //   }
+          if (audio.current) {
+            audio.current.volume = Number(e.target.value) / 100;
+          }
           setvolumen(Number(e.target.value));
         }}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          //   if (audio.current) {
-          //     audio.current.volume = Number(e.target.value) / 100;
-          //   }
+          if (audio.current) {
+            audio.current.volume = Number(e.target.value) / 100;
+          }
           //   setvolumen(Number(e.target.value));
           setvolumen(Number(e.target.value));
         }}

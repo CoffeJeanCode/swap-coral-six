@@ -40,6 +40,7 @@ const typeTracks = {
         key={props?.album?.id}
       >
         <AtomPlayTrack
+          {...props?.album}
           trackNumber={props?.album?.track_number}
           onPlay={props?.onPlay}
         />

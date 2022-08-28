@@ -12,6 +12,7 @@ import { FC, LegacyRef, MutableRefObject, useRef } from 'react';
 import { AUDIOREF_ATOM, PROGRESSBAR_ATOM } from '_jotai/player';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomInput from '../AtomInput';
+import { PLAY_TRACK_ATOM } from '../AtomPlayPlayer';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
 
@@ -21,7 +22,7 @@ const AtomPlayerProgressBar: FC = () => {
   const audio = useRef<HTMLAudioElement>();
   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   //   const setPlayPlayer = useSetAtom(PLAY_TRACK_ATOM);
-  //   const playerPlayer = useAtomValue(PLAY_TRACK_ATOM);
+  const playerPlayer = useAtomValue(PLAY_TRACK_ATOM);
   //   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   //   const video = useAtomValue(videoRefAtom);
   const setAudioRef = useSetAtom(AUDIOREF_ATOM);
@@ -190,7 +191,7 @@ const AtomPlayerProgressBar: FC = () => {
         ref={audio as LegacyRef<HTMLAudioElement>}
         // loop={controls.repeat}
         src={data?.audioById?.audio?.urls?.[0]?.url}
-        autoPlay
+        autoPlay={playerPlayer}
         onPlaying={() => {
           if (audio.current) {
             audio.current.ontimeupdate = (event: any) => {

@@ -55,7 +55,7 @@ export interface IQuery {
   artistById?: IArtist;
   listAlbums?: Array<IAlbumType | null>;
   albumById?: IAlbumType;
-  trackBySlug?: ITrack;
+  audioById?: ITrack;
   listPlaylistsBySlug?: Array<IlistPlaylistsBySlug | null>;
   listByType?: IlistByType;
   lyricByTrackId?: ILyricByTrack;
@@ -215,21 +215,30 @@ export interface ITrackLinkObject {
 
 export interface ITrack {
   id?: string;
-  slug?: string;
-  url?: string;
-  youtube_url?: string;
-  youtube_video?: string;
-  lyrics?: string;
-  isSyncronous?: boolean;
-  edit_lyrics?: Array<IEDITLYRICS | null>;
+  audio?: IAudio;
 }
 
-export interface IEDITLYRICS {
+export interface IAudio {
+  name?: string;
+  artists?: Array<IAudioArtists | null>;
+  urls?: Array<IAudioUrls | null>;
+}
+
+export interface IAudioArtists {
+  external_urls?: IAudioExternalArtis;
+  href?: string;
   id?: string;
-  lyric?: string;
-  time?: number;
-  artist?: string;
-  line?: number;
+  name?: string;
+  type?: string;
+  uri?: string;
+}
+
+export interface IAudioExternalArtis {
+  spotify?: string;
+}
+
+export interface IAudioUrls {
+  url?: string;
 }
 
 export interface IlistPlaylistsBySlug {
@@ -432,7 +441,10 @@ export interface IResolver {
   TrackArtist?: ITrackArtistTypeResolver;
   TrackLinkObject?: ITrackLinkObjectTypeResolver;
   Track?: ITrackTypeResolver;
-  EDITLYRICS?: IEDITLYRICSTypeResolver;
+  Audio?: IAudioTypeResolver;
+  AudioArtists?: IAudioArtistsTypeResolver;
+  AudioExternalArtis?: IAudioExternalArtisTypeResolver;
+  AudioUrls?: IAudioUrlsTypeResolver;
   listPlaylistsBySlug?: IlistPlaylistsBySlugTypeResolver;
   Owner?: IOwnerTypeResolver;
   PlaylistTracks?: IPlaylistTracksTypeResolver;
@@ -450,7 +462,7 @@ export interface IQueryTypeResolver<TParent = any> {
   artistById?: QueryToArtistByIdResolver<TParent>;
   listAlbums?: QueryToListAlbumsResolver<TParent>;
   albumById?: QueryToAlbumByIdResolver<TParent>;
-  trackBySlug?: QueryToTrackBySlugResolver<TParent>;
+  audioById?: QueryToAudioByIdResolver<TParent>;
   listPlaylistsBySlug?: QueryToListPlaylistsBySlugResolver<TParent>;
   listByType?: QueryToListByTypeResolver<TParent>;
   lyricByTrackId?: QueryToLyricByTrackIdResolver<TParent>;
@@ -504,15 +516,13 @@ export interface QueryToAlbumByIdResolver<TParent = any, TResult = any> {
   ): TResult;
 }
 
-export interface QueryToTrackBySlugArgs {
-  slug?: string;
-  artist?: string;
-  title_track?: string;
+export interface QueryToAudioByIdArgs {
+  id?: string;
 }
-export interface QueryToTrackBySlugResolver<TParent = any, TResult = any> {
+export interface QueryToAudioByIdResolver<TParent = any, TResult = any> {
   (
     parent: TParent,
-    args: QueryToTrackBySlugArgs,
+    args: QueryToAudioByIdArgs,
     context: any,
     info: GraphQLResolveInfo
   ): TResult;
@@ -1100,72 +1110,87 @@ export interface TrackLinkObjectToUriResolver<TParent = any, TResult = any> {
 
 export interface ITrackTypeResolver<TParent = any> {
   id?: TrackToIdResolver<TParent>;
-  slug?: TrackToSlugResolver<TParent>;
-  url?: TrackToUrlResolver<TParent>;
-  youtube_url?: TrackToYoutube_urlResolver<TParent>;
-  youtube_video?: TrackToYoutube_videoResolver<TParent>;
-  lyrics?: TrackToLyricsResolver<TParent>;
-  isSyncronous?: TrackToIsSyncronousResolver<TParent>;
-  edit_lyrics?: TrackToEdit_lyricsResolver<TParent>;
+  audio?: TrackToAudioResolver<TParent>;
 }
 
 export interface TrackToIdResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToSlugResolver<TParent = any, TResult = any> {
+export interface TrackToAudioResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToUrlResolver<TParent = any, TResult = any> {
+export interface IAudioTypeResolver<TParent = any> {
+  name?: AudioToNameResolver<TParent>;
+  artists?: AudioToArtistsResolver<TParent>;
+  urls?: AudioToUrlsResolver<TParent>;
+}
+
+export interface AudioToNameResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToYoutube_urlResolver<TParent = any, TResult = any> {
+export interface AudioToArtistsResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToYoutube_videoResolver<TParent = any, TResult = any> {
+export interface AudioToUrlsResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToLyricsResolver<TParent = any, TResult = any> {
+export interface IAudioArtistsTypeResolver<TParent = any> {
+  external_urls?: AudioArtistsToExternal_urlsResolver<TParent>;
+  href?: AudioArtistsToHrefResolver<TParent>;
+  id?: AudioArtistsToIdResolver<TParent>;
+  name?: AudioArtistsToNameResolver<TParent>;
+  type?: AudioArtistsToTypeResolver<TParent>;
+  uri?: AudioArtistsToUriResolver<TParent>;
+}
+
+export interface AudioArtistsToExternal_urlsResolver<
+  TParent = any,
+  TResult = any
+> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToIsSyncronousResolver<TParent = any, TResult = any> {
+export interface AudioArtistsToHrefResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface TrackToEdit_lyricsResolver<TParent = any, TResult = any> {
+export interface AudioArtistsToIdResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface IEDITLYRICSTypeResolver<TParent = any> {
-  id?: EDITLYRICSToIdResolver<TParent>;
-  lyric?: EDITLYRICSToLyricResolver<TParent>;
-  time?: EDITLYRICSToTimeResolver<TParent>;
-  artist?: EDITLYRICSToArtistResolver<TParent>;
-  line?: EDITLYRICSToLineResolver<TParent>;
-}
-
-export interface EDITLYRICSToIdResolver<TParent = any, TResult = any> {
+export interface AudioArtistsToNameResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface EDITLYRICSToLyricResolver<TParent = any, TResult = any> {
+export interface AudioArtistsToTypeResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface EDITLYRICSToTimeResolver<TParent = any, TResult = any> {
+export interface AudioArtistsToUriResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface EDITLYRICSToArtistResolver<TParent = any, TResult = any> {
+export interface IAudioExternalArtisTypeResolver<TParent = any> {
+  spotify?: AudioExternalArtisToSpotifyResolver<TParent>;
+}
+
+export interface AudioExternalArtisToSpotifyResolver<
+  TParent = any,
+  TResult = any
+> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface EDITLYRICSToLineResolver<TParent = any, TResult = any> {
+export interface IAudioUrlsTypeResolver<TParent = any> {
+  url?: AudioUrlsToUrlResolver<TParent>;
+}
+
+export interface AudioUrlsToUrlResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

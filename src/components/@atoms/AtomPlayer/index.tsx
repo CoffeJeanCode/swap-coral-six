@@ -423,7 +423,6 @@ const AtomPlayer: FC = () => {
           />
         </AtomButton>
         <AtomVolumenPlayer />
-        {/* <BarVolumen /> */}
       </AtomWrapper>
     </AtomWrapper>
   );

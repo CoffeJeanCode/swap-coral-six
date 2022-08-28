@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
@@ -10,12 +10,14 @@ import AtomImage from '../AtomImage';
 import AtomPlayerProgressBar from '../AtomPlayerProgressBar';
 import AtomPlayPlayer from '../AtomPlayPlayer';
 import { AtomText } from '../AtomText';
+import { VIEWIMAGESIDEBAR_ATOM } from '../AtomViewImageSidebar';
 import AtomVolumenPlayer from '../AtomVolumenPlayer';
 import AtomWrapper from '../Atomwrapper';
 
 const AtomPlayer: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+  const setViewImageSideBar = useSetAtom(VIEWIMAGESIDEBAR_ATOM);
   const router = useRouter();
 
   return (
@@ -65,13 +67,7 @@ const AtomPlayer: FC = () => {
             height="100%"
             backgroundColor="transparent"
             onClick={() => {
-              // dispatch({
-              //   type: 'VIEWIMAGESIDEBAR',
-              //   payload: {
-              //     view: !controls.view,
-              //     image: controls?.player?.currentTrack?.image
-              //   }
-              // });
+              setViewImageSideBar(true);
             }}
           >
             <AtomImage
@@ -360,24 +356,23 @@ const AtomPlayer: FC = () => {
         <AtomButton
           backgroundColor="transparent"
           padding="0px"
-
-          //   onClick={() => {
-          //     router?.asPath?.includes('/lyric')
-          //       ? router.back()
-          //       : router
-          //           ?.push({
-          //             pathname: '/swap/lyric/[id]',
-          //             query: {
-          //               id: controls?.player?.currentTrack?.idTrack
-          //             }
-          //           })
-          //           .then(() => {
-          //             document?.getElementById('view')?.scroll({
-          //               top: 0,
-          //               behavior: 'smooth'
-          //             });
-          //           });
-          //   }}
+          onClick={() => {
+            router?.asPath?.includes('/lyric')
+              ? router.back()
+              : router
+                  ?.push({
+                    pathname: '/public/lyric/[id]',
+                    query: {
+                      id: controls?.currentTrack?.id
+                    }
+                  })
+                  .then(() => {
+                    document?.getElementById('view')?.scroll({
+                      top: 0,
+                      behavior: 'smooth'
+                    });
+                  });
+          }}
         >
           <AtomIcon
             icon="https://res.cloudinary.com/whil/image/upload/v1661655095/microphone_pnd062.svg"

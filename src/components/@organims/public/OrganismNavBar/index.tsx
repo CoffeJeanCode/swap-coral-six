@@ -1,6 +1,7 @@
 import AtomButton from '@Components/@atoms/AtomButton';
 import AtomIcon from '@Components/@atoms/AtomIcon';
 import { AtomText } from '@Components/@atoms/AtomText';
+import AtomViewImageSidebar from '@Components/@atoms/AtomViewImageSidebar';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -126,6 +127,7 @@ const OrganismNavbar: FC = () => {
             </AtomButton>
           ))}
         </AtomWrapper>
+        <AtomViewImageSidebar />
       </AtomWrapper>
     </AtomWrapper>
   );

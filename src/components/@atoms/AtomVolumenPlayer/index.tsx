@@ -8,10 +8,10 @@ import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomInput from '../AtomInput';
 
-export const volumenAtom = atomWithStorage('VOLUMENSWAP', 0 as number);
+export const VOLUMEN_ATOM = atomWithStorage('VOLUMENSWAP', 0 as number);
 
 const AtomVolumenPlayer: FC = () => {
-  const [volumen, setvolumen] = useAtom(volumenAtom);
+  const [volumen, setvolumen] = useAtom(VOLUMEN_ATOM);
   const colors = useAtomValue(COLORS_ATOM);
   //   const audio = useAtomValue(audioRefAtom);
   const [storeVolumen, setStoreVolumen] = useState(0);

@@ -2,35 +2,29 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
+import useSetRef from '@Hooks/useSetRef';
 import useTime from '@Hooks/useTime';
-import { atom, useAtomValue } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
-import { FC, MutableRefObject } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { FC, LegacyRef, MutableRefObject, useRef } from 'react';
+import { AUDIOREF_ATOM, PROGRESSBAR_ATOM } from '_jotai/player';
 import AtomInput from '../AtomInput';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
-
-export const progressBarAtom = atomWithStorage('PROGRESSBAR', 0 as number);
-export const audioRefAtom = atom(
-  {} as MutableRefObject<HTMLAudioElement | undefined>
-);
-
 const AtomPlayerProgressBar: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
+  const [currentTime, setCurrentTime] = useAtom(PROGRESSBAR_ATOM);
+  const audio = useRef<HTMLAudioElement>();
+
   //   const setPlayPlayer = useSetAtom(PLAY_TRACK_ATOM);
   //   const playerPlayer = useAtomValue(PLAY_TRACK_ATOM);
-  //   const [currentTime, setCurrentTime] = useAtom(progressBarAtom);
   //   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   //   const video = useAtomValue(videoRefAtom);
-  //   const setAudioRef = useSetAtom(audioRefAtom);
-  //   const audio = useRef<HTMLAudioElement>();
-  //   useSetRef<MutableRefObject<HTMLAudioElement | undefined>>(
-  //     audio as any,
-  //     setAudioRef
-  //   );
-  //   const totalTime = audio?.current?.duration || 0;
-  //   const screen = useScreen();
-  //   const colors = useAtomValue(colorsAtom);
+  const setAudioRef = useSetAtom(AUDIOREF_ATOM);
+  useSetRef<MutableRefObject<HTMLAudioElement | undefined>>(
+    audio as any,
+    setAudioRef
+  );
+  const totalTime = audio?.current?.duration || 0;
 
   //   useEffect(() => {
   //     if (audio.current) {
@@ -40,9 +34,6 @@ const AtomPlayerProgressBar: FC = () => {
   //       audio.current.volume = (volumen as unknown as number) / 100;
   //     }
   //   }, []);
-
-  const currentTime = 20;
-  const totalTime = 100;
 
   return (
     <AtomWrapper
@@ -69,23 +60,23 @@ const AtomPlayerProgressBar: FC = () => {
           }
         `}
       >
-        {useTime({ duration_ms: 10020 })}
+        {useTime({ duration_ms: currentTime || 2200 })}
       </AtomText>
       <AtomInput
         id="player-reproductor"
         type="range"
         min="0"
-        // max={audio.current?.duration ? audio.current.duration : 0}
-        // value={currentTime}
-        onClick={() => {
-          //   if (video.current) {
-          //     video.current.currentTime = currentTime;
-          //   }
-        }}
+        max={audio.current?.duration ? audio.current.duration : 0}
+        value={currentTime}
+        // onClick={() => {
+        //   //   if (video.current) {
+        //   //     video.current.currentTime = currentTime;
+        //   //   }
+        // }}
         onChange={(event) => {
-          //   if (audio.current) {
-          //     audio.current.currentTime = Number(event.target.value);
-          //   }
+          if (audio.current) {
+            audio.current.currentTime = Number(event.target.value);
+          }
         }}
         customCSS={css`
           height: 6px;
@@ -182,25 +173,23 @@ const AtomPlayerProgressBar: FC = () => {
         `}
       />
 
-      {/* {controls?.player?.currentTrack?.preview_url && (
-        <audio
-          id="AUDIOPLAYER"
-          ref={audio as LegacyRef<HTMLAudioElement>}
-          loop={controls.repeat}
-          src={controls?.player?.currentTrack?.preview_url as string}
-          autoPlay={playerPlayer}
-          onPlaying={() => {
-            if (audio.current) {
-              audio.current.ontimeupdate = (event: any) => {
-                setCurrentTime(Math.round(event.target.currentTime));
-              };
-            }
-          }}
-          onEnded={() => {
-            setPlayPlayer(false);
-          }}
-        ></audio>
-      )} */}
+      <audio
+        id="AUDIOPLAYER"
+        ref={audio as LegacyRef<HTMLAudioElement>}
+        // loop={controls.repeat}
+        // src={controls?.player?.currentTrack?.preview_url as string}
+        // autoPlay={playerPlayer}
+        onPlaying={() => {
+          if (audio.current) {
+            audio.current.ontimeupdate = (event: any) => {
+              setCurrentTime(event.target.currentTime);
+            };
+          }
+        }}
+        onEnded={() => {
+          // setPlayPlayer(false);
+        }}
+      ></audio>
 
       <AtomText
         as="p"
@@ -213,7 +202,7 @@ const AtomPlayerProgressBar: FC = () => {
           }
         `}
       >
-        {useTime({ duration_ms: 236000 })}
+        {useTime({ duration_ms: audio?.current?.duration || 1 })}
       </AtomText>
     </AtomWrapper>
   );

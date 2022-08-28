@@ -63,6 +63,7 @@ const AtomPlayer: FC = () => {
             padding="0px"
             width="100%"
             height="100%"
+            backgroundColor="transparent"
             onClick={() => {
               // dispatch({
               //   type: 'VIEWIMAGESIDEBAR',

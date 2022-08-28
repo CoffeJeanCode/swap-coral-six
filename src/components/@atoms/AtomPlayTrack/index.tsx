@@ -8,13 +8,14 @@ import { AtomText } from '../AtomText';
 
 type Props = {
   trackNumber?: number;
+  onPlay?: () => void;
 };
 
 const AtomPlayTrack: FC<Props> = (props) => {
   const colors = useAtomValue(COLORS_ATOM);
   return (
     <AtomButton
-      onClick={async () => {}}
+      onClick={props?.onPlay}
       backgroundColor="transparent"
       customCSS={css`
         grid-column: 1;
@@ -58,7 +59,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
         `}
         width="30px"
         height="30px"
-        color={colors?.[0]?.hex}
+        color={colors?.[1]?.hex ?? colors?.[0]?.hex}
         icon="https://res.cloudinary.com/whil/image/upload/v1661401539/play_obtqfo.svg"
       />
     </AtomButton>

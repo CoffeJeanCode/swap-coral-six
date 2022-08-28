@@ -13,26 +13,23 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import client from '../apollo/client';
-
 const MyApp = ({
   Component,
   pageProps: { session, ...pageProps }
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO;
   return (
-    <>
-      <ApolloProvider client={client}>
-        <SessionProvider session={session}>
-          <HeadComponent>
-            <Layouts Layout={Component.Layout} SEO={SEO}>
-              <Global styles={Normalize} />
-              <ToastContainer />
-              <Component {...pageProps} />
-            </Layouts>
-          </HeadComponent>
-        </SessionProvider>
-      </ApolloProvider>
-    </>
+    <ApolloProvider client={client}>
+      <SessionProvider session={session}>
+        <HeadComponent>
+          <Layouts Layout={Component.Layout} SEO={SEO}>
+            <Global styles={Normalize} />
+            <ToastContainer />
+            <Component {...pageProps} />
+          </Layouts>
+        </HeadComponent>
+      </SessionProvider>
+    </ApolloProvider>
   );
 };
 

@@ -1,19 +1,26 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { REDUCER_PLAYER, REDUCER_PLAYER_ATOM } from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
+import AtomImage from '../AtomImage';
 import AtomPlayerProgressBar from '../AtomPlayerProgressBar';
 import AtomPlayPlayer from '../AtomPlayPlayer';
+import { AtomText } from '../AtomText';
 import AtomVolumenPlayer from '../AtomVolumenPlayer';
 import AtomWrapper from '../Atomwrapper';
 
+export const CONTROLS_PLAYER_WITH_REDUCER_ATOM =
+  REDUCER_PLAYER_ATOM(REDUCER_PLAYER);
+
 const AtomPlayer: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
-  //   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+  const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const router = useRouter();
+  console.log(controls);
 
   return (
     <AtomWrapper
@@ -47,47 +54,44 @@ const AtomPlayer: FC = () => {
           }
         `}
       >
-        {false && (
-          <AtomWrapper
-            customCSS={css`
-              width: 80px;
-              grid-row: 1 /-1;
-              @media (max-width: 980px) {
-                display: none;
-              }
-            `}
+        <AtomWrapper
+          customCSS={css`
+            width: 80px;
+            grid-row: 1 /-1;
+            @media (max-width: 980px) {
+              display: none;
+            }
+          `}
+        >
+          <AtomButton
+            padding="0px"
+            width="100%"
+            height="100%"
+            onClick={() => {
+              // dispatch({
+              //   type: 'VIEWIMAGESIDEBAR',
+              //   payload: {
+              //     view: !controls.view,
+              //     image: controls?.player?.currentTrack?.image
+              //   }
+              // });
+            }}
           >
-            <AtomButton
-              padding="0px"
+            <AtomImage
+              src={controls?.currentTrack?.images?.[0]?.url as string}
+              alt={controls?.currentTrack?.images?.[0]?.url as string}
+              borderRadius="10px"
               width="100%"
               height="100%"
-              onClick={() => {
-                // dispatch({
-                //   type: 'VIEWIMAGESIDEBAR',
-                //   payload: {
-                //     view: !controls.view,
-                //     image: controls?.player?.currentTrack?.image
-                //   }
-                // });
-              }}
-            >
-              {/* <AtomImage
-                src={controls?.player?.currentTrack?.image as string}
-                alt={controls?.player?.currentTrack?.name as string}
-                borderRadius="10px"
-                id="IMAGE"
-                width="100%"
-                height="100%"
-                css={css`
-                  grid-row: 1 / -1;
-                `}
-              /> */}
-            </AtomButton>
-          </AtomWrapper>
-        )}
-        {/* <AtomWrapper
+              customCSS={css`
+                grid-row: 1 / -1;
+              `}
+            />
+          </AtomButton>
+        </AtomWrapper>
+        <AtomWrapper
           customCSS={css`
-            grid-column: ${controls.view ? '1' : '2'};
+            grid-column: 2;
             grid-row: 1;
             display: flex;
             flex-direction: row;
@@ -97,6 +101,8 @@ const AtomPlayer: FC = () => {
         >
           <AtomButton
             width="max-content"
+            padding="0px"
+            backgroundColor="transparent"
             customCSS={css`
               &:hover {
                 text-decoration: underline;
@@ -105,9 +111,9 @@ const AtomPlayer: FC = () => {
             onClick={() => {
               router
                 .push({
-                  pathname: `/swap/album/[id]`,
+                  pathname: `/public/album/[id]`,
                   query: {
-                    id: controls?.player?.currentTrack?.album.id
+                    id: controls?.currentTrack?.id
                   }
                 })
                 .then(() => {
@@ -118,9 +124,9 @@ const AtomPlayer: FC = () => {
             }}
           >
             <AtomText
-              fontWeight="700"
               as="p"
-              css={css`
+              color="white"
+              customCSS={css`
                 grid-column: 2;
                 grid-row: 1;
                 align-self: center;
@@ -131,17 +137,19 @@ const AtomPlayer: FC = () => {
                 }
               `}
             >
-              {controls?.player?.currentTrack?.name}
+              {controls?.currentTrack?.name ?? ''}
             </AtomText>
           </AtomButton>
           <AtomButton
+            backgroundColor="transparent"
+            padding="0px"
             onClick={() => {
-              router.push({
-                pathname: `/swap/video/[id]`,
-                query: {
-                  id: controls?.player?.currentTrack?.idTrack
-                }
-              });
+              // router.push({
+              //   pathname: `/swap/video/[id]`,
+              //   query: {
+              //     id: controls?.currentTrack?.id
+              //   }
+              // });
             }}
           >
             <AtomIcon
@@ -150,7 +158,7 @@ const AtomPlayer: FC = () => {
               icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/to.svg"
             />
           </AtomButton>
-        </AtomWrapper> */}
+        </AtomWrapper>
         <AtomWrapper
           customCSS={css`
             grid-row: 2;
@@ -162,9 +170,12 @@ const AtomPlayer: FC = () => {
           `}
         >
           <AtomWrapper flexDirection="row" justifyContent="flex-start">
-            {/* {controls?.player?.currentTrack?.artists?.map((item, index) => (
+            {controls?.currentTrack?.artists?.map((item, index) => (
               <AtomButton
-                key={item.id && item?.id}
+                key={item?.id}
+                padding="0px"
+                color="white"
+                backgroundColor="transparent"
                 customCSS={css`
                   &:hover {
                     text-decoration: underline;
@@ -173,9 +184,9 @@ const AtomPlayer: FC = () => {
                 onClick={() => {
                   router
                     .push({
-                      pathname: `/swap/artist/[id]`,
+                      pathname: `/public/artist/[id]`,
                       query: {
-                        id: item.id
+                        id: item?.id
                       }
                     })
                     .then(() => {
@@ -186,20 +197,9 @@ const AtomPlayer: FC = () => {
                     });
                 }}
               >
-                <AtomText
-                  as="p"
-                  css={css`
-                    opacity: 0.5;
-                    @media (max-width: 980px) {
-                      font-size: 0.8rem;
-                    }
-                  `}
-                  key={item.id}
-                >
-                  {index === 0 ? item.name : `, ${item.name}`}
-                </AtomText>
+                {index === 0 ? item?.name : `, ${item?.name}`}
               </AtomButton>
-            ))} */}
+            ))}
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>

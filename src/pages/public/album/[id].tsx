@@ -1,13 +1,16 @@
 import { useQuery } from '@apollo/client';
 import { albumByID } from '@Apollo/client/query/albumByID';
 import AtomBanner from '@Components/@atoms/AtomBanner';
+import { CONTROLS_PLAYER_WITH_REDUCER_ATOM } from '@Components/@atoms/AtomPlayer';
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
-import { IQueryFilter } from '@Types/index';
+import { IImage, IQueryFilter, ISong } from '@Types/index';
+import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
 
 const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
+  const dispatch = useSetAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const { data } = useQuery<IQueryFilter<'albumById'>>(albumByID, {
     skip: !id,
     variables: {
@@ -33,6 +36,19 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
           <AtomTrack
             type="album"
             key={item?.id}
+            onPlay={() => {
+              dispatch({
+                type: 'SET_TRACK',
+                payload: {
+                  currentTrack: {
+                    ...item,
+                    artists: data?.albumById?.artists,
+                    images: data?.albumById?.images as IImage[]
+                  },
+                  context: data?.albumById?.tracks?.items as ISong[]
+                }
+              });
+            }}
             album={{
               ...item,
               artists: data?.albumById?.artists,

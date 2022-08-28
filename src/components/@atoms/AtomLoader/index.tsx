@@ -78,7 +78,7 @@ export const LoaderContainer = styled.div<LoaderProps>`
   ${({ customCSS }) => customCSS};
 `;
 
-const Loader: FC<LoaderProps> = (props) => {
+const AtomLoader: FC<LoaderProps> = (props) => {
   const { isLoading } = props;
   return isLoading ? (
     <LoaderContainer {...props}>
@@ -92,4 +92,4 @@ const Loader: FC<LoaderProps> = (props) => {
   ) : null;
 };
 
-export default Loader;
+export default AtomLoader;

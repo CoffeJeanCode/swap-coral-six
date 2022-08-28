@@ -18,6 +18,7 @@ type AlbumProps = PropsWithTypes<ISong>;
 const typeTracks = {
   album: (props: AtomTrack) => {
     const router = useRouter();
+
     return (
       <AtomWrapper
         customCSS={css`
@@ -38,7 +39,10 @@ const typeTracks = {
         `}
         key={props?.album?.id}
       >
-        <AtomPlayTrack trackNumber={props?.album?.track_number} />
+        <AtomPlayTrack
+          trackNumber={props?.album?.track_number}
+          onPlay={props?.onPlay}
+        />
         <AtomWrapper
           customCSS={css`
             grid-column: 2;
@@ -125,7 +129,8 @@ const typeTracks = {
 
 type AtomTrack = {
   type: keyof typeof typeTracks;
-  album: AlbumProps;
+  onPlay: () => void;
+  album?: AlbumProps;
 };
 
 const AtomTrack: FC<AtomTrack> = (props) => typeTracks[props.type](props);

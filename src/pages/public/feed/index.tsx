@@ -46,6 +46,10 @@ const Public: NextPageFCProps = () => {
           </>
         ))}
       </AtomWrapper>
+      <video
+        src="blob:http://www.youtube.com/v/LKsgDcckur0?version=3&autohide=1"
+        controls
+      ></video>
     </AtomWrapper>
   );
 };

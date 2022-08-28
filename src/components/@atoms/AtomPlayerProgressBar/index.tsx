@@ -1,20 +1,25 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
+import { useQuery } from '@apollo/client';
+import { audioById } from '@Apollo/client/query/audioById';
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
 import useSetRef from '@Hooks/useSetRef';
-import useTime from '@Hooks/useTime';
+import { IQueryFilter } from '@Types/index';
+import convertToSecondsAndMinutes from '@Utils/convertToSecontsAndMinutes';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { FC, LegacyRef, MutableRefObject, useRef } from 'react';
 import { AUDIOREF_ATOM, PROGRESSBAR_ATOM } from '_jotai/player';
+import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomInput from '../AtomInput';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
+
 const AtomPlayerProgressBar: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
   const [currentTime, setCurrentTime] = useAtom(PROGRESSBAR_ATOM);
   const audio = useRef<HTMLAudioElement>();
-
+  const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   //   const setPlayPlayer = useSetAtom(PLAY_TRACK_ATOM);
   //   const playerPlayer = useAtomValue(PLAY_TRACK_ATOM);
   //   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
@@ -25,6 +30,13 @@ const AtomPlayerProgressBar: FC = () => {
     setAudioRef
   );
   const totalTime = audio?.current?.duration || 0;
+
+  const { data } = useQuery<IQueryFilter<'audioById'>>(audioById, {
+    skip: !controls?.currentTrack?.id,
+    variables: {
+      id: controls?.currentTrack?.id
+    }
+  });
 
   //   useEffect(() => {
   //     if (audio.current) {
@@ -60,7 +72,7 @@ const AtomPlayerProgressBar: FC = () => {
           }
         `}
       >
-        {useTime({ duration_ms: currentTime || 2200 })}
+        {convertToSecondsAndMinutes(currentTime)?.text}
       </AtomText>
       <AtomInput
         id="player-reproductor"
@@ -177,8 +189,8 @@ const AtomPlayerProgressBar: FC = () => {
         id="AUDIOPLAYER"
         ref={audio as LegacyRef<HTMLAudioElement>}
         // loop={controls.repeat}
-        // src={controls?.player?.currentTrack?.preview_url as string}
-        // autoPlay={playerPlayer}
+        src={data?.audioById?.audio?.urls?.[0]?.url}
+        autoPlay
         onPlaying={() => {
           if (audio.current) {
             audio.current.ontimeupdate = (event: any) => {
@@ -202,7 +214,7 @@ const AtomPlayerProgressBar: FC = () => {
           }
         `}
       >
-        {useTime({ duration_ms: audio?.current?.duration || 1 })}
+        {convertToSecondsAndMinutes(audio?.current?.duration as number)?.text}
       </AtomText>
     </AtomWrapper>
   );

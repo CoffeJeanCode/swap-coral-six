@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
+import { atom, useAtom, useAtomValue } from 'jotai';
 import { FC } from 'react';
+import { AUDIOREF_ATOM } from '_jotai/player';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 
@@ -8,16 +10,20 @@ type Props = {
   height?: string;
 };
 
+const PLAY_TRACK_ATOM = atom(false);
+
 const AtomPlayPlayer: FC<Props> = (props) => {
+  const [play, setPlayPlayer] = useAtom(PLAY_TRACK_ATOM);
+  const audio = useAtomValue(AUDIOREF_ATOM);
   return (
     <AtomButton
       padding="0px"
       backgroundColor="transparent"
       onClick={() => {
-        // if (audio.current) {
-        //   setPlay((prev) => !prev);
-        //   play ? audio.current.pause() : audio.current.play();
-        // }
+        if (audio.current) {
+          setPlayPlayer((prev) => !prev);
+          play ? audio.current.pause() : audio.current.play();
+        }
       }}
     >
       <AtomIcon
@@ -30,12 +36,12 @@ const AtomPlayPlayer: FC<Props> = (props) => {
             }
           }
         `}
-        icon="https://res.cloudinary.com/whil/image/upload/v1661401539/play_obtqfo.svg"
-        // icon={
-        //   play
-        //     ? 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/ZZEV3WD/icons/pause-circle.svg'
-        //     : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/ZZEV3WD/icons/play-circle.svg'
-        // }
+        // icon="https://res.cloudinary.com/whil/image/upload/v1661401539/play_obtqfo.svg"
+        icon={
+          play
+            ? 'https://res.cloudinary.com/whil/image/upload/v1661674261/pause-circle_yw7s3n.svg'
+            : 'https://res.cloudinary.com/whil/image/upload/v1661674252/play-circle_tq6brv.svg'
+        }
       />
     </AtomButton>
   );

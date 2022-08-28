@@ -1,60 +1,76 @@
+import { CONFIG_SPOTIFY } from '@Config/spotify';
 import { youtube } from 'scrape-youtube';
 import ytdl from 'ytdl-core';
+import { ContextRoot } from '../../types';
 const Track = require('@Apollo/server/graphql/service/swap/track/models');
-7;
-type trackBySlug = {
-  slug: string;
+
+type audioById = {
+  id: string;
 };
 
 const resolverTracks = {
   Query: {
-    trackBySlug: async (_: any, { slug }: trackBySlug) => {
-      const track = await Track.findOne({ slug });
+    audioById: async (
+      _: unknown,
+      { id }: audioById,
+      { spotifyAPIToken }: ContextRoot
+    ) => {
+      const track = await Track.findOne({ id });
       if (!track) {
+        await spotifyAPIToken();
+        const trackBySpotify = await (
+          await CONFIG_SPOTIFY.SPOTIFY_API.getTrack(id)
+        ).body;
+        const nameTrack = trackBySpotify?.name;
+        const artistsTrack = trackBySpotify.artists
+          .map((item) => item.name)
+          ?.join();
         const videos = await youtube
-          .search(slug)
+          .search(`${artistsTrack} ${nameTrack}`)
           .then(async (results) => results.videos);
 
         let info = await ytdl.getInfo(videos[0].link);
         let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
-        let videoformats = ytdl.chooseFormat(info.formats, {
-          quality: 'highestvideo'
-        });
-
-        for (const iterator of audioFormats) {
-          const isValid = await fetch(iterator.url).then((res) => res.ok);
-          if (isValid) {
-            const track = new Track({
-              slug,
-              id: videos[0].id,
-              url: iterator.url,
-              youtube_url: videos[0].link,
-              youtube_video: videoformats.url
-            });
-            await track.save();
-            return track;
+        const track = new Track({
+          id: id,
+          audio: {
+            name: nameTrack,
+            artists: trackBySpotify?.artists,
+            urls: audioFormats
           }
-        }
+        });
+        await track.save();
+        return track;
       }
       if (track) {
-        const verifyIsExpired = (await fetch(track.url)).status === 200;
-        if (!verifyIsExpired) {
+        const findIsOneIsExpired = track?.audio?.urls.find(
+          async (item: { url: string }) =>
+            (await fetch(item?.url)).status === 200
+        );
+
+        if (!findIsOneIsExpired) {
+          await spotifyAPIToken();
+          const trackBySpotify = await (
+            await CONFIG_SPOTIFY.SPOTIFY_API.getTrack(id)
+          ).body;
+          const nameTrack = trackBySpotify?.name;
+          const artistsTrack = trackBySpotify.artists
+            .map((item) => item.name)
+            ?.join();
           const videos = await youtube
-            .search(slug)
+            .search(`${artistsTrack} ${nameTrack}`)
             .then(async (results) => results.videos);
 
           let info = await ytdl.getInfo(videos[0].link);
           let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
-          let videoformats = ytdl.chooseFormat(info.formats, {
-            quality: 'highestvideo'
-          });
-
-          track.id = videos[0].id;
-          track.youtube_url = videos[0].link;
-          track.url = audioFormats[0].url;
-          track.youtube_video = videoformats.url;
+          track.id = id;
+          track.audio = {
+            name: nameTrack,
+            artists: trackBySpotify.artists,
+            urls: audioFormats
+          };
           await track.save();
           return track;
         }

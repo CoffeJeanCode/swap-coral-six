@@ -1,56 +1,36 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 export type TracktYPE = {
   id: string;
   name: string;
   url: string;
 };
-
-const Track: Schema = new Schema({
+const Audios: Schema = new Schema({
   id: {
-    type: String,
+    type: String
   },
-  /* Defining the name property of the Track model. */
-  slug: {
-    type: String,
-    required: true,
-  },
-  url: {
-    type: String,
-    required: true,
-  },
-  youtube_url: {
-    type: String,
-  },
-  youtube_video: {
-    type: String,
-  },
-  lyrics: {
-    type: String,
-  },
-  edit_lyrics: [
-    {
-      id: {
-        type: String,
-      },
-      lyric: {
-        type: String,
-      },
-      time: {
-        type: Number,
-      },
-      artist: {
-        type: String,
-      },
-      line: {
-        type: Number,
-      },
+  audio: {
+    name: {
+      type: String
     },
-  ],
-  isSyncronous: {
-    type: Boolean,
-  },
+    artists: [
+      {
+        external_urls: {
+          spotify: String
+        },
+        href: String,
+        id: String,
+        name: String,
+        uri: String
+      }
+    ],
+    urls: [
+      {
+        url: String
+      }
+    ]
+  }
 });
 
 module.exports =
-  mongoose.models.Track || mongoose.model<TracktYPE>("Track", Track);
+  mongoose.models.Audios || mongoose.model<TracktYPE>('Audios', Audios);

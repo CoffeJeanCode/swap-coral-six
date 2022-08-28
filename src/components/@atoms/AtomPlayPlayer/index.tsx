@@ -13,11 +13,12 @@ const AtomPlayPlayer: FC = () => {
   return (
     <AtomButton
       padding="0px"
+      width="45px"
+      height="45px"
       backgroundColor="transparent"
       onClick={() => {
         if (audio.current) {
           setPlayPlayer((prev) => !prev);
-          // audio.current.play();
           play ? audio.current.pause() : audio.current.play();
         }
       }}
@@ -32,7 +33,6 @@ const AtomPlayPlayer: FC = () => {
             }
           }
         `}
-        // icon="https://res.cloudinary.com/whil/image/upload/v1661401539/play_obtqfo.svg"
         icon={
           play
             ? 'https://res.cloudinary.com/whil/image/upload/v1661674261/pause-circle_yw7s3n.svg'

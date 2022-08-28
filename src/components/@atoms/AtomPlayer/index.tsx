@@ -221,6 +221,7 @@ const AtomPlayer: FC = () => {
           flexDirection="row"
           justifyContent="center"
           alignItems="center"
+          gap="10px"
         >
           <AtomButton
             backgroundColor="transparent"
@@ -409,7 +410,7 @@ const AtomPlayer: FC = () => {
           `}
         >
           <AtomIcon
-            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/ZZEV3WD/icons/music-filter.svg"
+            icon="https://res.cloudinary.com/whil/image/upload/v1661401538/music-filter_pfws7j.svg"
             width="22px"
             height="22px"
             customCSS={css`

@@ -29,7 +29,7 @@ const getArtistByLyrc = async (
       id: artistBySpotify.id,
       name: artistBySpotify.name,
       image: artistBySpotify.images[0].url,
-      color: colorByArtist[0]
+      color: colorByArtist?.[0]?.hex
     });
   }
   return result;
@@ -76,6 +76,8 @@ const resolverLyric = {
                 notifies: []
               }))
           });
+          console.log(artistsByTrack);
+
           await newLyric.save();
           return newLyric;
         } else {

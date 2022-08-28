@@ -141,18 +141,34 @@ const AtomPlayer: FC = () => {
             backgroundColor="transparent"
             padding="0px"
             onClick={() => {
-              // router.push({
-              //   pathname: `/swap/video/[id]`,
-              //   query: {
-              //     id: controls?.currentTrack?.id
-              //   }
-              // });
+              const isVideoPage = router.asPath.includes('video');
+
+              if (isVideoPage) {
+                router.back();
+              }
+              router.push({
+                pathname: `/public/video/[id]`,
+                query: {
+                  id: controls?.currentTrack?.id
+                }
+              });
             }}
           >
             <AtomIcon
-              width="20px"
-              height="20px"
-              icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/to.svg"
+              width="25px"
+              height="25px"
+              customCSS={css`
+                svg {
+                  path {
+                    stroke: white;
+                  }
+                }
+              `}
+              icon={
+                router.asPath.includes('video')
+                  ? 'https://res.cloudinary.com/whil/image/upload/v1661706864/PREVVIDEO_icmtkr.svg'
+                  : 'https://res.cloudinary.com/whil/image/upload/v1661706864/TOVIDEO_j3jb2e.svg'
+              }
             />
           </AtomButton>
         </AtomWrapper>

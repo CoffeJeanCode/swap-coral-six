@@ -110,7 +110,7 @@ const AtomPlayer: FC = () => {
                 .push({
                   pathname: `/public/album/[id]`,
                   query: {
-                    id: controls?.currentTrack?.id
+                    id: controls?.currentTrack?.album?.id
                   }
                 })
                 .then(() => {

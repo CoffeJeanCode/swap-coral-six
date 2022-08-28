@@ -1,4 +1,4 @@
-import { IImage, ISong } from '@Types/index';
+import { IAlbumType, IImage, ISong } from '@Types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
@@ -6,6 +6,7 @@ import { atomWithStorage } from 'jotai/utils';
 
 type PropsWithTypes<T> = T & {
   images?: IImage[];
+  album?: IAlbumType;
 };
 
 export type InitialState = {
@@ -14,7 +15,7 @@ export type InitialState = {
     aleatory: boolean;
     repeat: boolean;
   };
-  context?: ISong[];
+  context?: PropsWithTypes<ISong>[];
 };
 
 export const initialState: InitialState = {

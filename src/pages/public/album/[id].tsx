@@ -5,7 +5,7 @@ import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
-import { IImage, IQueryFilter } from '@Types/index';
+import { IImage, IQueryFilter, ISong } from '@Types/index';
 import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
@@ -44,23 +44,19 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
                 payload: {
                   currentTrack: {
                     ...item,
-                    artists: data?.albumById?.artists,
+                    // artists: data?.albumById?.artists,
                     images: data?.albumById?.images as IImage[],
                     album: data?.albumById
                   },
                   context: data?.albumById?.tracks?.items?.map((item) => ({
                     ...item,
-                    artists: data?.albumById?.artists,
                     album: data?.albumById,
                     images: data?.albumById?.images as IImage[]
                   }))
                 }
               });
             }}
-            album={{
-              ...item,
-              artists: data?.albumById?.artists
-            }}
+            album={item as ISong}
           />
         ))}
       </AtomWrapper>

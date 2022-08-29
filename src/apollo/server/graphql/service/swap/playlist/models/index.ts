@@ -1,93 +1,161 @@
-import mongoose, { Schema } from "mongoose";
-import { GlobalProps } from "../../types";
+import mongoose, { Schema } from 'mongoose';
+import { GlobalProps } from '../../types';
 
 export type Playlist = GlobalProps & SpotifyApi.PlaylistObjectSimplified;
 
 export const Playlist: Schema = new Schema<Playlist>({
   collaborative: {
-    type: Boolean,
+    type: Boolean
   },
   description: {
-    type: String,
+    type: String
   },
   external_urls: {
     spotify: {
-      type: String,
-    },
+      type: String
+    }
   },
   href: {
-    type: String,
+    type: String
   },
   id: {
-    type: String,
+    type: String
   },
   images: [
     {
       height: {
-        type: Number,
+        type: Number
       },
       url: {
-        type: String,
+        type: String
       },
       width: {
-        type: Number,
-      },
-    },
+        type: Number
+      }
+    }
   ],
   name: {
-    type: String,
+    type: String
   },
   owner: {
     display_name: {
-      type: String,
+      type: String
     },
     external_urls: {
       spotify: {
-        type: String,
-      },
+        type: String
+      }
     },
     href: {
-      type: String,
+      type: String
     },
     id: {
-      type: String,
+      type: String
     },
     type: {
-      type: String,
+      type: String
     },
     uri: {
-      type: String,
-    },
+      type: String
+    }
   },
   public: {
-    type: Boolean,
+    type: Boolean
   },
   snapshot_id: {
-    type: String,
+    type: String
   },
   tracks: {
+    limit: {
+      type: Number
+    },
+    next: {
+      type: String
+    },
+    offset: {
+      type: Number
+    },
+    previous: {
+      type: String
+    },
+    items: [
+      {
+        album: {
+          album_type: String,
+          artists: [
+            {
+              id: String,
+              name: String,
+              uri: String,
+              href: String,
+              external_urls: {
+                spotify: String
+              }
+            }
+          ],
+          external_urls: {
+            spotify: String
+          },
+          href: String,
+          id: String,
+          name: String,
+          images: [
+            {
+              url: String,
+              width: Number,
+              height: Number
+            }
+          ],
+          release_date: String,
+          release_date_precision: String,
+          total_tracks: Number,
+          uri: String,
+          album_group: String
+        },
+        artists: [
+          {
+            id: String,
+            name: String,
+            uri: String,
+            href: String,
+            external_urls: {
+              spotify: String
+            }
+          }
+        ],
+        disc_number: Number,
+        duration_ms: Number,
+        href: String,
+        id: String,
+        name: String,
+        popularity: Number,
+        preview_url: String,
+        track_number: Number,
+        uri: String
+      }
+    ],
     href: {
-      type: String,
+      type: String
     },
     total: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   type: {
-    type: String,
+    type: String
   },
   uri: {
-    type: String,
+    type: String
   },
   customize: {
     font: {
-      color: String,
+      color: String
     },
     background: {
-      color: String,
-    },
-  },
+      color: String
+    }
+  }
 });
 
 module.exports =
-  mongoose.models.Playlist || mongoose.model<Playlist>("Playlist", Playlist);
+  mongoose.models.Playlist || mongoose.model<Playlist>('Playlist', Playlist);

@@ -16,12 +16,12 @@ const resolverPlaylist = {
 
       if (isExistPlaylist.length === 0) {
         await spotifyAPIToken();
-        const playlist = await CONFIG_SPOTIFY.SPOTIFY_API.search(slug, [
+        const playlists = await CONFIG_SPOTIFY.SPOTIFY_API.search(slug, [
           'playlist',
           'track'
         ]).then((response) => response.body.playlists?.items);
 
-        for (const iterator of playlist || []) {
+        for (const iterator of playlists || []) {
           const newPlaylist = new Playlist({
             ...iterator
           });
@@ -29,9 +29,38 @@ const resolverPlaylist = {
           await newPlaylist.save();
         }
 
-        return playlist;
+        return playlists;
       }
       return isExistPlaylist;
+    },
+    playListById: async (
+      _: any,
+      { id }: { id: string },
+      { spotifyAPIToken }: ContextRoot
+    ) => {
+      const playlist = await Playlist.findOne({
+        id: id
+      });
+
+      if (playlist?.tracks?.items?.length === 0) {
+        await spotifyAPIToken();
+        const newPlayist = await CONFIG_SPOTIFY.SPOTIFY_API.getPlaylist(
+          id
+        ).then((res) => res.body);
+
+        playlist.tracks.href = newPlayist?.tracks?.href;
+        playlist.tracks.limit = newPlayist?.tracks?.limit;
+        playlist.tracks.next = newPlayist?.tracks?.next;
+        playlist.tracks.offset = newPlayist?.tracks?.offset;
+        playlist.tracks.previous = newPlayist?.tracks?.previous;
+        playlist.tracks.total = newPlayist?.tracks?.total;
+        playlist.tracks.items = newPlayist?.tracks?.items?.map((item) => ({
+          ...item.track
+        }));
+        await playlist.save();
+        return playlist;
+      }
+      return playlist;
     }
   },
   Mutation: {}

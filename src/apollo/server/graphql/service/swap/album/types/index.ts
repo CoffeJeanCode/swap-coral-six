@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-micro'
+import { gql } from 'apollo-server-micro';
 
 const typeDefsAlbum = gql`
   type RestrictionsObject {
@@ -50,6 +50,10 @@ const typeDefsAlbum = gql`
   extend type AlbumType {
     customize: Custmize
   }
+  extend type Song {
+    album: AlbumType
+  }
+
   type RestrictionsObject {
     reason: String
   }
@@ -146,5 +150,5 @@ const typeDefsAlbum = gql`
   type Mutation {
     deleteAlbum(input: deleteAlbumInput!): deleteAlbum
   }
-`
-export default typeDefsAlbum
+`;
+export default typeDefsAlbum;

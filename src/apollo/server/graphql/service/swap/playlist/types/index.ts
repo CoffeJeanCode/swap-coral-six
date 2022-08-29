@@ -1,4 +1,4 @@
-import { gql } from "apollo-server-micro";
+import { gql } from 'apollo-server-micro';
 
 const typeDefsPlaylist = gql`
   type Owner {
@@ -11,6 +11,11 @@ const typeDefsPlaylist = gql`
   }
   type PlaylistTracks {
     href: String
+    items: [Song]
+    limit: Int
+    next: String
+    offset: Int
+    previous: String
     total: Int
   }
   type listPlaylistsBySlug {
@@ -30,6 +35,7 @@ const typeDefsPlaylist = gql`
   }
   type Query {
     listPlaylistsBySlug(slug: String!): [listPlaylistsBySlug]
+    playListById(id: String!): listPlaylistsBySlug
   }
 `;
 export default typeDefsPlaylist;

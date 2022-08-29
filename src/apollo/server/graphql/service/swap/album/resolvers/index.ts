@@ -50,6 +50,19 @@ const resolverAlbum = {
     ) => {
       const album = await Album.findOne({ id });
       // console.log("albumById", album);
+      if (album === null) {
+        await spotifyAPIToken();
+        const albumResponse = await (
+          await CONFIG_SPOTIFY.SPOTIFY_API.getAlbum(id)
+        ).body;
+
+        const newAlbum = await new Album({
+          ...albumResponse
+        });
+        // console.log(albumResponse.body.tracks.items[0], "albumResponse ");
+
+        return newAlbum;
+      }
 
       if (album?.tracks.items.length === 0) {
         await spotifyAPIToken();

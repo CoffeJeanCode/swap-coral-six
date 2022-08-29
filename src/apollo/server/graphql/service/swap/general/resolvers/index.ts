@@ -1,50 +1,63 @@
-const Artist = require('@Apollo/server/graphql/service/swap/artist/models')
-const Album = require('@Apollo/server/graphql/service/swap/album/models')
-const Track = require('@Apollo/server/graphql/service/swap/track/models')
+const Artist = require('@Apollo/server/graphql/service/swap/artist/models');
+const Album = require('@Apollo/server/graphql/service/swap/album/models');
+const Track = require('@Apollo/server/graphql/service/swap/track/models');
+const Playlist = require('@Apollo/server/graphql/service/swap/playlist/models');
+
 const getTypes = {
   artists: async (limit: number) => {
-    const totalArtits = await Artist.count().exec()
-    let allResults = [] as SpotifyApi.ArtistObjectFull[]
+    const totalArtits = await Artist.count().exec();
+    let allResults = [] as SpotifyApi.ArtistObjectFull[];
     for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalArtits)
-      const resultArtists = await Artist.findOne().skip(random).exec()
+      const random = Math.floor(Math.random() * totalArtits);
+      const resultArtists = await Artist.findOne().skip(random).exec();
       if (resultArtists) {
-        allResults.push(resultArtists)
+        allResults.push(resultArtists);
       }
     }
 
-    return allResults
+    return allResults;
   },
   albums: async (limit: number) => {
-    const totalAlbums = await Album.count().exec()
-    let allResults = [] as SpotifyApi.AlbumObjectSimplified[]
+    const totalAlbums = await Album.count().exec();
+    let allResults = [] as SpotifyApi.AlbumObjectSimplified[];
     for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalAlbums)
-      const resultAlbum = await Album.findOne().skip(random).exec()
+      const random = Math.floor(Math.random() * totalAlbums);
+      const resultAlbum = await Album.findOne().skip(random).exec();
       if (resultAlbum) {
-        allResults.push(resultAlbum)
+        allResults.push(resultAlbum);
       }
     }
-    return allResults
+    return allResults;
   },
   tracks: async (limit: number) => {
-    const totalTracks = Track.count().exec()
-    let allResults = [] as SpotifyApi.TrackObjectFull[]
+    const totalTracks = Track.count().exec();
+    let allResults = [] as SpotifyApi.TrackObjectFull[];
     for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalTracks)
-      const resultAlbum = await Album.findOne().skip(random).exec()
+      const random = Math.floor(Math.random() * totalTracks);
+      const resultAlbum = await Album.findOne().skip(random).exec();
       if (resultAlbum) {
-        allResults.push(resultAlbum)
+        allResults.push(resultAlbum);
       }
     }
-    return allResults
+    return allResults;
   },
-  playlist: () => {},
+  playlist: async (limit: number) => {
+    const totalTracks = await Playlist.count().exec();
+    let allResults = [] as SpotifyApi.TrackObjectFull[];
+    for (let index = 0; index < limit; index++) {
+      const random = Math.floor(Math.random() * totalTracks);
+      const resultAlbum = await Playlist.findOne().skip(random).exec();
+      if (resultAlbum) {
+        allResults.push(resultAlbum);
+      }
+    }
+    return allResults;
+  },
   episode: () => {},
-  show: () => {},
-}
+  show: () => {}
+};
 
-type GetTypes = ReturnType<() => typeof getTypes>
+type GetTypes = ReturnType<() => typeof getTypes>;
 
 const resolversGeneral = {
   Query: {
@@ -52,22 +65,22 @@ const resolversGeneral = {
       _: any,
       {
         type,
-        limit,
+        limit
       }: {
-        type: ['artists', 'albums', 'tracks', 'playlist', 'episode', 'show']
-        limit: number
+        type: ['artists', 'albums', 'tracks', 'playlist', 'episode', 'show'];
+        limit: number;
       }
     ) => {
-      let results = {} as GetTypes
+      let results = {} as GetTypes;
       for (const iterator of type) {
-        const resultByType = await getTypes[iterator](limit ?? 10)
-        results = { ...results, [iterator]: resultByType }
+        const resultByType = await getTypes[iterator](limit ?? 10);
+        results = { ...results, [iterator]: resultByType };
       }
 
-      return results
-    },
+      return results;
+    }
   },
-  Mutation: {},
-}
+  Mutation: {}
+};
 
-export default resolversGeneral
+export default resolversGeneral;

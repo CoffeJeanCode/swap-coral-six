@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { LISTBYTYPE } from '@Apollo/client/query/listByType';
 import AtomCard from '@Components/@atoms/AtomCard';
+import { AtomText } from '@Components/@atoms/AtomText';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
 import { IQueryFilter } from '@Types/index';
@@ -11,8 +12,8 @@ const Public: NextPageFCProps = () => {
   const router = useRouter();
   const { data } = useQuery<IQueryFilter<'listByType'>>(LISTBYTYPE, {
     variables: {
-      type: ['artists'],
-      limit: 50
+      type: ['artists', 'albums', 'playlist', 'tracks'],
+      limit: 25
     }
   });
 
@@ -37,6 +38,24 @@ const Public: NextPageFCProps = () => {
               onClick={() => {
                 router.push({
                   pathname: '/public/artist/[id]',
+                  query: {
+                    id: props?.id
+                  }
+                });
+              }}
+            />
+          </>
+        ))}
+        <AtomText>playlists</AtomText>
+        {data?.listByType?.playlist?.map((props) => (
+          <>
+            <AtomCard
+              key={props?.id}
+              {...props}
+              image={props?.images?.[0]?.url as string}
+              onClick={() => {
+                router.push({
+                  pathname: `/public/${props?.type}/[id]`,
                   query: {
                     id: props?.id
                   }

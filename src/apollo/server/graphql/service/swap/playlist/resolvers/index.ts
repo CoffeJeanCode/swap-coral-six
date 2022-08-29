@@ -54,9 +54,12 @@ const resolverPlaylist = {
         playlist.tracks.offset = newPlayist?.tracks?.offset;
         playlist.tracks.previous = newPlayist?.tracks?.previous;
         playlist.tracks.total = newPlayist?.tracks?.total;
-        playlist.tracks.items = newPlayist?.tracks?.items?.map((item) => ({
-          ...item.track
-        }));
+        playlist.tracks.items = newPlayist?.tracks?.items?.map(
+          (item, index) => ({
+            ...item.track,
+            track_number: index + 1
+          })
+        );
         await playlist.save();
         return playlist;
       }

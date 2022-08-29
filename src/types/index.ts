@@ -57,6 +57,7 @@ export interface IQuery {
   albumById?: IAlbumType;
   audioById?: ITrack;
   listPlaylistsBySlug?: Array<IlistPlaylistsBySlug | null>;
+  playListById?: IlistPlaylistsBySlug;
   listByType?: IlistByType;
   lyricByTrackId?: ILyricByTrack;
 }
@@ -194,6 +195,7 @@ export interface ISong {
   track_number?: number;
   type?: string;
   uri?: string;
+  album?: IAlbumType;
 }
 
 export interface ITrackArtist {
@@ -268,6 +270,11 @@ export interface IOwner {
 
 export interface IPlaylistTracks {
   href?: string;
+  items?: Array<ISong | null>;
+  limit?: number;
+  next?: string;
+  offset?: number;
+  previous?: string;
   total?: number;
 }
 
@@ -464,6 +471,7 @@ export interface IQueryTypeResolver<TParent = any> {
   albumById?: QueryToAlbumByIdResolver<TParent>;
   audioById?: QueryToAudioByIdResolver<TParent>;
   listPlaylistsBySlug?: QueryToListPlaylistsBySlugResolver<TParent>;
+  playListById?: QueryToPlayListByIdResolver<TParent>;
   listByType?: QueryToListByTypeResolver<TParent>;
   lyricByTrackId?: QueryToLyricByTrackIdResolver<TParent>;
 }
@@ -538,6 +546,18 @@ export interface QueryToListPlaylistsBySlugResolver<
   (
     parent: TParent,
     args: QueryToListPlaylistsBySlugArgs,
+    context: any,
+    info: GraphQLResolveInfo
+  ): TResult;
+}
+
+export interface QueryToPlayListByIdArgs {
+  id: string;
+}
+export interface QueryToPlayListByIdResolver<TParent = any, TResult = any> {
+  (
+    parent: TParent,
+    args: QueryToPlayListByIdArgs,
     context: any,
     info: GraphQLResolveInfo
   ): TResult;
@@ -975,6 +995,7 @@ export interface ISongTypeResolver<TParent = any> {
   track_number?: SongToTrack_numberResolver<TParent>;
   type?: SongToTypeResolver<TParent>;
   uri?: SongToUriResolver<TParent>;
+  album?: SongToAlbumResolver<TParent>;
 }
 
 export interface SongToArtistsResolver<TParent = any, TResult = any> {
@@ -1038,6 +1059,10 @@ export interface SongToTypeResolver<TParent = any, TResult = any> {
 }
 
 export interface SongToUriResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface SongToAlbumResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
@@ -1333,10 +1358,38 @@ export interface OwnerToUriResolver<TParent = any, TResult = any> {
 
 export interface IPlaylistTracksTypeResolver<TParent = any> {
   href?: PlaylistTracksToHrefResolver<TParent>;
+  items?: PlaylistTracksToItemsResolver<TParent>;
+  limit?: PlaylistTracksToLimitResolver<TParent>;
+  next?: PlaylistTracksToNextResolver<TParent>;
+  offset?: PlaylistTracksToOffsetResolver<TParent>;
+  previous?: PlaylistTracksToPreviousResolver<TParent>;
   total?: PlaylistTracksToTotalResolver<TParent>;
 }
 
 export interface PlaylistTracksToHrefResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PlaylistTracksToItemsResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PlaylistTracksToLimitResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PlaylistTracksToNextResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PlaylistTracksToOffsetResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PlaylistTracksToPreviousResolver<
+  TParent = any,
+  TResult = any
+> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

@@ -9,8 +9,22 @@ export const LISTBYTYPE = gql`
         type
         images {
           url
+          __typename
+        }
+        __typename
+      }
+      playlist {
+        id
+        name
+        type
+        images {
+          url
+        }
+        owner {
+          display_name
         }
       }
+      __typename
     }
   }
 `;

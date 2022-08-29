@@ -5,6 +5,7 @@ import { ISong } from '@Types/index';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import AtomButton from '../AtomButton';
+import AtomImage from '../AtomImage';
 import AtomPlayTrack from '../AtomPlayTrack';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
@@ -45,6 +46,7 @@ const typeTracks = {
           onPlay={props?.onPlay}
         />
         <AtomWrapper
+          flexDirection="row"
           customCSS={css`
             grid-column: 2;
             display: flex;
@@ -55,12 +57,14 @@ const typeTracks = {
             }
           `}
         >
-          {/* <AtomImage
-            src={props?.}
-          alt="xd"
-          width="50px"
-          height="50px"
-        /> */}
+          {props?.album?.album?.images?.[0]?.url && (
+            <AtomImage
+              src={props?.album?.album?.images?.[0]?.url}
+              alt="xd"
+              width="50px"
+              height="50px"
+            />
+          )}
           <AtomWrapper>
             <AtomText as="p" color="white">
               {props?.album?.name}

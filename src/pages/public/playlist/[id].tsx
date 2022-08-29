@@ -44,6 +44,7 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
                   currentTrack: {
                     ...item,
                     // artists: data?.albumById?.artists,
+                    album: item?.album,
                     images: item?.album?.images as IImage[]
                   },
                   context: data?.playListById?.tracks?.items?.map((item) => ({

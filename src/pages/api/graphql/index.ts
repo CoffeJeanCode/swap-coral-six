@@ -15,8 +15,9 @@ const apolloServer = new ApolloServer({
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   introspection: true,
   csrfPrevention: true,
-  context: async () => ({
-    spotifyAPIToken
+  context: async ({ req }) => ({
+    spotifyAPIToken,
+    req
   })
 });
 

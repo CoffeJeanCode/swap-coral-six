@@ -29,6 +29,7 @@
     "color-thief-node": "^1.0.4",
     "colorthief": "^2.3.2",
     "dotenv": "^16.0.0",
+    "electron": "20.1.0",
     "extract-colors": "^1.1.22",
     "formik": "^2.2.9",
     "framer-motion": "^5.0.0",

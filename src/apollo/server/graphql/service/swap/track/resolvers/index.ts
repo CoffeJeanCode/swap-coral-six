@@ -14,7 +14,7 @@ const resolverTracks = {
     audioById: async (
       _: unknown,
       { id }: audioById,
-      { spotifyAPIToken }: ContextRoot
+      { spotifyAPIToken, req }: ContextRoot
     ) => {
       const track = await Track.findOne({ id });
 

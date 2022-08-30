@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
@@ -17,7 +17,9 @@ import AtomWrapper from '../Atomwrapper';
 const AtomPlayer: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-  const setViewImageSideBar = useSetAtom(VIEWIMAGESIDEBAR_ATOM);
+  const [viewImageSidebar, setViewImageSideBar] = useAtom(
+    VIEWIMAGESIDEBAR_ATOM
+  );
   const router = useRouter();
 
   return (
@@ -52,39 +54,41 @@ const AtomPlayer: FC = () => {
           }
         `}
       >
-        <AtomWrapper
-          customCSS={css`
-            width: 80px;
-            grid-row: 1 /-1;
-            @media (max-width: 980px) {
-              display: none;
-            }
-          `}
-        >
-          <AtomButton
-            padding="0px"
-            width="100%"
-            height="100%"
-            backgroundColor="transparent"
-            onClick={() => {
-              setViewImageSideBar(true);
-            }}
+        {!viewImageSidebar && (
+          <AtomWrapper
+            customCSS={css`
+              width: 80px;
+              grid-row: 1 /-1;
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
           >
-            <AtomImage
-              src={controls?.currentTrack?.images?.[0]?.url as string}
-              alt={controls?.currentTrack?.images?.[0]?.url as string}
-              borderRadius="10px"
+            <AtomButton
+              padding="0px"
               width="100%"
               height="100%"
-              customCSS={css`
-                grid-row: 1 / -1;
-              `}
-            />
-          </AtomButton>
-        </AtomWrapper>
+              backgroundColor="transparent"
+              onClick={() => {
+                setViewImageSideBar(true);
+              }}
+            >
+              <AtomImage
+                src={controls?.currentTrack?.images?.[0]?.url as string}
+                alt={controls?.currentTrack?.images?.[0]?.url as string}
+                borderRadius="10px"
+                width="100%"
+                height="100%"
+                customCSS={css`
+                  grid-row: 1 / -1;
+                `}
+              />
+            </AtomButton>
+          </AtomWrapper>
+        )}
         <AtomWrapper
           customCSS={css`
-            grid-column: 2;
+            grid-column: ${viewImageSidebar ? '1' : '2'};
             grid-row: 1;
             display: flex;
             flex-direction: row;

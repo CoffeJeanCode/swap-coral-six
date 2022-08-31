@@ -8,8 +8,9 @@ import useSetRef from '@Hooks/useSetRef';
 import { IQueryFilter } from '@Types/index';
 import convertToSecondsAndMinutes from '@Utils/convertToSecontsAndMinutes';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { isNull } from 'lodash';
 import { FC, LegacyRef, MutableRefObject, useRef } from 'react';
-import { AUDIOREF_ATOM, PROGRESSBAR_ATOM } from '_jotai/player';
+import { AUDIOREF_ATOM, PROGRESSBAR_ATOM, VOLUMEN_ATOM } from '_jotai/player';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomInput from '../AtomInput';
 import { PLAY_TRACK_ATOM } from '../AtomPlayPlayer';
@@ -19,34 +20,26 @@ import AtomWrapper from '../Atomwrapper';
 const AtomPlayerProgressBar: FC = () => {
   const colors = useAtomValue(COLORS_ATOM);
   const [currentTime, setCurrentTime] = useAtom(PROGRESSBAR_ATOM);
+  const volumen = useAtomValue(VOLUMEN_ATOM);
   const audio = useRef<HTMLAudioElement>();
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const setPlayPlayer = useSetAtom(PLAY_TRACK_ATOM);
   const playerPlayer = useAtomValue(PLAY_TRACK_ATOM);
-  //   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-  //   const video = useAtomValue(videoRefAtom);
   const setAudioRef = useSetAtom(AUDIOREF_ATOM);
   useSetRef<MutableRefObject<HTMLAudioElement | undefined>>(
     audio as any,
     setAudioRef
   );
-  const totalTime = audio?.current?.duration || 0;
 
   const { data } = useQuery<IQueryFilter<'audioById'>>(audioById, {
     skip: !controls?.currentTrack?.id,
+    fetchPolicy: 'cache-and-network',
     variables: {
       id: controls?.currentTrack?.id
     }
   });
 
-  //   useEffect(() => {
-  //     if (audio.current) {
-  //       const currentTime = localStorage.getItem('PROGRESSBAR');
-  //       const volumen = localStorage.getItem('VOLUMENSWAP');
-  //       audio.current.currentTime = currentTime as unknown as number;
-  //       audio.current.volume = (volumen as unknown as number) / 100;
-  //     }
-  //   }, []);
+  const totalTime = audio?.current?.duration || 0;
 
   return (
     <AtomWrapper
@@ -105,11 +98,13 @@ const AtomPlayerProgressBar: FC = () => {
             ${colors?.[0]?.hex}
           );
           background-repeat: no-repeat;
-          background-size: ${Math.floor(
-              ((((currentTime - 0) * 100) / totalTime ||
-                currentTime) as number as number) - 0
-            )}%
-            100%;
+          ${!isNull(totalTime) &&
+          css`
+            background-size: ${Math.floor(
+                ((currentTime * 100) / totalTime) as number
+              )}%
+              100%;
+          `}
           &::-webkit-slider-thumb {
             -webkit-appearance: none;
             height: 15px;
@@ -194,6 +189,7 @@ const AtomPlayerProgressBar: FC = () => {
         autoPlay={playerPlayer}
         onPlaying={() => {
           if (audio.current) {
+            audio.current.volume = volumen / 100;
             audio.current.ontimeupdate = (event: any) => {
               setCurrentTime(event.target.currentTime);
             };

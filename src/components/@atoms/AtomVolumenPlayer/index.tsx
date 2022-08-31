@@ -2,14 +2,11 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
 import { useAtom, useAtomValue } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
 import { ChangeEvent, FC, useState } from 'react';
-import { AUDIOREF_ATOM } from '_jotai/player';
+import { AUDIOREF_ATOM, VOLUMEN_ATOM } from '_jotai/player';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomInput from '../AtomInput';
-
-export const VOLUMEN_ATOM = atomWithStorage('VOLUMENSWAP', 0 as number);
 
 const AtomVolumenPlayer: FC = () => {
   const [volumen, setvolumen] = useAtom(VOLUMEN_ATOM);

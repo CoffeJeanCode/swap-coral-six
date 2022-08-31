@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import UseColor from '@Hooks/useColor';
 import useTime from '@Hooks/useTime';
-import { IAlbumType, IArtist, ISong } from '@Types/index';
+import { IAlbumType, IArtist, IlistPlaylistsBySlug, ISong } from '@Types/index';
 import convertDateWithOptions from '@Utils/convertDateWithOptions';
 import convertWithCommas from '@Utils/numberWithCommas';
 import { useRouter } from 'next/router';
@@ -332,6 +332,160 @@ const typeBanners = {
         </AtomWrapper>
       </AtomWrapper>
     );
+  },
+  playlist: (props: AtomProps) => {
+    const router = useRouter();
+    const color = UseColor(props?.playlist?.images?.[0]?.url as string);
+    return (
+      <AtomWrapper
+        id="background-dynamic-color"
+        justifyContent="center"
+        alignItems="flex-start"
+        customCSS={css`
+          min-height: 500px;
+          transition: all 0.3s ease;
+          background: linear-gradient(
+              180deg,
+              rgba(100, 100, 100, 0) 0%,
+              #121216 100%
+            ),
+            ${color?.[0]?.hex};
+          @media (max-width: 980px) {
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 600px;
+            padding: 0;
+          }
+        `}
+      >
+        <AtomWrapper
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          maxWidth="1440px"
+          gap="20px"
+          padding="0px 90px"
+          customCSS={css`
+            @media (max-width: 980px) {
+              padding: 0px 30px;
+              flex-direction: column;
+              width: auto;
+              padding: 0;
+            }
+          `}
+        >
+          <AtomImage
+            src={props?.playlist?.images?.[0]?.url as string}
+            width="260px"
+            height="260px"
+            alt={props?.playlist?.name as string}
+            borderRadius="10px"
+          />
+          <AtomWrapper
+            customCSS={css`
+              max-width: 100%;
+              display: grid;
+              gap: 10px;
+              /* width: 900px; */
+              @media (max-width: 1440px) {
+                width: 500px;
+              }
+              @media (max-width: 1240px) {
+                width: 350px;
+              }
+              @media (max-width: 980px) {
+                width: auto;
+                margin: 0 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+            `}
+          >
+            <AtomText
+              as="p"
+              fontWeight="bold"
+              color="white"
+              fontSize="16px"
+              customCSS={css`
+                @media (max-width: 778px) {
+                  text-align: center;
+                }
+              `}
+            >
+              {props?.playlist?.type?.toUpperCase()}
+            </AtomText>
+            <AtomText
+              as="h1"
+              color="white"
+              id="headerBarScrollTitle"
+              fontWeight="bold"
+              fontSize="26px"
+              customCSS={css`
+                cursor: text;
+                margin: 0;
+                font-size: 48px;
+                @media (max-width: 1440px) {
+                  font-size: 36px;
+                }
+                @media (max-width: 890px) {
+                  font-size: 28px;
+                }
+                @media (max-width: 778px) {
+                  font-size: 22px;
+                  text-align: center;
+                }
+                ${sizeFontByTitle(props?.playlist?.name as string)}
+              `}
+            >
+              {props?.playlist?.name}
+            </AtomText>
+            <AtomWrapper
+              flexDirection="row"
+              gap="5px"
+              customCSS={css`
+                @media (max-width: 980px) {
+                  justify-content: center;
+                  align-items: center;
+                }
+              `}
+            >
+              <AtomWrapper flexDirection="row">
+                <AtomButton
+                  key={props?.playlist?.owner?.id}
+                  backgroundColor="transparent"
+                  padding="0px"
+                  fontSize="16px"
+                  fontWeight="bold"
+                  customCSS={css`
+                    &:hover {
+                      text-decoration: underline;
+                    }
+                  `}
+                  onClick={() => {
+                    router.push({
+                      pathname: '/public/artist/[id]',
+                      query: {
+                        id: props?.playlist?.owner?.id
+                      }
+                    });
+                  }}
+                >
+                  {props?.playlist?.owner?.display_name}
+                </AtomButton>
+              </AtomWrapper>
+              <AtomText color="white" fontSize="16px">
+                • {props?.playlist?.tracks?.total || 0} Tracks -{' '}
+                {useTime({
+                  tracks: props?.playlist?.tracks?.items as ISong[]
+                })}
+              </AtomText>
+            </AtomWrapper>
+          </AtomWrapper>
+        </AtomWrapper>
+      </AtomWrapper>
+    );
   }
 };
 
@@ -339,6 +493,7 @@ type AtomProps = {
   type: keyof typeof typeBanners;
   artist?: IArtist;
   album?: IAlbumType;
+  playlist?: IlistPlaylistsBySlug;
 };
 
 const AtomBanner: FC<AtomProps> = (props) => typeBanners[props.type](props);

@@ -20,7 +20,7 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
   });
   return (
     <AtomWrapper>
-      <AtomBanner type="album" album={data?.playListById} />
+      <AtomBanner type="playlist" playlist={data?.playListById} />
       <AtomWrapper
         padding="45px 90px"
         maxWidth="1440px"

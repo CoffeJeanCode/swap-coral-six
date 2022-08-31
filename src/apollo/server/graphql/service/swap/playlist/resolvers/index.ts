@@ -22,11 +22,15 @@ const resolverPlaylist = {
         ]).then((response) => response.body.playlists?.items);
 
         for (const iterator of playlists || []) {
-          const newPlaylist = new Playlist({
-            ...iterator
+          const IsSave = await Playlist.find({
+            id: iterator.id
           });
-
-          await newPlaylist.save();
+          if (!IsSave) {
+            const newPlaylist = new Playlist({
+              ...iterator
+            });
+            await newPlaylist.save();
+          }
         }
 
         return playlists;

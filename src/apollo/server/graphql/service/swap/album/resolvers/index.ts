@@ -22,17 +22,20 @@ const resolverAlbum = {
         .in([filter.artist.id])
         .exec();
 
-      if (albums.length === 0) {
-        await spotifyAPIToken();
-        const artistAlbums = await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(
-          filter?.artist.id,
-          {
-            limit: filter?.limit ?? 50,
-            offset: filter?.offset ?? 0
-          }
-        ).then((res) => res.body.items);
+      await spotifyAPIToken();
+      const artistAlbums = await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(
+        filter?.artist.id,
+        {
+          limit: filter?.limit ?? 50,
+          offset: filter?.offset ?? 0
+        }
+      ).then((res) => res.body.items);
 
-        for (const iterator of artistAlbums) {
+      for (const iterator of artistAlbums) {
+        const isExistAlbum = await Album.find({
+          id: iterator?.id
+        });
+        if (!isExistAlbum) {
           const newAlbum = new Album({
             ...iterator
           });

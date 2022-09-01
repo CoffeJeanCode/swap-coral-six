@@ -46,12 +46,20 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
                     ...item,
                     // artists: data?.albumById?.artists,
                     images: data?.albumById?.images as IImage[],
-                    album: data?.albumById
+                    album: data?.albumById,
+                    destination: {
+                      type: 'album',
+                      id: id
+                    }
                   },
                   context: data?.albumById?.tracks?.items?.map((item) => ({
                     ...item,
                     album: data?.albumById,
-                    images: data?.albumById?.images as IImage[]
+                    images: data?.albumById?.images as IImage[],
+                    destination: {
+                      type: 'album',
+                      id: id
+                    }
                   }))
                 }
               });

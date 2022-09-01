@@ -7,6 +7,10 @@ import { atomWithStorage } from 'jotai/utils';
 type PropsWithTypes<T> = T & {
   images?: IImage[];
   album?: IAlbumType;
+  destination?: {
+    type: 'album' | 'playlist' | '';
+    id: string;
+  };
 };
 
 export type InitialState = {
@@ -23,7 +27,11 @@ export const initialState: InitialState = {
   currentTrack: {
     id: '',
     name: 'XDDD',
-    artists: []
+    artists: [],
+    destination: {
+      type: '',
+      id: ''
+    }
   },
   controls: {
     aleatory: false,

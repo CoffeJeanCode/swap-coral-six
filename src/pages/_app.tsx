@@ -6,6 +6,7 @@ import Normalize from '@Styles/global/normalize';
 import Layouts from 'layout';
 import { SessionProvider } from 'next-auth/react';
 import type { AppPropsWithLayout } from 'next/app';
+import Script from 'next/script';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/css';
@@ -19,17 +20,27 @@ const MyApp = ({
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO;
   return (
-    <ApolloProvider client={client}>
-      <SessionProvider session={session}>
-        <HeadComponent>
-          <Layouts Layout={Component.Layout} SEO={SEO}>
-            <Global styles={Normalize} />
-            <ToastContainer />
-            <Component {...pageProps} />
-          </Layouts>
-        </HeadComponent>
-      </SessionProvider>
-    </ApolloProvider>
+    <>
+      <Script
+        src="https://open.spotify.com/embed-podcast/iframe-api/v1"
+        async
+      />
+      <script
+        src="https://open.spotify.com/embed-podcast/iframe-api/v1"
+        async
+      ></script>
+      <ApolloProvider client={client}>
+        <SessionProvider session={session}>
+          <HeadComponent>
+            <Layouts Layout={Component.Layout} SEO={SEO}>
+              <Global styles={Normalize} />
+              <ToastContainer />
+              <Component {...pageProps} />
+            </Layouts>
+          </HeadComponent>
+        </SessionProvider>
+      </ApolloProvider>
+    </>
   );
 };
 

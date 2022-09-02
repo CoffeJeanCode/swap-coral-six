@@ -39,6 +39,7 @@ const typeTracks = {
           }
         `}
         key={props?.album?.id}
+        onClick={props?.onPlay}
       >
         <AtomPlayTrack
           {...props?.album}

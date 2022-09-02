@@ -20,7 +20,7 @@ import AtomWrapper from '../Atomwrapper';
 // };
 
 const AtomPlayer: FC = () => {
-  const [showPlayerSPotify, setSpotify] = useState(false);
+  const [showPlayerSPotify, setSpotify] = useState(true);
   const colors = useAtomValue(COLORS_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const [viewImageSidebar, setViewImageSideBar] = useAtom(
@@ -92,24 +92,42 @@ const AtomPlayer: FC = () => {
               >
                 PAUSE / PLAY
               </AtomButton>
+              {/* <div id="embed-iframe"></div>
               <AtomButton
-                onClick={() => {
-                  const SPOTIFYIFRAMEREF = document?.querySelector(
-                    'iframe[src*="spotify.com/embed"]'
-                  ) as any;
-                  const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
-                  spotifyEmbedWindow.postMessage(
-                    { command: 'seek-click' },
-                    '*'
+                onClick={async () => {
+                  // const SPOTIFYIFRAMEREF = document?.querySelector(
+                  //   'iframe[src*="spotify.com/embed"]'
+                  // ) as any;
+
+                  let element = document.getElementById('embed-iframe');
+                  let options = {
+                    width: 1200,
+                    height: 1200,
+                    uri: controls?.currentTrack?.uri,
+                    src: `https://open.spotify.com/embed/track/${controls?.currentTrack?.id}?utm_source=generator#2:00`
+                  };
+                  let callback = (EmbedController) => {
+                    console.log(EmbedController, 'EmbedController');
+                  };
+                  window?.SpotifyIframeApi?.createController(
+                    element,
+                    options,
+                    callback
                   );
                 }}
               >
                 CURRENTTRACK
-              </AtomButton>
+              </AtomButton> */}
               <AtomButton
                 backgroundColor="transparent"
                 padding="0px"
                 onClick={() => {
+                  const SPOTIFYIFRAMEREF = document?.querySelector(
+                    'iframe[src*="spotify.com/embed"]'
+                  ) as any;
+
+                  const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
+                  spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
                   dispatch({
                     type: 'CHANGE_TRACK',
                     payload: {
@@ -174,6 +192,15 @@ const AtomPlayer: FC = () => {
                       }
                     }
                   });
+
+                  setTimeout(() => {
+                    const SPOTIFYIFRAMEREF = document?.querySelector(
+                      'iframe[src*="spotify.com/embed"]'
+                    ) as any;
+
+                    const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
+                    spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
+                  }, 300);
                 }}
                 customCSS={css`
                   @media (max-width: 980px) {

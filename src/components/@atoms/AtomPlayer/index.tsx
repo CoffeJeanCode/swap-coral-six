@@ -14,6 +14,11 @@ import { VIEWIMAGESIDEBAR_ATOM } from '../AtomViewImageSidebar';
 import AtomVolumenPlayer from '../AtomVolumenPlayer';
 import AtomWrapper from '../Atomwrapper';
 
+// const METHODSSPOTIFYIFRAME = {
+//   'seek-click': '',
+//   'seek-drag': ''
+// };
+
 const AtomPlayer: FC = () => {
   const [showPlayerSPotify, setSpotify] = useState(false);
   const colors = useAtomValue(COLORS_ATOM);
@@ -33,17 +38,16 @@ const AtomPlayer: FC = () => {
             grid-row: 2;
             background-color: #191922;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 500px;
             grid-template-rows: auto;
             gap: 10px;
             @media (max-width: 980px) {
               grid-template-columns: 1fr auto;
-              grid-template-rows: auto auto;
               padding: 0 15px 15px 15px;
             }
           `}
         >
-          <iframe
+          {/* <iframe
             src={`https://open.spotify.com/embed/${controls?.currentTrack?.destination?.type}/${controls?.currentTrack?.destination?.id}?utm_source=generator&theme=0`}
             width="100%"
             height="380"
@@ -51,35 +55,147 @@ const AtomPlayer: FC = () => {
             style={{ gridColumn: '1/ 3' }}
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           ></iframe>
-          {/* <iframe
+          <iframe
             src="https://open.spotify.com/embed/track/0KAzP1Rbp0Vz5pw8i1KDDI?utm_source=generator"
             width="100%"
             height="380"
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           ></iframe> */}
-          <AtomButton
-            backgroundColor="transparent"
-            padding="0px"
-            onClick={() => {
-              setSpotify(!showPlayerSPotify);
-            }}
-          >
-            Go back
-            <AtomIcon
-              icon="https://res.cloudinary.com/whil/image/upload/v1661924056/spotify_white_ih7an5.svg"
-              width="22px"
-              height="22px"
-              color="default"
-              customCSS={css`
-                svg {
-                  path {
-                    fill: #1ed760;
+          <iframe
+            src={`https://open.spotify.com/embed/track/${controls?.currentTrack?.id}?utm_source=generator#2:00`}
+            width="100%"
+            height="100px"
+            id="IFRAMEPLAYER"
+            frameBorder="0"
+            style={{ gridColumn: '1 / 3' }}
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; payment;"
+          ></iframe>
+          <AtomWrapper>
+            <AtomWrapper
+              flexDirection="row"
+              width="100%"
+              height="100%"
+              alignItems="center"
+              justifyContent="space-around"
+            >
+              <AtomButton
+                onClick={() => {
+                  const SPOTIFYIFRAMEREF = document?.querySelector(
+                    'iframe[src*="spotify.com/embed"]'
+                  ) as any;
+
+                  const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
+                  spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
+                  // console.log(spotifyEmbedWindow, 'spotifyEmbedWindow');
+                }}
+              >
+                PAUSE / PLAY
+              </AtomButton>
+              <AtomButton
+                onClick={() => {
+                  const SPOTIFYIFRAMEREF = document?.querySelector(
+                    'iframe[src*="spotify.com/embed"]'
+                  ) as any;
+                  const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
+                  spotifyEmbedWindow.postMessage(
+                    { command: 'seek-click' },
+                    '*'
+                  );
+                }}
+              >
+                CURRENTTRACK
+              </AtomButton>
+              <AtomButton
+                backgroundColor="transparent"
+                padding="0px"
+                onClick={() => {
+                  dispatch({
+                    type: 'CHANGE_TRACK',
+                    payload: {
+                      currentTrack: {
+                        track_number:
+                          (controls?.currentTrack?.track_number as number) - 1
+                      }
+                    }
+                  });
+                }}
+                customCSS={css`
+                  @media (max-width: 980px) {
+                    display: none;
                   }
-                }
-              `}
-            />
-          </AtomButton>
+                `}
+              >
+                <AtomIcon
+                  icon="https://res.cloudinary.com/whil/image/upload/v1661401539/previous_sqclao.svg"
+                  width="22px"
+                  height="22px"
+                  customCSS={css`
+                    svg {
+                      path {
+                        stroke: white;
+                      }
+                    }
+                  `}
+                />
+              </AtomButton>
+              <AtomButton
+                backgroundColor="transparent"
+                padding="0px"
+                onClick={() => {
+                  setSpotify(!showPlayerSPotify);
+                }}
+              >
+                <AtomIcon
+                  icon="https://res.cloudinary.com/whil/image/upload/v1661924056/spotify_white_ih7an5.svg"
+                  width="22px"
+                  height="22px"
+                  color="default"
+                  customCSS={css`
+                    svg {
+                      path {
+                        fill: #1ed760;
+                      }
+                    }
+                  `}
+                />
+                Go back
+              </AtomButton>
+              <AtomButton
+                backgroundColor="transparent"
+                padding="0px"
+                onClick={() => {
+                  dispatch({
+                    type: 'CHANGE_TRACK',
+                    payload: {
+                      currentTrack: {
+                        track_number:
+                          (controls?.currentTrack?.track_number as number) + 1
+                      }
+                    }
+                  });
+                }}
+                customCSS={css`
+                  @media (max-width: 980px) {
+                    display: none;
+                  }
+                `}
+              >
+                <AtomIcon
+                  icon="https://res.cloudinary.com/whil/image/upload/v1661401538/next_mudtaa.svg"
+                  width="22px"
+                  height="22px"
+                  customCSS={css`
+                    svg {
+                      path {
+                        stroke: white;
+                      }
+                    }
+                  `}
+                />
+              </AtomButton>
+            </AtomWrapper>
+          </AtomWrapper>
         </AtomWrapper>
       ) : (
         <AtomWrapper

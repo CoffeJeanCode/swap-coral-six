@@ -46,7 +46,6 @@ const AtomPlayerIframe: FC = () => {
         setCurrentTime(0);
         setPlayIFRAME(false);
       }
-      console.log('FINISH');
     }
   });
 

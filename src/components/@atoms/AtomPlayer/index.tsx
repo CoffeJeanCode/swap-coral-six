@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import { useAtom, useAtomValue } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomImage from '../AtomImage';
+import AtomPlayerIframe from '../AtomPlayerIframe';
 import AtomPlayerProgressBar from '../AtomPlayerProgressBar';
 import AtomPlayPlayer from '../AtomPlayPlayer';
 import { AtomText } from '../AtomText';
@@ -19,8 +20,9 @@ import AtomWrapper from '../Atomwrapper';
 //   'seek-drag': ''
 // };
 
+export const SHOWPLAYERIFRAME_ATOM = atom(true);
 const AtomPlayer: FC = () => {
-  const [showPlayerSPotify, setSpotify] = useState(true);
+  const [showPlayerSPotify, setSpotify] = useAtom(SHOWPLAYERIFRAME_ATOM);
   const colors = useAtomValue(COLORS_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const [viewImageSidebar, setViewImageSideBar] = useAtom(
@@ -31,199 +33,7 @@ const AtomPlayer: FC = () => {
   return (
     <>
       {showPlayerSPotify ? (
-        <AtomWrapper
-          customCSS={css`
-            padding: 10px;
-            grid-column: 1 / -1;
-            grid-row: 2;
-            background-color: #191922;
-            display: grid;
-            grid-template-columns: 1fr 1fr 500px;
-            grid-template-rows: auto;
-            gap: 10px;
-            @media (max-width: 980px) {
-              grid-template-columns: 1fr auto;
-              padding: 0 15px 15px 15px;
-            }
-          `}
-        >
-          {/* <iframe
-            src={`https://open.spotify.com/embed/${controls?.currentTrack?.destination?.type}/${controls?.currentTrack?.destination?.id}?utm_source=generator&theme=0`}
-            width="100%"
-            height="380"
-            frameBorder="0"
-            style={{ gridColumn: '1/ 3' }}
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          ></iframe>
-          <iframe
-            src="https://open.spotify.com/embed/track/0KAzP1Rbp0Vz5pw8i1KDDI?utm_source=generator"
-            width="100%"
-            height="380"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          ></iframe> */}
-          <iframe
-            src={`https://open.spotify.com/embed/track/${controls?.currentTrack?.id}?utm_source=generator#2:00`}
-            width="100%"
-            height="100px"
-            id="IFRAMEPLAYER"
-            frameBorder="0"
-            style={{ gridColumn: '1 / 3' }}
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; payment;"
-          ></iframe>
-          <AtomWrapper>
-            <AtomWrapper
-              flexDirection="row"
-              width="100%"
-              height="100%"
-              alignItems="center"
-              justifyContent="space-around"
-            >
-              <AtomButton
-                onClick={() => {
-                  const SPOTIFYIFRAMEREF = document?.querySelector(
-                    'iframe[src*="spotify.com/embed"]'
-                  ) as any;
-
-                  const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
-                  spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
-                  // console.log(spotifyEmbedWindow, 'spotifyEmbedWindow');
-                }}
-              >
-                PAUSE / PLAY
-              </AtomButton>
-              {/* <div id="embed-iframe"></div>
-              <AtomButton
-                onClick={async () => {
-                  // const SPOTIFYIFRAMEREF = document?.querySelector(
-                  //   'iframe[src*="spotify.com/embed"]'
-                  // ) as any;
-
-                  let element = document.getElementById('embed-iframe');
-                  let options = {
-                    width: 1200,
-                    height: 1200,
-                    uri: controls?.currentTrack?.uri,
-                    src: `https://open.spotify.com/embed/track/${controls?.currentTrack?.id}?utm_source=generator#2:00`
-                  };
-                  let callback = (EmbedController) => {
-                    console.log(EmbedController, 'EmbedController');
-                  };
-                  window?.SpotifyIframeApi?.createController(
-                    element,
-                    options,
-                    callback
-                  );
-                }}
-              >
-                CURRENTTRACK
-              </AtomButton> */}
-              <AtomButton
-                backgroundColor="transparent"
-                padding="0px"
-                onClick={() => {
-                  const SPOTIFYIFRAMEREF = document?.querySelector(
-                    'iframe[src*="spotify.com/embed"]'
-                  ) as any;
-
-                  const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
-                  spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
-                  dispatch({
-                    type: 'CHANGE_TRACK',
-                    payload: {
-                      currentTrack: {
-                        track_number:
-                          (controls?.currentTrack?.track_number as number) - 1
-                      }
-                    }
-                  });
-                }}
-                customCSS={css`
-                  @media (max-width: 980px) {
-                    display: none;
-                  }
-                `}
-              >
-                <AtomIcon
-                  icon="https://res.cloudinary.com/whil/image/upload/v1661401539/previous_sqclao.svg"
-                  width="22px"
-                  height="22px"
-                  customCSS={css`
-                    svg {
-                      path {
-                        stroke: white;
-                      }
-                    }
-                  `}
-                />
-              </AtomButton>
-              <AtomButton
-                backgroundColor="transparent"
-                padding="0px"
-                onClick={() => {
-                  setSpotify(!showPlayerSPotify);
-                }}
-              >
-                <AtomIcon
-                  icon="https://res.cloudinary.com/whil/image/upload/v1661924056/spotify_white_ih7an5.svg"
-                  width="22px"
-                  height="22px"
-                  color="default"
-                  customCSS={css`
-                    svg {
-                      path {
-                        fill: #1ed760;
-                      }
-                    }
-                  `}
-                />
-                Go back
-              </AtomButton>
-              <AtomButton
-                backgroundColor="transparent"
-                padding="0px"
-                onClick={() => {
-                  dispatch({
-                    type: 'CHANGE_TRACK',
-                    payload: {
-                      currentTrack: {
-                        track_number:
-                          (controls?.currentTrack?.track_number as number) + 1
-                      }
-                    }
-                  });
-
-                  setTimeout(() => {
-                    const SPOTIFYIFRAMEREF = document?.querySelector(
-                      'iframe[src*="spotify.com/embed"]'
-                    ) as any;
-
-                    const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
-                    spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
-                  }, 300);
-                }}
-                customCSS={css`
-                  @media (max-width: 980px) {
-                    display: none;
-                  }
-                `}
-              >
-                <AtomIcon
-                  icon="https://res.cloudinary.com/whil/image/upload/v1661401538/next_mudtaa.svg"
-                  width="22px"
-                  height="22px"
-                  customCSS={css`
-                    svg {
-                      path {
-                        stroke: white;
-                      }
-                    }
-                  `}
-                />
-              </AtomButton>
-            </AtomWrapper>
-          </AtomWrapper>
-        </AtomWrapper>
+        <AtomPlayerIframe />
       ) : (
         <AtomWrapper
           customCSS={css`

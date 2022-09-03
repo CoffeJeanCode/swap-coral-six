@@ -1,37 +1,48 @@
+/* eslint-disable no-unused-vars */
+import { PLAY_IFRAME_ATOM } from '@Components/@atoms/AtomPlayerIframe';
+import useIframe from '@Utils/useRefIframe';
 import { atom, useAtom } from 'jotai';
-import { atomFamily } from 'jotai/utils';
 import { useEffect } from 'react';
+import CONTROLS_PLAYER_WITH_REDUCER_ATOM, {
+  InitialState
+} from '_jotai/player/reducer';
 
 type Props = {
   start?: number;
   end: number;
   play: boolean;
   ms?: number;
+  repeat?: boolean;
   callback?: () => void;
+  onCompleted: (controls: InitialState) => void;
 };
 
-export const loadTimerAtom = atom(true);
-
-const timerAtom = atomFamily((init: number) => {
-  const timerInsideAtom = atom(init, (_, set, arg: number) => {
-    set(loadTimerAtom, false);
-    set(timerInsideAtom, arg);
-  });
-  return timerInsideAtom;
-});
+export const timerAtom = atom(0);
 
 const useTimer = (props: Props) => {
-  const { start, ms, callback } = props;
-  const [timer, setTimer] = useAtom(timerAtom(start ?? 3));
+  const { ms } = props;
+  const [timer, setTimer] = useAtom(timerAtom);
+  const [playIFRAME, setPlayIFRAME] = useAtom(PLAY_IFRAME_ATOM);
+  const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+  const spotifyEmbedWindow = useIframe();
+  useEffect(() => {
+    const intervalTimer = setTimeout(() => {
+      if (controls?.controls?.repeat || playIFRAME) {
+        setTimer(0);
+        setPlayIFRAME(true);
+        spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
+      }
+    }, 1200);
+    return () => clearInterval(intervalTimer);
+  }, [controls?.currentTrack?.id, controls?.controls?.repeat, playIFRAME]);
 
   useEffect(() => {
     const intervalTimer = setInterval(() => {
       if (props?.play) {
         if (timer >= props?.end) {
-          return;
+          props?.onCompleted(controls);
         } else {
-          setTimer(timer + 1);
-          callback && callback();
+          setTimer((prev: number) => prev + 1);
           clearTimeout(intervalTimer);
         }
         clearTimeout(intervalTimer);

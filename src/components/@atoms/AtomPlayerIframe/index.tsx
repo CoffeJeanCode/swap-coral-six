@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import useTimer from '@Hooks/useTimer';
+import useTimer, { timerAtom } from '@Hooks/useTimer';
 import useIframe from '@Utils/useRefIframe';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
@@ -12,13 +12,13 @@ import AtomInput from '../AtomInput';
 import { SHOWPLAYERIFRAME_ATOM } from '../AtomPlayer';
 import AtomWrapper from '../Atomwrapper';
 
-const CURRENT_TIME_ATOM = atom(0);
+export const PLAY_IFRAME_ATOM = atom(false);
 
 const AtomPlayerIframe: FC = () => {
-  const [playIFRAME, setPlayIFRAME] = useState(false);
+  const [playIFRAME, setPlayIFRAME] = useAtom(PLAY_IFRAME_ATOM);
   const setSpotify = useSetAtom(SHOWPLAYERIFRAME_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-  const [currentTime, setCurrentTime] = useAtom(CURRENT_TIME_ATOM);
+  const [currentTime, setCurrentTime] = useAtom(timerAtom);
   const colors = useAtomValue(COLORS_ATOM);
   const spotifyEmbedWindow = useIframe();
 
@@ -28,8 +28,25 @@ const AtomPlayerIframe: FC = () => {
     start: 0,
     end: CURRTRACK,
     play: playIFRAME,
-    callback: () => {
-      setCurrentTime((prev) => prev + 1);
+    repeat: controls?.controls?.repeat,
+    onCompleted: (returnCOn) => {
+      if (returnCOn?.controls?.repeat) {
+        setCurrentTime(0);
+        setPlayIFRAME(true);
+        dispatch({
+          type: 'CHANGE_TRACK',
+          payload: {
+            currentTrack: {
+              track_number:
+                (returnCOn?.currentTrack?.track_number as number) + 1
+            }
+          }
+        });
+      } else {
+        setCurrentTime(0);
+        setPlayIFRAME(false);
+      }
+      console.log('FINISH');
     }
   });
 
@@ -52,7 +69,7 @@ const AtomPlayerIframe: FC = () => {
     >
       <AtomWrapper>
         <iframe
-          src={`https://open.spotify.com/embed/track/${controls?.currentTrack?.id}?utm_source=generator#2:00`}
+          src={`https://open.spotify.com/embed/track/${controls?.currentTrack?.id}?utm_source=generator`}
           width="100%"
           height="100px"
           id="IFRAMEPLAYER"
@@ -210,7 +227,39 @@ const AtomPlayerIframe: FC = () => {
             backgroundColor="transparent"
             padding="0px"
             onClick={() => {
-              spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
+              dispatch({
+                type: 'SET_REPEAT',
+                payload: {}
+              });
+            }}
+            customCSS={css`
+              @media (max-width: 980px) {
+                display: none;
+              }
+            `}
+          >
+            <AtomIcon
+              icon="https://res.cloudinary.com/whil/image/upload/v1661401540/repeatt_yet17i.svg"
+              width="22px"
+              height="22px"
+              customCSS={css`
+                svg {
+                  path {
+                    stroke: ${controls.controls?.repeat
+                      ? colors?.[0]?.hex
+                      : 'white'};
+                  }
+                }
+              `}
+            />
+          </AtomButton>
+          <AtomButton
+            backgroundColor="transparent"
+            padding="0px"
+            onClick={() => {
+              // spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
+              setCurrentTime(0);
+              setPlayIFRAME(true);
               dispatch({
                 type: 'CHANGE_TRACK',
                 payload: {
@@ -220,7 +269,6 @@ const AtomPlayerIframe: FC = () => {
                   }
                 }
               });
-              setPlayIFRAME(false);
             }}
             customCSS={css`
               @media (max-width: 980px) {
@@ -270,7 +318,8 @@ const AtomPlayerIframe: FC = () => {
             backgroundColor="transparent"
             padding="0px"
             onClick={async () => {
-              setPlayIFRAME(false);
+              setCurrentTime(0);
+              setPlayIFRAME(true);
               dispatch({
                 type: 'CHANGE_TRACK',
                 payload: {

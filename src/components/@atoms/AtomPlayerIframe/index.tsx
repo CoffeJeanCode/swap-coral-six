@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
+import useTimer from '@Hooks/useTimer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
@@ -15,6 +16,18 @@ const AtomPlayerIframe: FC = () => {
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const [currentTime, setCurrentTime] = useState(0);
   const colors = useAtomValue(COLORS_ATOM);
+
+  const CURRTRACK = (controls?.currentTrack?.duration_ms as number) / 1000;
+  useTimer({
+    ms: 1000,
+    start: 0,
+    end: CURRTRACK,
+    play: playIFRAME,
+    callback: () => {
+      setCurrentTime((prev) => prev + 1);
+    }
+  });
+
   return (
     <AtomWrapper
       customCSS={css`
@@ -42,27 +55,20 @@ const AtomPlayerIframe: FC = () => {
           style={{ gridColumn: '1 / 3' }}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; payment;"
         ></iframe>
-        {currentTime} CURRENT TIME <br />
-        {controls?.currentTrack?.duration_ms} MAX AUDIO
         <AtomInput
           id="player-reproductor"
           type="range"
           min="0"
-          max={Math.floor(controls?.currentTrack?.duration_ms / 1000)}
+          max={Math.floor(CURRTRACK)}
           value={currentTime}
-          // onClick={() => {
-          //   //   if (video.current) {
-          //   //     video.current.currentTime = currentTime;
-          //   //   }
-          // }}
-          onChange={(event) => {
+          onClick={(event: any) => {
             const SPOTIFYIFRAMEREF = document?.querySelector(
               'iframe[src*="spotify.com/embed"]'
             ) as any;
             const timeDuration = Number(event.target.value);
 
             const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
-
+            setCurrentTime(Number(event.target.value));
             spotifyEmbedWindow.postMessage(
               {
                 command: 'seek',
@@ -70,7 +76,9 @@ const AtomPlayerIframe: FC = () => {
               },
               '*'
             );
-            setCurrentTime(event.target.value);
+          }}
+          onChange={(event) => {
+            setCurrentTime(Number(event.target.value));
           }}
           customCSS={css`
             height: 6px;
@@ -88,8 +96,7 @@ const AtomPlayerIframe: FC = () => {
             background-repeat: no-repeat;
 
             background-size: ${Math.floor(
-                ((currentTime * 100) / controls?.currentTrack?.duration_ms ||
-                  0) as number as number
+                ((currentTime * 100) / CURRTRACK || 0) as number as number
               )}%
               100%;
             &::-webkit-slider-thumb {
@@ -197,23 +204,6 @@ const AtomPlayerIframe: FC = () => {
               `}
             />
             Go back
-          </AtomButton>
-          <AtomButton
-            onClick={() => {
-              const SPOTIFYIFRAMEREF = document?.querySelector(
-                'iframe[src*="spotify.com/embed"]'
-              ) as any;
-
-              const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
-              console.log(spotifyEmbedWindow, 'spotifyEmbedWindow');
-
-              spotifyEmbedWindow.postMessage(
-                { command: 'seek', timestamp: 183427 },
-                '*'
-              );
-            }}
-          >
-            PROGRESSSSETTER
           </AtomButton>
           <AtomButton
             backgroundColor="transparent"

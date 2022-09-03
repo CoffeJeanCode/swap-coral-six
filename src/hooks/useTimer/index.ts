@@ -34,6 +34,7 @@ const useTimer = (props: Props) => {
           callback && callback();
           clearTimeout(intervalTimer);
         }
+        clearTimeout(intervalTimer);
       }
     }, ms ?? 1000);
 

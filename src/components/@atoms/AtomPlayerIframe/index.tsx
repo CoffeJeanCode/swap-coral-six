@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
 import useTimer from '@Hooks/useTimer';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import useIframe from '@Utils/useRefIframe';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
@@ -10,12 +12,15 @@ import AtomInput from '../AtomInput';
 import { SHOWPLAYERIFRAME_ATOM } from '../AtomPlayer';
 import AtomWrapper from '../Atomwrapper';
 
+const CURRENT_TIME_ATOM = atom(0);
+
 const AtomPlayerIframe: FC = () => {
   const [playIFRAME, setPlayIFRAME] = useState(false);
   const setSpotify = useSetAtom(SHOWPLAYERIFRAME_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useAtom(CURRENT_TIME_ATOM);
   const colors = useAtomValue(COLORS_ATOM);
+  const spotifyEmbedWindow = useIframe();
 
   const CURRTRACK = (controls?.currentTrack?.duration_ms as number) / 1000;
   useTimer({
@@ -62,12 +67,8 @@ const AtomPlayerIframe: FC = () => {
           max={Math.floor(CURRTRACK)}
           value={currentTime}
           onClick={(event: any) => {
-            const SPOTIFYIFRAMEREF = document?.querySelector(
-              'iframe[src*="spotify.com/embed"]'
-            ) as any;
             const timeDuration = Number(event.target.value);
 
-            const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
             setCurrentTime(Number(event.target.value));
             spotifyEmbedWindow.postMessage(
               {
@@ -209,11 +210,6 @@ const AtomPlayerIframe: FC = () => {
             backgroundColor="transparent"
             padding="0px"
             onClick={() => {
-              const SPOTIFYIFRAMEREF = document?.querySelector(
-                'iframe[src*="spotify.com/embed"]'
-              ) as any;
-
-              const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
               spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
               dispatch({
                 type: 'CHANGE_TRACK',
@@ -249,11 +245,6 @@ const AtomPlayerIframe: FC = () => {
             backgroundColor="transparent"
             padding="0px"
             onClick={() => {
-              const SPOTIFYIFRAMEREF = document?.querySelector(
-                'iframe[src*="spotify.com/embed"]'
-              ) as any;
-
-              const spotifyEmbedWindow = SPOTIFYIFRAMEREF?.contentWindow;
               setPlayIFRAME((prev) => !prev);
               spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
             }}
@@ -278,7 +269,7 @@ const AtomPlayerIframe: FC = () => {
           <AtomButton
             backgroundColor="transparent"
             padding="0px"
-            onClick={() => {
+            onClick={async () => {
               setPlayIFRAME(false);
               dispatch({
                 type: 'CHANGE_TRACK',
@@ -311,7 +302,6 @@ const AtomPlayerIframe: FC = () => {
           </AtomButton>
         </AtomWrapper>
       </AtomWrapper>
-      {/* <pre>{JSON.stringify(controls, null, 2)}</pre> */}
     </AtomWrapper>
   );
 };

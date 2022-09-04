@@ -1,3 +1,9 @@
+import { listAlbums } from '../../album/resolvers';
+import listAlbumBySlug from '../../album/resolvers/listAlbumBySlug';
+import listArtistBySlug from '../../artist/resolvers/listArtistBySlug';
+import listPlaylistsBySlug from '../../playlist/resolvers/listPlaylistsBySlug';
+import { ContextRoot } from '../../types';
+
 const Artist = require('@Apollo/server/graphql/service/swap/artist/models');
 const Album = require('@Apollo/server/graphql/service/swap/album/models');
 const Track = require('@Apollo/server/graphql/service/swap/track/models');
@@ -78,6 +84,20 @@ const resolversGeneral = {
       }
 
       return results;
+    },
+    Search: async (
+      _: any,
+      args: { filter: listAlbums },
+      context: ContextRoot
+    ) => {
+      const albums = await listAlbumBySlug(_, args, context);
+      const artists = await listArtistBySlug(_, args, context);
+      const playlists = await listPlaylistsBySlug(_, args, context);
+      return {
+        albums,
+        artists,
+        playlists
+      };
     }
   },
   Mutation: {}

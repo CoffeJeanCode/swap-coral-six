@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { SEARCHQUERY } from '@Apollo/client/query/Search';
 import AtomCard from '@Components/@atoms/AtomCard';
 import AtomInput from '@Components/@atoms/AtomInput';
+import AtomLoader from '@Components/@atoms/AtomLoader';
 import { AtomText } from '@Components/@atoms/AtomText';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
@@ -13,10 +14,11 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const searchAtom = atom('');
+const limitAtom = atom(10);
 
 const SearchPage: NextPageFCProps = () => {
   const [search, setSearch] = useAtom(searchAtom);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useAtom(limitAtom);
   const [word, setword] = useState('');
   const router = useRouter();
   const { setTimer } = useTimer({
@@ -25,7 +27,7 @@ const SearchPage: NextPageFCProps = () => {
     }
   });
 
-  const { data } = useQuery<IQueryFilter<'Search'>>(SEARCHQUERY, {
+  const { data, loading } = useQuery<IQueryFilter<'Search'>>(SEARCHQUERY, {
     skip: !search,
     variables: {
       filter: {
@@ -76,40 +78,50 @@ const SearchPage: NextPageFCProps = () => {
             gap: 10px;
           `}
         >
-          {typeSearch?.map((item) => (
+          {loading ? (
+            <AtomLoader type="small" isLoading colorLoading="white" />
+          ) : (
             <>
-              <AtomText color="white" fontWeight="bold">
-                {item}
-              </AtomText>
-              <AtomWrapper
-                width="100%"
-                flexDirection="row"
-                flexWrap="wrap"
-                customCSS={css`
-                  display: flex;
-                  gap: 10px;
-                `}
-              >
-                {data?.Search?.[item as keyof typeof data.Search]?.map(
-                  (props) => (
-                    <AtomCard
-                      key={props?.id}
-                      {...props}
-                      image={props?.images?.[0]?.url as string}
-                      onClick={() => {
-                        router.push({
-                          pathname: `/public/${props?.type}/[id]`,
-                          query: {
-                            id: props?.id
-                          }
-                        });
-                      }}
-                    />
-                  )
-                )}
-              </AtomWrapper>
+              {typeSearch?.map((item) => (
+                <>
+                  {data?.Search?.[item as keyof typeof data.Search]?.length && (
+                    <>
+                      <AtomText color="white" fontWeight="bold">
+                        {item}
+                      </AtomText>
+                      <AtomWrapper
+                        width="100%"
+                        flexDirection="row"
+                        flexWrap="wrap"
+                        customCSS={css`
+                          display: flex;
+                          gap: 10px;
+                        `}
+                      >
+                        {data?.Search?.[item as keyof typeof data.Search]?.map(
+                          (props) => (
+                            <AtomCard
+                              key={props?.id}
+                              {...props}
+                              image={props?.images?.[0]?.url as string}
+                              onClick={() => {
+                                router.push({
+                                  pathname: `/public/${props?.type}/[id]`,
+                                  query: {
+                                    id: props?.id
+                                  }
+                                });
+                              }}
+                            />
+                          )
+                        )}
+                      </AtomWrapper>
+                    </>
+                  )}
+                </>
+              ))}
             </>
-          ))}
+          )}
         </AtomWrapper>
       </AtomWrapper>
     </AtomWrapper>

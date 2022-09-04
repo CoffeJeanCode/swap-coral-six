@@ -11,15 +11,15 @@ import { IQueryFilter } from '@Types/index';
 import { atom, useAtom } from 'jotai';
 import { NextPageFCProps } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 const searchAtom = atom('');
 const limitAtom = atom(10);
+const wordAtom = atom('');
 
 const SearchPage: NextPageFCProps = () => {
   const [search, setSearch] = useAtom(searchAtom);
   const [limit, setLimit] = useAtom(limitAtom);
-  const [word, setword] = useState('');
+  const [word, setword] = useAtom(wordAtom);
   const router = useRouter();
   const { setTimer } = useTimer({
     callback: () => {

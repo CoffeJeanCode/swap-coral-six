@@ -31,14 +31,13 @@ const useTimer = (props: Props) => {
         setTimer(0);
         setPlayIFRAME(true);
         spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
-      } else if (playIFRAME) {
-        setTimer(0);
-        setPlayIFRAME(true);
-        spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
       }
+      setTimer(0);
+      setPlayIFRAME(true);
+      spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
     }, 1200);
     return () => clearInterval(intervalTimer);
-  }, [controls?.currentTrack?.id, controls?.controls?.repeat, playIFRAME]);
+  }, [controls?.currentTrack?.id, controls?.controls?.repeat]);
 
   useEffect(() => {
     const intervalTimer = setInterval(() => {

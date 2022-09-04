@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
-import useTimer, { timerAtom } from '@Hooks/useTimer';
+import useTimer, { timerAtom } from '@Hooks/useTimerTrack';
 import useIframe from '@Utils/useRefIframe';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { FC } from 'react';

@@ -53,17 +53,20 @@ interface IGraphQLResponseErrorLocation {
 export interface IQuery {
   listArtistBySlug?: Array<IArtist | null>;
   artistById?: IArtist;
-  listAlbums?: Array<IAlbumType | null>;
+  listAlbumBySlug?: Array<IAlbumType | null>;
   albumById?: IAlbumType;
   audioById?: ITrack;
   listPlaylistsBySlug?: Array<IlistPlaylistsBySlug | null>;
   playListById?: IlistPlaylistsBySlug;
   listByType?: IlistByType;
+  Search?: ISearch;
   lyricByTrackId?: ILyricByTrack;
 }
 
 export interface IArtistFilter {
   slug: string;
+  limit?: number;
+  offset?: string;
 }
 
 export interface IArtist {
@@ -112,6 +115,7 @@ export interface ICustomizeColors {
 
 export interface IlistAlbumsInput {
   artist?: IlistAlbumsArtistInput;
+  slug: string;
   limit?: number;
   offset?: number;
 }
@@ -285,6 +289,12 @@ export interface IlistByType {
   playlist?: Array<IlistPlaylistsBySlug | null>;
 }
 
+export interface ISearch {
+  artists?: Array<IArtist | null>;
+  albums?: Array<IAlbumType | null>;
+  playlists?: Array<IlistPlaylistsBySlug | null>;
+}
+
 export interface IlyricByTrackInput {
   id: string;
 }
@@ -456,6 +466,7 @@ export interface IResolver {
   Owner?: IOwnerTypeResolver;
   PlaylistTracks?: IPlaylistTracksTypeResolver;
   listByType?: IlistByTypeTypeResolver;
+  Search?: ISearchTypeResolver;
   LyricByTrack?: ILyricByTrackTypeResolver;
   ArtistByLyric?: IArtistByLyricTypeResolver;
   Lyric?: ILyricTypeResolver;
@@ -467,12 +478,13 @@ export interface IResolver {
 export interface IQueryTypeResolver<TParent = any> {
   listArtistBySlug?: QueryToListArtistBySlugResolver<TParent>;
   artistById?: QueryToArtistByIdResolver<TParent>;
-  listAlbums?: QueryToListAlbumsResolver<TParent>;
+  listAlbumBySlug?: QueryToListAlbumBySlugResolver<TParent>;
   albumById?: QueryToAlbumByIdResolver<TParent>;
   audioById?: QueryToAudioByIdResolver<TParent>;
   listPlaylistsBySlug?: QueryToListPlaylistsBySlugResolver<TParent>;
   playListById?: QueryToPlayListByIdResolver<TParent>;
   listByType?: QueryToListByTypeResolver<TParent>;
+  Search?: QueryToSearchResolver<TParent>;
   lyricByTrackId?: QueryToLyricByTrackIdResolver<TParent>;
 }
 
@@ -500,13 +512,13 @@ export interface QueryToArtistByIdResolver<TParent = any, TResult = any> {
   ): TResult;
 }
 
-export interface QueryToListAlbumsArgs {
+export interface QueryToListAlbumBySlugArgs {
   filter?: IlistAlbumsInput;
 }
-export interface QueryToListAlbumsResolver<TParent = any, TResult = any> {
+export interface QueryToListAlbumBySlugResolver<TParent = any, TResult = any> {
   (
     parent: TParent,
-    args: QueryToListAlbumsArgs,
+    args: QueryToListAlbumBySlugArgs,
     context: any,
     info: GraphQLResolveInfo
   ): TResult;
@@ -537,7 +549,7 @@ export interface QueryToAudioByIdResolver<TParent = any, TResult = any> {
 }
 
 export interface QueryToListPlaylistsBySlugArgs {
-  slug: string;
+  filter?: IArtistFilter;
 }
 export interface QueryToListPlaylistsBySlugResolver<
   TParent = any,
@@ -571,6 +583,18 @@ export interface QueryToListByTypeResolver<TParent = any, TResult = any> {
   (
     parent: TParent,
     args: QueryToListByTypeArgs,
+    context: any,
+    info: GraphQLResolveInfo
+  ): TResult;
+}
+
+export interface QueryToSearchArgs {
+  filter?: IArtistFilter;
+}
+export interface QueryToSearchResolver<TParent = any, TResult = any> {
+  (
+    parent: TParent,
+    args: QueryToSearchArgs,
     context: any,
     info: GraphQLResolveInfo
   ): TResult;
@@ -1417,6 +1441,24 @@ export interface listByTypeToTracksResolver<TParent = any, TResult = any> {
 }
 
 export interface listByTypeToPlaylistResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface ISearchTypeResolver<TParent = any> {
+  artists?: SearchToArtistsResolver<TParent>;
+  albums?: SearchToAlbumsResolver<TParent>;
+  playlists?: SearchToPlaylistsResolver<TParent>;
+}
+
+export interface SearchToArtistsResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface SearchToAlbumsResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface SearchToPlaylistsResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

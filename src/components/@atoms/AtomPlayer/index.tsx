@@ -20,7 +20,7 @@ import AtomWrapper from '../Atomwrapper';
 //   'seek-drag': ''
 // };
 
-export const SHOWPLAYERIFRAME_ATOM = atom(true);
+export const SHOWPLAYERIFRAME_ATOM = atom(false);
 const AtomPlayer: FC = () => {
   const [showPlayerSPotify, setSpotify] = useAtom(SHOWPLAYERIFRAME_ATOM);
   const colors = useAtomValue(COLORS_ATOM);

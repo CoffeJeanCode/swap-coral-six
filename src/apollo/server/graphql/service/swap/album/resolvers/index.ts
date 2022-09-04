@@ -4,6 +4,9 @@ import listAlbumBySlug from './listAlbumBySlug';
 const Album = require('@Apollo/server/graphql/service/swap/album/models');
 
 export type listAlbums = {
+  artist?: {
+    id: string;
+  };
   slug: string;
   offset: number;
   limit: number;
@@ -12,6 +15,40 @@ export type listAlbums = {
 const resolverAlbum = {
   Query: {
     listAlbumBySlug: listAlbumBySlug,
+    listAlbums: async (
+      _: any,
+      { filter }: { filter: listAlbums },
+      { spotifyAPIToken }: ContextRoot
+    ) => {
+      const albums = await Album.find()
+        .where('artists.id')
+        .in([filter.artist?.id])
+        .exec();
+
+      await spotifyAPIToken();
+      const artistAlbums = await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(
+        filter?.artist?.id as string,
+        {
+          limit: filter?.limit ?? 50,
+          offset: filter?.offset ?? 0
+        }
+      ).then((res) => res.body.items);
+
+      for (const iterator of artistAlbums) {
+        const isExistAlbum = await Album.find({
+          id: iterator?.id
+        });
+        if (!isExistAlbum) {
+          const newAlbum = new Album({
+            ...iterator
+          });
+
+          await newAlbum.save();
+        }
+        return artistAlbums;
+      }
+      return albums;
+    },
     albumById: async (
       root: any,
       { id }: { id: string },

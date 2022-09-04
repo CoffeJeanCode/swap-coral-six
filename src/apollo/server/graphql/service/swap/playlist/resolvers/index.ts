@@ -15,6 +15,30 @@ const resolverPlaylist = {
       const playlist = await Playlist.findOne({
         id: id
       });
+      if (!playlist) {
+        await spotifyAPIToken();
+        const sPlaylist = await (
+          await CONFIG_SPOTIFY.SPOTIFY_API.getPlaylist(id)
+        ).body;
+
+        const newPlaylist = new Playlist({
+          ...sPlaylist,
+          tracks: {
+            href: sPlaylist?.tracks?.href,
+            limit: sPlaylist?.tracks?.limit,
+            next: sPlaylist?.tracks?.next,
+            offset: sPlaylist?.tracks?.offset,
+            previous: sPlaylist?.tracks?.previous,
+            total: sPlaylist?.tracks?.total,
+            items: sPlaylist?.tracks?.items?.map((item, index) => ({
+              ...item.track,
+              track_number: index + 1
+            }))
+          }
+        });
+        await newPlaylist.save();
+        return newPlaylist;
+      }
 
       if (playlist?.tracks?.items?.length === 0) {
         await spotifyAPIToken();

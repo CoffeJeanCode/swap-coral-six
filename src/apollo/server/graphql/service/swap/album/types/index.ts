@@ -140,11 +140,12 @@ const typeDefsAlbum = gql`
   }
   input listAlbumsInput {
     artist: listAlbumsArtistInput
-    slug: String!
+    slug: String
     limit: Int
     offset: Int
   }
   type Query {
+    listAlbums(filter: listAlbumsInput): [AlbumType]
     listAlbumBySlug(filter: listAlbumsInput): [AlbumType]
     albumById(id: String!): AlbumType
   }

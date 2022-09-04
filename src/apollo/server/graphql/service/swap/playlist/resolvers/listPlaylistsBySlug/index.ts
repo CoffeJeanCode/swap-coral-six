@@ -14,35 +14,37 @@ const listPlaylistsBySlug = async (
   { filter }: { filter: Filter },
   { spotifyAPIToken }: ContextRoot
 ) => {
-  const isExistPlaylist = await Playlist.find({
-    name: filter?.slug
-  });
-
-  if (isExistPlaylist.length === 0) {
-    await spotifyAPIToken();
-    const playlists = await CONFIG_SPOTIFY.SPOTIFY_API.searchPlaylists(
-      filter?.slug,
-      {
-        limit: filter?.limit ?? 50,
-        offset: filter?.offset ?? 0
-      }
-    ).then((response) => response.body.playlists?.items);
-
-    for (const iterator of playlists || []) {
-      const IsSave = await Playlist.find({
-        id: iterator.id
-      });
-      if (!IsSave) {
-        const newPlaylist = new Playlist({
-          ...iterator
-        });
-        await newPlaylist.save();
-      }
+  await spotifyAPIToken();
+  const playlists = await CONFIG_SPOTIFY.SPOTIFY_API.searchPlaylists(
+    filter?.slug,
+    {
+      limit: filter?.limit ?? 50,
+      offset: filter?.offset ?? 0
     }
+  ).then((response) => response.body.playlists?.items);
 
-    return playlists;
+  for (const iterator of playlists || []) {
+    const IsSave = await Playlist.find({
+      id: iterator.id
+    });
+    if (!IsSave) {
+      const newPlaylist = new Playlist({
+        ...iterator,
+        tracks: {
+          href: '',
+          limit: 0,
+          next: '',
+          offset: 0,
+          previous: '',
+          total: 0,
+          items: []
+        }
+      });
+      await newPlaylist.save();
+    }
   }
-  return isExistPlaylist;
+
+  return playlists;
 };
 
 export default listPlaylistsBySlug;

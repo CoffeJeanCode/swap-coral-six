@@ -34,7 +34,6 @@ const SearchPage: NextPageFCProps = () => {
       }
     }
   });
-  console.log(data);
 
   return (
     <AtomWrapper>

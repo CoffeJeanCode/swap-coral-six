@@ -53,6 +53,7 @@ interface IGraphQLResponseErrorLocation {
 export interface IQuery {
   listArtistBySlug?: Array<IArtist | null>;
   artistById?: IArtist;
+  listAlbums?: Array<IAlbumType | null>;
   listAlbumBySlug?: Array<IAlbumType | null>;
   albumById?: IAlbumType;
   audioById?: ITrack;
@@ -115,7 +116,7 @@ export interface ICustomizeColors {
 
 export interface IlistAlbumsInput {
   artist?: IlistAlbumsArtistInput;
-  slug: string;
+  slug?: string;
   limit?: number;
   offset?: number;
 }
@@ -478,6 +479,7 @@ export interface IResolver {
 export interface IQueryTypeResolver<TParent = any> {
   listArtistBySlug?: QueryToListArtistBySlugResolver<TParent>;
   artistById?: QueryToArtistByIdResolver<TParent>;
+  listAlbums?: QueryToListAlbumsResolver<TParent>;
   listAlbumBySlug?: QueryToListAlbumBySlugResolver<TParent>;
   albumById?: QueryToAlbumByIdResolver<TParent>;
   audioById?: QueryToAudioByIdResolver<TParent>;
@@ -507,6 +509,18 @@ export interface QueryToArtistByIdResolver<TParent = any, TResult = any> {
   (
     parent: TParent,
     args: QueryToArtistByIdArgs,
+    context: any,
+    info: GraphQLResolveInfo
+  ): TResult;
+}
+
+export interface QueryToListAlbumsArgs {
+  filter?: IlistAlbumsInput;
+}
+export interface QueryToListAlbumsResolver<TParent = any, TResult = any> {
+  (
+    parent: TParent,
+    args: QueryToListAlbumsArgs,
     context: any,
     info: GraphQLResolveInfo
   ): TResult;

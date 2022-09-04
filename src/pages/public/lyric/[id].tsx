@@ -4,16 +4,15 @@ import AtomLoader from '@Components/@atoms/AtomLoader';
 import { AtomText } from '@Components/@atoms/AtomText';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
-import { COLORS_ATOM } from '@Hooks/useColor';
+import UseColor from '@Hooks/useColor';
 import { IQueryFilter } from '@Types/index';
 import { useAtomValue } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
+import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 
 const LyricByID: NextPageFC<{ id: string }> = ({ id }) => {
-  //   const router = useRouter();
-  //   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-  const colorBackground = useAtomValue(COLORS_ATOM);
-
+  const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
+  const color = UseColor(controls?.currentTrack?.images?.[0]?.url as string);
   const { data, loading } = useQuery<IQueryFilter<'lyricByTrackId'>>(
     LYRICBYTRACKID,
     {
@@ -30,7 +29,7 @@ const LyricByID: NextPageFC<{ id: string }> = ({ id }) => {
   return (
     <AtomWrapper
       padding="45px"
-      backgroundColor={colorBackground?.[0]?.hex as string}
+      backgroundColor={color?.[0]?.hex as string}
       height={loading ? '100vh' : 'auto'}
       customCSS={css`
         display: flex;

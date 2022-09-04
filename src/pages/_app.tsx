@@ -3,6 +3,7 @@ import { ApolloProvider } from '@apollo/client';
 import { Global } from '@emotion/react';
 import HeadComponent from '@Styles/global/head';
 import Normalize from '@Styles/global/normalize';
+import { Provider } from 'jotai';
 import Layouts from 'layout';
 import { SessionProvider } from 'next-auth/react';
 import type { AppPropsWithLayout } from 'next/app';
@@ -20,7 +21,7 @@ const MyApp = ({
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO;
   return (
-    <>
+    <Provider>
       <Script
         src="https://open.spotify.com/embed-podcast/iframe-api/v1"
         async
@@ -40,7 +41,7 @@ const MyApp = ({
           </HeadComponent>
         </SessionProvider>
       </ApolloProvider>
-    </>
+    </Provider>
   );
 };
 

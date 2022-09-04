@@ -20,8 +20,9 @@ const Public: NextPageFCProps = () => {
   return (
     <AtomWrapper>
       <AtomWrapper
+        padding="25px"
         maxWidth="1440px"
-        flexDirection="row"
+        flexDirection="column"
         flexWrap="wrap"
         customCSS={css`
           display: flex;

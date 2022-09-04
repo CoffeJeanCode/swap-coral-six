@@ -15,11 +15,6 @@ import { VIEWIMAGESIDEBAR_ATOM } from '../AtomViewImageSidebar';
 import AtomVolumenPlayer from '../AtomVolumenPlayer';
 import AtomWrapper from '../Atomwrapper';
 
-// const METHODSSPOTIFYIFRAME = {
-//   'seek-click': '',
-//   'seek-drag': ''
-// };
-
 export const SHOWPLAYERIFRAME_ATOM = atom(false);
 const AtomPlayer: FC = () => {
   const [showPlayerSPotify, setSpotify] = useAtom(SHOWPLAYERIFRAME_ATOM);

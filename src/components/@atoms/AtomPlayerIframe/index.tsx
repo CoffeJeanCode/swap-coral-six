@@ -74,6 +74,7 @@ const AtomPlayerIframe: FC = () => {
           id="IFRAMEPLAYER"
           frameBorder="0"
           style={{ gridColumn: '1 / 3' }}
+          allowTransparency
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; payment;"
         ></iframe>
         <AtomInput

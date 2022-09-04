@@ -6,32 +6,28 @@ type listAlbums = {
   artist: {
     id: string;
   };
+  slug: string;
   offset: number;
   limit: number;
 };
 
 const resolverAlbum = {
   Query: {
-    listAlbums: async (
+    listAlbumBySlug: async (
       _: any,
       { filter }: { filter: listAlbums },
       { spotifyAPIToken }: ContextRoot
     ) => {
-      const albums = await Album.find()
-        .where('artists.id')
-        .in([filter.artist.id])
-        .exec();
-
       await spotifyAPIToken();
-      const artistAlbums = await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(
-        filter?.artist.id,
+      const artistAlbums = await CONFIG_SPOTIFY.SPOTIFY_API.searchAlbums(
+        filter?.slug,
         {
           limit: filter?.limit ?? 50,
           offset: filter?.offset ?? 0
         }
-      ).then((res) => res.body.items);
+      ).then((res) => res.body.albums);
 
-      for (const iterator of artistAlbums) {
+      for (const iterator of artistAlbums?.items ?? []) {
         const isExistAlbum = await Album.find({
           id: iterator?.id
         });
@@ -42,9 +38,8 @@ const resolverAlbum = {
 
           await newAlbum.save();
         }
-        return artistAlbums;
       }
-      return albums;
+      return artistAlbums?.items;
     },
     albumById: async (
       root: any,
@@ -62,8 +57,6 @@ const resolverAlbum = {
         const newAlbum = await new Album({
           ...albumResponse
         });
-        // console.log(albumResponse.body.tracks.items[0], "albumResponse ");
-
         return newAlbum;
       }
 
@@ -78,8 +71,6 @@ const resolverAlbum = {
           },
           { new: true }
         );
-        // console.log(albumResponse.body.tracks.items[0], "albumResponse ");
-
         return newAlbum;
       }
       return album;

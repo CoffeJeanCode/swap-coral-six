@@ -34,7 +34,7 @@ const typeDefsPlaylist = gql`
     uri: String
   }
   type Query {
-    listPlaylistsBySlug(slug: String!): [listPlaylistsBySlug]
+    listPlaylistsBySlug(filter: ArtistFilter): [listPlaylistsBySlug]
     playListById(id: String!): listPlaylistsBySlug
   }
 `;

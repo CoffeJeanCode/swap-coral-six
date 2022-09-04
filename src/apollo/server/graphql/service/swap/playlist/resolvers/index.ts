@@ -3,23 +3,32 @@ import { ContextRoot } from '../../types';
 
 const Playlist = require('@Apollo/server/graphql/service/swap/playlist/models');
 
+type Filter = {
+  slug: string;
+  limit: number;
+  offset: number;
+};
+
 const resolverPlaylist = {
   Query: {
     listPlaylistsBySlug: async (
       _: any,
-      { slug }: { slug: string },
+      { filter }: { filter: Filter },
       { spotifyAPIToken }: ContextRoot
     ) => {
       const isExistPlaylist = await Playlist.find({
-        name: slug
+        name: filter?.slug
       });
 
       if (isExistPlaylist.length === 0) {
         await spotifyAPIToken();
-        const playlists = await CONFIG_SPOTIFY.SPOTIFY_API.search(slug, [
-          'playlist',
-          'track'
-        ]).then((response) => response.body.playlists?.items);
+        const playlists = await CONFIG_SPOTIFY.SPOTIFY_API.searchPlaylists(
+          filter?.slug,
+          {
+            limit: filter?.limit ?? 50,
+            offset: filter?.offset ?? 0
+          }
+        ).then((response) => response.body.playlists?.items);
 
         for (const iterator of playlists || []) {
           const IsSave = await Playlist.find({

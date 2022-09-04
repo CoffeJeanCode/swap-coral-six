@@ -5,6 +5,8 @@ const Artist = require('@Apollo/server/graphql/service/swap/artist/models');
 const Album = require('@Apollo/server/graphql/service/swap/album/models');
 type listArtistBySlug = {
   slug: string;
+  limit?: number;
+  offset: number;
 };
 
 const createArtists = async (artists: SpotifyApi.ArtistObjectFull[]) => {
@@ -33,31 +35,26 @@ const resolvers = {
       { filter }: { filter: listArtistBySlug },
       { spotifyAPIToken }: ContextRoot
     ) => {
-      const artists = await Artist.find({ name: filter.slug }).exec();
-      if (artists?.length === 0) {
-        await spotifyAPIToken();
-        const searchArtist = await CONFIG_SPOTIFY.SPOTIFY_API.search(
-          filter.slug,
-          ['artist'],
-          {
-            limit: 50
-          }
-        );
-
-        const artistsResponse = searchArtist.body.artists?.items ?? [];
-        const newArtistd = await createArtists(artistsResponse);
-
-        for (const artist of newArtistd ?? []) {
-          const isExistArtist = await Artist.findOne({
-            id: artist.id
-          });
-
-          if (isExistArtist === null) {
-            const newArtist = new Artist(artist);
-            await newArtist.save();
-          }
+      await spotifyAPIToken();
+      const searchArtist = await CONFIG_SPOTIFY.SPOTIFY_API.searchArtists(
+        filter.slug,
+        {
+          limit: filter?.limit ?? 50,
+          offset: filter?.offset ?? 0
         }
-        return artistsResponse;
+      );
+
+      const artistsResponse = searchArtist.body.artists?.items ?? [];
+      const artists = await createArtists(artistsResponse);
+
+      for (const artist of artists ?? []) {
+        const isExistArtist = await Artist.findOne({
+          id: artist.id
+        });
+        if (isExistArtist === null) {
+          const newArtist = new Artist(artist);
+          await newArtist.save();
+        }
       }
       return artists;
     },
@@ -71,21 +68,33 @@ const resolvers = {
       { spotifyAPIToken }: ContextRoot
     ) => {
       const artist = await Artist.findOne({ id: id });
-
-      if (!artist) {
+      if (artist) {
         await spotifyAPIToken();
-
         const albumResponse = await (
           await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(id)
         ).body;
+        for (const iterator of albumResponse?.items) {
+          const isExistAlbum = await Album.findOne({ id: iterator.id });
+          if (isExistAlbum === null) {
+            const newAlbum = await new Album({
+              ...iterator
+            });
+            await newAlbum.save();
+          }
+        }
+      }
 
+      if (!artist) {
+        await spotifyAPIToken();
+        const albumResponse = await (
+          await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(id)
+        ).body;
         for (const iterator of albumResponse?.items) {
           const newAlbum = await new Album({
             ...iterator
           });
           await newAlbum.save();
         }
-
         const searchArtist = await CONFIG_SPOTIFY.SPOTIFY_API.getArtist(
           id
         ).then((artist) => artist.body);

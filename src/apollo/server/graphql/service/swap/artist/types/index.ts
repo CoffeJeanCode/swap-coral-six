@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-micro'
+import { gql } from 'apollo-server-micro';
 
 const typeDefs = gql`
   type CustomizeColors {
@@ -43,11 +43,13 @@ const typeDefs = gql`
 
   input ArtistFilter {
     slug: String!
+    limit: Int
+    offset: String
   }
 
   type Query {
     listArtistBySlug(filter: ArtistFilter): [Artist]
     artistById(id: String!): Artist
   }
-`
-export default typeDefs
+`;
+export default typeDefs;

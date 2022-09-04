@@ -1,81 +1,81 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose';
 
 const Artist: Schema = new Schema({
   external_urls: {
     spotify: {
-      type: String,
-    },
+      type: String
+    }
   },
   followers: {
     total: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   genres: {
-    type: [String],
+    type: [String]
   },
   href: {
-    type: String,
+    type: String
   },
   id: {
-    type: String,
+    type: String
   },
   images: [
     {
       url: {
-        type: String,
+        type: String
       },
       height: {
-        type: Number,
+        type: Number
       },
       width: {
-        type: Number,
-      },
-    },
+        type: Number
+      }
+    }
   ],
   name: {
-    type: String,
+    type: String
   },
   popularity: {
-    type: Number,
+    type: Number
   },
   type: {
-    type: String,
+    type: String
   },
   uri: {
-    type: String,
+    type: String
   },
   customize: {
     colors: {
       profile: {
         primary: {
-          type: String,
+          type: String
         },
         secondary: {
-          type: String,
+          type: String
         },
         tertiary: {
-          type: String,
-        },
+          type: String
+        }
       },
       background: {
         primary: {
-          type: String,
+          type: String
         },
         secondary: {
-          type: String,
+          type: String
         },
         tertiary: {
-          type: String,
-        },
-      },
-    },
-  },
-})
+          type: String
+        }
+      }
+    }
+  }
+});
 
 module.exports =
   mongoose.models.Artist ||
   mongoose.model<SpotifyApi.PagingObject<SpotifyApi.ArtistObjectFull>>(
     'Artist',
     Artist
-  )
+  );

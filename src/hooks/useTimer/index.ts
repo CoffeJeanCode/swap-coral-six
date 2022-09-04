@@ -27,7 +27,11 @@ const useTimer = (props: Props) => {
   const spotifyEmbedWindow = useIframe();
   useEffect(() => {
     const intervalTimer = setTimeout(() => {
-      if (controls?.controls?.repeat || playIFRAME) {
+      if (controls?.controls?.repeat) {
+        setTimer(0);
+        setPlayIFRAME(true);
+        spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
+      } else if (playIFRAME) {
         setTimer(0);
         setPlayIFRAME(true);
         spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');

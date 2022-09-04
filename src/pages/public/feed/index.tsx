@@ -20,7 +20,6 @@ const Public: NextPageFCProps = () => {
   return (
     <AtomWrapper>
       <AtomWrapper
-        padding="25px"
         maxWidth="1440px"
         flexDirection="row"
         flexWrap="wrap"
@@ -29,45 +28,46 @@ const Public: NextPageFCProps = () => {
           gap: 10px;
         `}
       >
-        {data?.listByType?.artists?.map((props) => (
+        {typeSearch?.map((item) => (
           <>
-            <AtomCard
-              key={props?.id}
-              {...props}
-              image={props?.images?.[0]?.url as string}
-              onClick={() => {
-                router.push({
-                  pathname: '/public/artist/[id]',
-                  query: {
-                    id: props?.id
-                  }
-                });
-              }}
-            />
-          </>
-        ))}
-        <AtomText>playlists</AtomText>
-        {data?.listByType?.playlist?.map((props) => (
-          <>
-            <AtomCard
-              key={props?.id}
-              {...props}
-              image={props?.images?.[0]?.url as string}
-              onClick={() => {
-                router.push({
-                  pathname: `/public/${props?.type}/[id]`,
-                  query: {
-                    id: props?.id
-                  }
-                });
-              }}
-            />
+            <AtomText color="white" fontWeight="bold">
+              {item}
+            </AtomText>
+            <AtomWrapper
+              width="100%"
+              flexDirection="row"
+              flexWrap="wrap"
+              customCSS={css`
+                display: flex;
+                gap: 10px;
+              `}
+            >
+              {data?.listByType?.[item as keyof typeof data.listByType]?.map(
+                (props) => (
+                  <AtomCard
+                    key={props?.id}
+                    {...props}
+                    image={props?.images?.[0]?.url as string}
+                    onClick={() => {
+                      router.push({
+                        pathname: `/public/${props?.type}/[id]`,
+                        query: {
+                          id: props?.id
+                        }
+                      });
+                    }}
+                  />
+                )
+              )}
+            </AtomWrapper>
           </>
         ))}
       </AtomWrapper>
     </AtomWrapper>
   );
 };
+const typeSearch = ['artists', 'albums', 'playlist'];
+
 export async function getServerSideProps() {
   return {
     props: {}

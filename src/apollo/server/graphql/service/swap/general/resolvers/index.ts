@@ -9,55 +9,46 @@ const Album = require('@Apollo/server/graphql/service/swap/album/models');
 const Track = require('@Apollo/server/graphql/service/swap/track/models');
 const Playlist = require('@Apollo/server/graphql/service/swap/playlist/models');
 
+const BYTYPES = {
+  Artist: Artist,
+  Album: Album,
+  Track: Track,
+  Playlist: Playlist
+};
+
+const GETRANDOMBYTYPE = async <T>(
+  type: keyof typeof BYTYPES,
+  limit: number
+) => {
+  const totalArtits = await BYTYPES[type].count().exec();
+  let allResults = [] as T[];
+  for (let index = 0; index < limit; index++) {
+    const random = Math.floor(Math.random() * totalArtits);
+    const resultArtists = await BYTYPES[type].findOne().skip(random).exec();
+    if (resultArtists) {
+      allResults.push(resultArtists);
+    }
+  }
+
+  return allResults;
+};
+
 const getTypes = {
   artists: async (limit: number) => {
-    const totalArtits = await Artist.count().exec();
-    let allResults = [] as SpotifyApi.ArtistObjectFull[];
-    for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalArtits);
-      const resultArtists = await Artist.findOne().skip(random).exec();
-      if (resultArtists) {
-        allResults.push(resultArtists);
-      }
-    }
-
-    return allResults;
+    const result = await GETRANDOMBYTYPE('Artist', limit);
+    return result;
   },
   albums: async (limit: number) => {
-    const totalAlbums = await Album.count().exec();
-    let allResults = [] as SpotifyApi.AlbumObjectSimplified[];
-    for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalAlbums);
-      const resultAlbum = await Album.findOne().skip(random).exec();
-      if (resultAlbum) {
-        allResults.push(resultAlbum);
-      }
-    }
-    return allResults;
+    const result = await GETRANDOMBYTYPE('Album', limit);
+    return result;
   },
   tracks: async (limit: number) => {
-    const totalTracks = Track.count().exec();
-    let allResults = [] as SpotifyApi.TrackObjectFull[];
-    for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalTracks);
-      const resultAlbum = await Album.findOne().skip(random).exec();
-      if (resultAlbum) {
-        allResults.push(resultAlbum);
-      }
-    }
-    return allResults;
+    const result = await GETRANDOMBYTYPE('Track', limit);
+    return result;
   },
   playlist: async (limit: number) => {
-    const totalTracks = await Playlist.count().exec();
-    let allResults = [] as SpotifyApi.TrackObjectFull[];
-    for (let index = 0; index < limit; index++) {
-      const random = Math.floor(Math.random() * totalTracks);
-      const resultAlbum = await Playlist.findOne().skip(random).exec();
-      if (resultAlbum) {
-        allResults.push(resultAlbum);
-      }
-    }
-    return allResults;
+    const result = await GETRANDOMBYTYPE('Playlist', limit);
+    return result;
   },
   episode: () => {},
   show: () => {}

@@ -286,7 +286,6 @@ export interface IPlaylistTracks {
 export interface IlistByType {
   artists?: Array<IArtist | null>;
   albums?: Array<IAlbumType | null>;
-  tracks?: Array<ITrack | null>;
   playlist?: Array<IlistPlaylistsBySlug | null>;
 }
 
@@ -1438,7 +1437,6 @@ export interface PlaylistTracksToTotalResolver<TParent = any, TResult = any> {
 export interface IlistByTypeTypeResolver<TParent = any> {
   artists?: listByTypeToArtistsResolver<TParent>;
   albums?: listByTypeToAlbumsResolver<TParent>;
-  tracks?: listByTypeToTracksResolver<TParent>;
   playlist?: listByTypeToPlaylistResolver<TParent>;
 }
 
@@ -1447,10 +1445,6 @@ export interface listByTypeToArtistsResolver<TParent = any, TResult = any> {
 }
 
 export interface listByTypeToAlbumsResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-}
-
-export interface listByTypeToTracksResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

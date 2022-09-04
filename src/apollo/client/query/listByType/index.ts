@@ -13,6 +13,14 @@ export const LISTBYTYPE = gql`
         }
         __typename
       }
+      albums {
+        id
+        name
+        type
+        images {
+          url
+        }
+      }
       playlist {
         id
         name

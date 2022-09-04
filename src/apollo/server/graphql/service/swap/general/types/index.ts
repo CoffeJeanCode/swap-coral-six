@@ -4,7 +4,7 @@ const typesDefsGeneral = gql`
   type listByType {
     artists: [Artist]
     albums: [AlbumType]
-    tracks: [Track]
+    # tracks: [Track]
     playlist: [listPlaylistsBySlug]
   }
 

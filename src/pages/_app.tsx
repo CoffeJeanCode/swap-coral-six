@@ -21,7 +21,6 @@ const MyApp = ({
   pageProps: { session, ...pageProps }
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO;
-  console.log(SEO, 'SEOO');
 
   return (
     <Provider>

@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import { ApolloProvider } from '@apollo/client';
+import AtomSEO from '@Components/@atoms/AtomSeo';
 import { Global } from '@emotion/react';
 import HeadComponent from '@Styles/global/head';
 import Normalize from '@Styles/global/normalize';
@@ -22,6 +23,13 @@ const MyApp = ({
   const SEO = Component.SEO;
   return (
     <Provider>
+      <AtomSEO
+        title="Swap Coral Six"
+        page="asdf"
+        image="asdfsdaf"
+        keywords={['']}
+        description="asfasdf"
+      />
       <Script
         src="https://open.spotify.com/embed-podcast/iframe-api/v1"
         async

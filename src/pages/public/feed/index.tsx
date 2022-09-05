@@ -19,7 +19,7 @@ const Public: NextPageFCProps = () => {
   });
 
   return (
-    <AtomWrapper>
+    <AtomWrapper width="100%">
       <AtomWrapper
         padding="25px"
         maxWidth="1440px"

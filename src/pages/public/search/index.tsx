@@ -38,7 +38,7 @@ const SearchPage: NextPageFCProps = () => {
   });
 
   return (
-    <AtomWrapper>
+    <AtomWrapper width="100%" height="100%">
       <AtomWrapper
         padding="25px"
         maxWidth="1440px"

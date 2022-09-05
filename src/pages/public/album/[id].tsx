@@ -20,7 +20,7 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
     }
   });
   return (
-    <AtomWrapper>
+    <AtomWrapper width="100%">
       <AtomBanner type="album" album={data?.albumById} />
       <AtomWrapper
         padding="45px 90px"

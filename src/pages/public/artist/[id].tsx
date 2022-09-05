@@ -33,7 +33,7 @@ const PublicArtist: NextPageFC<{ id: string }> = (props) => {
   );
 
   return (
-    <AtomWrapper>
+    <AtomWrapper width="100%">
       <AtomBanner type="artist" artist={data?.artistById ?? {}} />
       <AtomWrapper
         padding="45px 90px"

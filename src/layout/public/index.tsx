@@ -64,8 +64,9 @@ const PublicLayout: FC = (props) => {
           >
             <AtomWrapper
               customCSS={css`
-                position: absolute;
+                height: 100%;
                 width: 100%;
+                overflow-x: clip;
                 z-index: 1;
                 top: 0;
                 @media (max-width: 980px) {

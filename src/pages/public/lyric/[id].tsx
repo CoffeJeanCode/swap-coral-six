@@ -28,62 +28,67 @@ const LyricByID: NextPageFC<{ id: string }> = ({ id }) => {
 
   return (
     <AtomWrapper
-      padding="45px"
       backgroundColor={color?.[0]?.hex as string}
-      height={loading ? '100vh' : 'auto'}
-      customCSS={css`
-        display: flex;
-        flex-direction: ${loading ? 'row' : 'column'};
-        justify-content: center;
-        align-items: ${loading ? 'center' : 'flex-start'};
-      `}
+      width="100%"
+      height="100%"
     >
-      {loading ? (
-        <AtomLoader type="small" colorLoading="white" isLoading />
-      ) : (
-        <>
-          <AtomWrapper flexDirection="row" alignItems="center" gap="10px">
-            {data?.lyricByTrackId?.artists?.map((item, index) => (
-              <AtomText
-                key={item?.id}
-                fontWeight="bold"
-                fontSize="30px"
-                color="white"
-              >
-                {index === 0 ? item?.name : `, ${item?.name}`}
-              </AtomText>
-            ))}
-            <AtomText fontWeight="bold" fontSize="30px" color="white">
-              {data?.lyricByTrackId?.name}
-            </AtomText>
-          </AtomWrapper>
-
-          {data?.lyricByTrackId?.lyrics?.map((item) => (
-            <AtomWrapper
-              key={item?.id}
-              customCSS={css`
-                margin-top: 20px;
-                font-family: 'Open Sans', sans-serif;
-                font-size: 2rem;
-                display: flex;
-                flex-direction: column;
-              `}
-            >
-              <AtomText
-                fontSize="30px"
-                color="black"
-                customCSS={css`
-                  color: white;
-                `}
-              >
-                {item?.phrase}
+      <AtomWrapper
+        padding="45px"
+        height={loading ? '100%' : 'auto'}
+        customCSS={css`
+          display: flex;
+          flex-direction: ${loading ? 'row' : 'column'};
+          justify-content: center;
+          align-items: ${loading ? 'center' : 'flex-start'};
+        `}
+      >
+        {loading ? (
+          <AtomLoader type="small" colorLoading="white" isLoading />
+        ) : (
+          <>
+            <AtomWrapper flexDirection="row" alignItems="center" gap="10px">
+              {data?.lyricByTrackId?.artists?.map((item, index) => (
+                <AtomText
+                  key={item?.id}
+                  fontWeight="bold"
+                  fontSize="30px"
+                  color="white"
+                >
+                  {index === 0 ? item?.name : `, ${item?.name}`}
+                </AtomText>
+              ))}
+              <AtomText fontWeight="bold" fontSize="30px" color="white">
+                {data?.lyricByTrackId?.name}
               </AtomText>
             </AtomWrapper>
-          ))}
 
-          <AtomText fontSize="13px">Whil Inc.</AtomText>
-        </>
-      )}
+            {data?.lyricByTrackId?.lyrics?.map((item) => (
+              <AtomWrapper
+                key={item?.id}
+                customCSS={css`
+                  margin-top: 20px;
+                  font-family: 'Open Sans', sans-serif;
+                  font-size: 2rem;
+                  display: flex;
+                  flex-direction: column;
+                `}
+              >
+                <AtomText
+                  fontSize="30px"
+                  color="black"
+                  customCSS={css`
+                    color: white;
+                  `}
+                >
+                  {item?.phrase}
+                </AtomText>
+              </AtomWrapper>
+            ))}
+
+            <AtomText fontSize="13px">Whil Inc.</AtomText>
+          </>
+        )}
+      </AtomWrapper>
     </AtomWrapper>
   );
 };

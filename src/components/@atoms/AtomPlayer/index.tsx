@@ -1,5 +1,8 @@
+import { useQuery } from '@apollo/client';
+import { audioById } from '@Apollo/client/query/audioById';
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
+import { IQueryFilter } from '@Types/index';
 import { atom, useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -7,6 +10,7 @@ import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomImage from '../AtomImage';
+import AtomLoader from '../AtomLoader';
 import AtomPlayerIframe from '../AtomPlayerIframe';
 import AtomPlayerProgressBar from '../AtomPlayerProgressBar';
 import AtomPlayPlayer from '../AtomPlayPlayer';
@@ -24,6 +28,14 @@ const AtomPlayer: FC = () => {
     VIEWIMAGESIDEBAR_ATOM
   );
   const router = useRouter();
+
+  const { data, loading } = useQuery<IQueryFilter<'audioById'>>(audioById, {
+    skip: !controls?.currentTrack?.id,
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      id: controls?.currentTrack?.id
+    }
+  });
 
   return (
     <>
@@ -285,7 +297,53 @@ const AtomPlayer: FC = () => {
                   `}
                 />
               </AtomButton>
-              <AtomPlayPlayer />
+              {loading ? (
+                <AtomLoader
+                  type="small"
+                  isLoading
+                  colorLoading="white"
+                  customCSS={css`
+                    .lds-ring {
+                      display: inline-block;
+                      position: relative;
+                      width: 45px;
+                      height: 45px;
+                    }
+                    .lds-ring div {
+                      box-sizing: border-box;
+                      display: block;
+                      position: absolute;
+                      width: 45px;
+                      height: 45px;
+                      margin: 0px;
+                      border: 4px solid white;
+                      border-radius: 500%;
+                      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1)
+                        infinite;
+                      border-color: white transparent transparent transparent;
+                    }
+                    .lds-ring div:nth-of-type(1) {
+                      animation-delay: -0.45s;
+                    }
+                    .lds-ring div:nth-of-type(2) {
+                      animation-delay: -0.3s;
+                    }
+                    .lds-ring div:nth-of-type(3) {
+                      animation-delay: -0.15s;
+                    }
+                    @keyframes lds-ring {
+                      0% {
+                        transform: rotate(0deg);
+                      }
+                      100% {
+                        transform: rotate(360deg);
+                      }
+                    }
+                  `}
+                />
+              ) : (
+                <AtomPlayPlayer />
+              )}
               <AtomButton
                 backgroundColor="transparent"
                 padding="0px"
@@ -350,7 +408,7 @@ const AtomPlayer: FC = () => {
                 />
               </AtomButton>
             </AtomWrapper>
-            <AtomPlayerProgressBar />
+            <AtomPlayerProgressBar data={data} loading={loading} />
           </AtomWrapper>
           <AtomWrapper
             flexDirection="row"

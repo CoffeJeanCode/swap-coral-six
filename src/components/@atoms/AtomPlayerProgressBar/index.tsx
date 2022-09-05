@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { useQuery } from '@apollo/client';
-import { audioById } from '@Apollo/client/query/audioById';
 import { css } from '@emotion/react';
 import { COLORS_ATOM } from '@Hooks/useColor';
 import useSetRef from '@Hooks/useSetRef';
@@ -17,7 +15,12 @@ import { PLAY_TRACK_ATOM } from '../AtomPlayPlayer';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
 
-const AtomPlayerProgressBar: FC = () => {
+type Props = {
+  data: IQueryFilter<'audioById'> | undefined;
+  loading: boolean;
+};
+
+const AtomPlayerProgressBar: FC<Props> = ({ data, loading }) => {
   const colors = useAtomValue(COLORS_ATOM);
   const [currentTime, setCurrentTime] = useAtom(PROGRESSBAR_ATOM);
   const volumen = useAtomValue(VOLUMEN_ATOM);
@@ -30,14 +33,6 @@ const AtomPlayerProgressBar: FC = () => {
     audio as any,
     setAudioRef
   );
-
-  const { data } = useQuery<IQueryFilter<'audioById'>>(audioById, {
-    skip: !controls?.currentTrack?.id,
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id: controls?.currentTrack?.id
-    }
-  });
 
   const totalTime = audio?.current?.duration || 0;
 
@@ -181,38 +176,40 @@ const AtomPlayerProgressBar: FC = () => {
         `}
       />
 
-      <audio
-        id="AUDIOPLAYER"
-        ref={audio as LegacyRef<HTMLAudioElement>}
-        loop={controls?.controls?.repeatByOne}
-        src={data?.audioById?.audio?.urls?.[0]?.url}
-        autoPlay={playerPlayer}
-        onPlaying={() => {
-          if (audio.current) {
-            audio.current.volume = volumen / 100;
-            audio.current.ontimeupdate = (event: any) => {
-              setCurrentTime(event.target.currentTime);
-            };
-          }
-        }}
-        onEnded={() => {
-          if (controls?.controls?.repeat) {
+      {!loading && (
+        <audio
+          id="AUDIOPLAYER"
+          ref={audio as LegacyRef<HTMLAudioElement>}
+          loop={controls?.controls?.repeatByOne}
+          src={data?.audioById?.audio?.urls?.[0]?.url}
+          autoPlay={playerPlayer}
+          onPlaying={() => {
             if (audio.current) {
-              dispatch({
-                type: 'CHANGE_TRACK',
-                payload: {
-                  currentTrack: {
-                    track_number:
-                      (controls?.currentTrack?.track_number as number) + 1
-                  }
-                }
-              });
-              setPlayPlayer(true);
-              audio.current.play();
+              audio.current.volume = volumen / 100;
+              audio.current.ontimeupdate = (event: any) => {
+                setCurrentTime(event.target.currentTime);
+              };
             }
-          }
-        }}
-      ></audio>
+          }}
+          onEnded={() => {
+            if (controls?.controls?.repeat) {
+              if (audio.current) {
+                dispatch({
+                  type: 'CHANGE_TRACK',
+                  payload: {
+                    currentTrack: {
+                      track_number:
+                        (controls?.currentTrack?.track_number as number) + 1
+                    }
+                  }
+                });
+                setPlayPlayer(true);
+                audio.current.play();
+              }
+            }
+          }}
+        ></audio>
+      )}
 
       <AtomText
         as="p"

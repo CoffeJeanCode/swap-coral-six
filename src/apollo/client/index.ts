@@ -5,6 +5,7 @@ const clientGraphql = new ApolloClient({
   uri: CONFIG.GRAPHQL_URL,
   cache: new InMemoryCache(),
   connectToDevTools: true,
+  ssrMode: true,
   queryDeduplication: true
 });
 export default clientGraphql;

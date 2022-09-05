@@ -1,7 +1,7 @@
 const CONFIG = {
   GRAPHQL_URL:
     process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL ||
-    'https://swapcoralsix.herokuapp.com/api/graphql',
+    'http://localhost:3000/api/graphql',
   MONGODB: process.env.MONGODB_URI as string
 };
 

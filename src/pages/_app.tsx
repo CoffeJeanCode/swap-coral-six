@@ -21,15 +21,19 @@ const MyApp = ({
   pageProps: { session, ...pageProps }
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO;
+  console.log(SEO, 'SEOO');
+
   return (
     <Provider>
-      <AtomSEO
-        title="Swap Coral Six"
-        page="asdf"
-        image="asdfsdaf"
-        keywords={['']}
-        description="asfasdf"
-      />
+      {SEO?.title && (
+        <AtomSEO
+          title="Swap Coral Six"
+          page={SEO.title}
+          image={SEO?.image}
+          keywords={SEO?.keywords}
+          description={SEO?.description}
+        />
+      )}
       <Script
         src="https://open.spotify.com/embed-podcast/iframe-api/v1"
         async

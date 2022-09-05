@@ -77,6 +77,13 @@ const Public: NextPageFCProps = () => {
 const typeSearch = ['artists', 'albums', 'playlist'];
 
 export async function getServerSideProps() {
+  Public.SEO = {
+    title: 'Feed',
+    image: 'https://i.scdn.co/image/ab6761610000e5eb6ee9f83106240222e4328db4',
+    description: `Swap Coral Six - Feed is avaible now!`,
+    keywords: ['swapcoralsix', 'Feed']
+  };
+
   return {
     props: {}
   };

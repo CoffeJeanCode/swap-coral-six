@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import client from '@Apollo/client/notWSS';
 import { albumByID } from '@Apollo/client/query/albumByID';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
@@ -90,6 +91,21 @@ AlbumPublic.Layout = 'public';
 
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
+  const artist = await client
+    .query<IQueryFilter<'albumById'>>({
+      query: albumByID,
+      variables: {
+        id: id
+      }
+    })
+    ?.then((res) => res.data?.albumById);
+  AlbumPublic.SEO = {
+    title: artist?.name,
+    image: artist?.images?.[0]?.url,
+    description: `Swap Coral Six - ${artist?.name} is avaible now!`,
+    keywords: ['swapcoralsix', artist?.name as string]
+  };
+
   return {
     props: {
       id

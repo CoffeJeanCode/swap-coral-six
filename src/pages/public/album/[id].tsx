@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { albumByID } from '@Apollo/client/query/albumByID';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
+import AtomSEO from '@Components/@atoms/AtomSeo';
 
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
@@ -22,6 +23,13 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
   });
   return (
     <AtomWrapper width="100%">
+      <AtomSEO
+        title="Swap Coral Six"
+        page={data?.albumById?.name}
+        image={data?.albumById?.images?.[0]?.url}
+        keywords={[data?.albumById?.name as string]}
+        description={data?.albumById?.name}
+      />
       {loading ? (
         <AtomLoader type="small" isLoading colorLoading="white" />
       ) : (

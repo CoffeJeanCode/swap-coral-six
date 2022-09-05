@@ -4,6 +4,7 @@ import { LISTALBUMSBYARTISTID } from '@Apollo/client/query/listAlbums';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomCard from '@Components/@atoms/AtomCard';
 import AtomLoader from '@Components/@atoms/AtomLoader';
+import AtomSEO from '@Components/@atoms/AtomSeo';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
 import { IQueryFilter } from '@Types/index';
@@ -34,6 +35,13 @@ const PublicArtist: NextPageFC<{ id: string }> = (props) => {
 
   return (
     <AtomWrapper width="100%">
+      <AtomSEO
+        title="Swap Coral Six"
+        page={data?.artistById?.name}
+        image={data?.artistById?.images?.[0]?.url}
+        keywords={[data?.artistById?.name as string]}
+        description={data?.artistById?.name}
+      />
       {loading ? (
         <AtomLoader type="small" isLoading colorLoading="white" />
       ) : (

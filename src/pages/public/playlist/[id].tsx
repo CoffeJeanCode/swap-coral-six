@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { PLAYLISTBYID } from '@Apollo/client/query/playlistById';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
+import AtomSEO from '@Components/@atoms/AtomSeo';
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
@@ -24,6 +25,13 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
   );
   return (
     <AtomWrapper width="100%">
+      <AtomSEO
+        title="Swap Coral Six"
+        page={data?.playListById?.name}
+        image={data?.playListById?.images?.[0]?.url}
+        keywords={[data?.playListById?.name as string]}
+        description={data?.playListById?.name}
+      />
       {loading ? (
         <AtomLoader type="small" isLoading colorLoading="white" />
       ) : (

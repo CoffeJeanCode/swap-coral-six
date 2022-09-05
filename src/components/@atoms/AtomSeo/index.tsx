@@ -13,7 +13,7 @@ export interface SeoPageProps {
   jsonType?: string;
 }
 
-const SeoPage: FC<SeoPageProps> = (props) => (
+const AtomSEO: FC<SeoPageProps> = (props) => (
   <Head>
     <title>
       {props.title} | {props.page}
@@ -82,4 +82,4 @@ const SeoPage: FC<SeoPageProps> = (props) => (
   </Head>
 );
 
-export default SeoPage;
+export default AtomSEO;

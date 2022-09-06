@@ -18,7 +18,7 @@ import { VIEWIMAGESIDEBAR_ATOM } from '../AtomViewImageSidebar';
 import AtomVolumenPlayer from '../AtomVolumenPlayer';
 import AtomWrapper from '../Atomwrapper';
 
-export const SHOWPLAYERIFRAME_ATOM = atom(false);
+export const SHOWPLAYERIFRAME_ATOM = atom(true);
 const AtomPlayer: FC = () => {
   const [showPlayerSPotify, setSpotify] = useAtom(SHOWPLAYERIFRAME_ATOM);
   const colors = useAtomValue(COLORS_ATOM);

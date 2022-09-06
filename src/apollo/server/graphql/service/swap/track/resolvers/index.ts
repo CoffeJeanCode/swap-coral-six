@@ -17,10 +17,6 @@ const resolverTracks = {
       { spotifyAPIToken }: ContextRoot
     ) => {
       const track = await Track.findOne({ id });
-
-      // const TOKEN = await spotifyAPIToken();
-      // console.log(TOKEN, 'TOKEN');
-
       if (!track) {
         await spotifyAPIToken();
         const trackBySpotify = await (

@@ -10,7 +10,6 @@ import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomImage from '../AtomImage';
-import AtomLoader from '../AtomLoader';
 import AtomPlayerIframe from '../AtomPlayerIframe';
 import AtomPlayerProgressBar from '../AtomPlayerProgressBar';
 import AtomPlayPlayer from '../AtomPlayPlayer';
@@ -298,40 +297,27 @@ const AtomPlayer: FC = () => {
                 />
               </AtomButton>
               {loading ? (
-                <AtomLoader
-                  type="small"
-                  isLoading
-                  colorLoading="white"
+                <AtomWrapper
                   customCSS={css`
-                    .lds-ring {
-                      display: inline-block;
-                      position: relative;
-                      width: 45px;
-                      height: 45px;
+                    border: 4px solid #f3f3f3;
+                    border-radius: 50%;
+                    border-top: 4px solid ${colors?.[0]?.hex};
+                    width: 30px;
+                    height: 30px;
+                    -webkit-animation: spin 2s linear infinite; /* Safari */
+                    animation: spin 2s linear infinite;
+
+                    /* Safari */
+                    @-webkit-keyframes spin {
+                      0% {
+                        -webkit-transform: rotate(0deg);
+                      }
+                      100% {
+                        -webkit-transform: rotate(360deg);
+                      }
                     }
-                    .lds-ring div {
-                      box-sizing: border-box;
-                      display: block;
-                      position: absolute;
-                      width: 45px;
-                      height: 45px;
-                      margin: 0px;
-                      border: 4px solid white;
-                      border-radius: 500%;
-                      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1)
-                        infinite;
-                      border-color: white transparent transparent transparent;
-                    }
-                    .lds-ring div:nth-of-type(1) {
-                      animation-delay: -0.45s;
-                    }
-                    .lds-ring div:nth-of-type(2) {
-                      animation-delay: -0.3s;
-                    }
-                    .lds-ring div:nth-of-type(3) {
-                      animation-delay: -0.15s;
-                    }
-                    @keyframes lds-ring {
+
+                    @keyframes spin {
                       0% {
                         transform: rotate(0deg);
                       }

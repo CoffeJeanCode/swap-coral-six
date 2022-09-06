@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import client from '@Apollo/client/notWSS';
 import { PLAYLISTBYID } from '@Apollo/client/query/playlistById';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
@@ -91,6 +92,21 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
 };
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
+  const artist = await client
+    .query<IQueryFilter<'playListById'>>({
+      query: PLAYLISTBYID,
+      variables: {
+        id: id
+      }
+    })
+    ?.then((res) => res.data?.playListById);
+  PlaylistPublic.SEO = {
+    title: artist?.name,
+    image: artist?.images?.[0]?.url,
+    description: `Swap Coral Six - ${artist?.name} is avaible now!`,
+    keywords: ['swapcoralsix', artist?.name as string]
+  };
+
   return {
     props: {
       id

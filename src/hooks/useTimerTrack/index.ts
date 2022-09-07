@@ -46,7 +46,7 @@ const useTimer = (props: Props) => {
       }
     }, 1200);
     return () => clearInterval(intervalTimer);
-  }, [controls?.currentTrack?.id, controls?.controls?.repeat]);
+  }, [controls?.currentTrack?.id]);
 
   useEffect(() => {
     const intervalTimer = setInterval(() => {

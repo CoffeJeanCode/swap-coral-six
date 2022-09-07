@@ -19,6 +19,7 @@ const PublicLayout: FC = (props) => {
       {first ? (
         <AtomWrapper
           customCSS={css`
+            overflow: hidden;
             display: grid;
             grid-template-columns: 270px 1fr;
             grid-template-rows: 1fr auto;

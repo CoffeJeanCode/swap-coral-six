@@ -30,7 +30,7 @@ const LyricByID: NextPageFC<{ id: string }> = ({ id }) => {
     <AtomWrapper
       backgroundColor={color?.[0]?.hex as string}
       width="100%"
-      height="auto"
+      height={loading ? '100%' : 'auto'}
     >
       <AtomWrapper
         padding="45px"

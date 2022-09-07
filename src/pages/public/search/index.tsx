@@ -51,23 +51,36 @@ const SearchPage: NextPageFCProps = () => {
       >
         <AtomWrapper>
           <h1>SearchPage</h1>
-          <AtomInput
-            type="text"
-            id="search"
-            onChange={(e) => {
-              setTimer(0);
-              setword(e.target.value);
-            }}
-          />
-          <select
-            onChange={(e) => setLimit(Number(e.target.value))}
-            value={limit}
+          <AtomWrapper
+            flexDirection="row"
+            gap="20px"
+            customCSS={css`
+              display: grid;
+              grid-template-columns: 1fr auto;
+            `}
           >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-          </select>
+            <AtomInput
+              type="text"
+              id="search"
+              customCSS={css`
+                width: 100%;
+              `}
+              onChange={(e) => {
+                setTimer(0);
+                setword(e.target.value);
+              }}
+            />
+            <select
+              onChange={(e) => setLimit(Number(e.target.value))}
+              value={limit}
+              style={{ width: 'auto' }}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </AtomWrapper>
         </AtomWrapper>
         <AtomWrapper
           maxWidth="1440px"

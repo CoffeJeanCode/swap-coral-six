@@ -25,6 +25,18 @@ const useTimer = (props: Props) => {
   const [playIFRAME, setPlayIFRAME] = useAtom(PLAY_IFRAME_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const spotifyEmbedWindow = useIframe();
+
+  useEffect(() => {
+    const intervalTimer = setTimeout(() => {
+      if (playIFRAME) {
+        setTimer(0);
+        setPlayIFRAME(true);
+        spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
+      }
+    }, 1200);
+    return () => clearInterval(intervalTimer);
+  }, [controls?.currentTrack?.id]);
+
   useEffect(() => {
     const intervalTimer = setTimeout(() => {
       if (controls?.controls?.repeat) {
@@ -32,9 +44,6 @@ const useTimer = (props: Props) => {
         setPlayIFRAME(true);
         spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
       }
-      setTimer(0);
-      setPlayIFRAME(true);
-      spotifyEmbedWindow?.postMessage({ command: 'play' }, '*');
     }, 1200);
     return () => clearInterval(intervalTimer);
   }, [controls?.currentTrack?.id, controls?.controls?.repeat]);
@@ -42,11 +51,13 @@ const useTimer = (props: Props) => {
   useEffect(() => {
     const intervalTimer = setInterval(() => {
       if (props?.play) {
-        if (timer >= props?.end) {
-          props?.onCompleted(controls);
-        } else {
-          setTimer((prev: number) => prev + 1);
-          clearTimeout(intervalTimer);
+        if (props?.end) {
+          if (timer >= props?.end) {
+            props?.onCompleted(controls);
+          } else {
+            setTimer((prev: number) => prev + 1);
+            clearTimeout(intervalTimer);
+          }
         }
         clearTimeout(intervalTimer);
       }

@@ -103,7 +103,9 @@ export async function getServerSideProps(context: NextPageContext) {
     .query<IQueryFilter<'lyricByTrackId'>>({
       query: LYRICBYTRACKID,
       variables: {
-        id: id
+        filter: {
+          id: id
+        }
       }
     })
     ?.then((res) => res.data?.lyricByTrackId);

@@ -186,5 +186,13 @@ const SearchPage: NextPageFCProps = () => {
 };
 
 const typeSearch = ['artists', 'albums', 'playlists'];
+
+SearchPage.SEO = {
+  title: 'Search',
+  image:
+    'https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png',
+  description: `Swap Coral Six - Search is avaible now!`,
+  keywords: ['swapcoralsix', 'Feed']
+};
 SearchPage.Layout = 'public';
 export default SearchPage;

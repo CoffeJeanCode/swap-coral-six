@@ -79,7 +79,8 @@ const typeSearch = ['artists', 'albums', 'playlist'];
 export async function getServerSideProps() {
   Public.SEO = {
     title: 'Feed',
-    image: 'https://i.scdn.co/image/ab6761610000e5eb6ee9f83106240222e4328db4',
+    image:
+      'https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png',
     description: `Swap Coral Six - Feed is avaible now!`,
     keywords: ['swapcoralsix', 'Feed']
   };

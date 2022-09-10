@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import client from '@Apollo/client/notWSS';
 import { LYRICBYTRACKID } from '@Apollo/client/query/lyricById';
 import AtomLoader from '@Components/@atoms/AtomLoader';
 import { AtomText } from '@Components/@atoms/AtomText';
@@ -97,6 +98,25 @@ LyricByID.Layout = 'public';
 
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query;
+
+  const lyric = await client
+    .query<IQueryFilter<'lyricByTrackId'>>({
+      query: LYRICBYTRACKID,
+      variables: {
+        id: id
+      }
+    })
+    ?.then((res) => res.data?.lyricByTrackId);
+  LyricByID.SEO = {
+    title: `${lyric?.name} - ${lyric?.artists
+      ?.map((item) => item?.name)
+      .join(' ,')}`,
+    image:
+      'https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png',
+    description: `Swap Coral Six - Lyrics is avaible now!`,
+    keywords: ['swapcoralsix', 'Feed']
+  };
+
   return {
     props: {
       id

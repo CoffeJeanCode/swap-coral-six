@@ -7,6 +7,7 @@ export type listAlbums = {
   artist?: {
     id: string;
   };
+  page: number;
   slug: string;
   offset: number;
   limit: number;
@@ -20,24 +21,39 @@ const resolverAlbum = {
       { filter }: { filter: listAlbums },
       { spotifyAPIToken }: ContextRoot
     ) => {
+      const perPage = 50;
+      const page = Math.max(0, filter?.page ?? 0);
       const albums = await Album.find()
         .where('artists.id')
+        .limit(perPage)
+        .skip(perPage * page)
+        .sort({ release_date: -1 })
+        .in([filter.artist?.id]);
+
+      const TOTALALBUMS = await Album.find()
+        .where('artists.id')
+        .sort({ release_date: -1 })
         .in([filter.artist?.id])
-        .exec();
+        .count();
+
+      await spotifyAPIToken();
 
       await spotifyAPIToken();
       const artistAlbums = await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(
         filter?.artist?.id as string,
         {
-          limit: filter?.limit ?? 50,
-          offset: filter?.offset ?? 0
+          limit: filter?.limit || 50,
+          offset: filter?.offset || 0
         }
-      ).then((res) => res.body.items);
+      ).then((res) => res.body);
 
-      for (const iterator of artistAlbums) {
-        const isExistAlbum = await Album.find({
+      for (const iterator of artistAlbums?.items) {
+        const isExistAlbum = await Album.findOne({
           id: iterator?.id
-        });
+        })
+          .select('id')
+          .lean();
+
         if (!isExistAlbum) {
           const newAlbum = new Album({
             ...iterator
@@ -45,9 +61,25 @@ const resolverAlbum = {
 
           await newAlbum.save();
         }
-        return artistAlbums;
       }
-      return albums;
+
+      return {
+        href: '',
+        limit: 50,
+        next: '',
+        hasNextPage: albums?.length > 0 ? true : false,
+        hasPreviousPage: page !== 0 ? true : false,
+        page: page,
+        offset: filter?.offset,
+        previous: '',
+        total: TOTALALBUMS,
+        items:
+          albums?.length > 0
+            ? albums
+            : artistAlbums?.items?.filter((item) =>
+                item.artists.some((artist) => artist.id === filter?.artist?.id)
+              )
+      };
     },
     albumById: async (
       root: any,

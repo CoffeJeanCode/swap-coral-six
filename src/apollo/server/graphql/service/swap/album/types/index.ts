@@ -1,6 +1,18 @@
 import { gql } from 'apollo-server-micro';
 
 const typeDefsAlbum = gql`
+  type AlbumWithOptions {
+    href: String
+    limit: Int
+    next: String
+    offset: Int
+    previous: String
+    page: Int
+    total: Int
+    hasNextPage: Boolean
+    hasPreviousPage: Boolean
+    items: [AlbumType]
+  }
   type RestrictionsObject {
     reason: String
   }
@@ -143,9 +155,10 @@ const typeDefsAlbum = gql`
     slug: String
     limit: Int
     offset: Int
+    page: Int
   }
   type Query {
-    listAlbums(filter: listAlbumsInput): [AlbumType]
+    listAlbums(filter: listAlbumsInput): AlbumWithOptions
     listAlbumBySlug(filter: listAlbumsInput): [AlbumType]
     albumById(id: String!): AlbumType
   }

@@ -53,7 +53,7 @@ interface IGraphQLResponseErrorLocation {
 export interface IQuery {
   listArtistBySlug?: Array<IArtist | null>;
   artistById?: IArtist;
-  listAlbums?: Array<IAlbumType | null>;
+  listAlbums?: IAlbumWithOptions;
   listAlbumBySlug?: Array<IAlbumType | null>;
   albumById?: IAlbumType;
   audioById?: ITrack;
@@ -119,10 +119,24 @@ export interface IlistAlbumsInput {
   slug?: string;
   limit?: number;
   offset?: number;
+  page?: number;
 }
 
 export interface IlistAlbumsArtistInput {
   id?: string;
+}
+
+export interface IAlbumWithOptions {
+  href?: string;
+  limit?: number;
+  next?: string;
+  offset?: number;
+  previous?: string;
+  page?: number;
+  total?: number;
+  hasNextPage?: boolean;
+  hasPreviousPage?: boolean;
+  items?: Array<IAlbumType | null>;
 }
 
 export interface IAlbumType {
@@ -447,6 +461,7 @@ export interface IResolver {
   Customize?: ICustomizeTypeResolver;
   CustomizeColorsByType?: ICustomizeColorsByTypeTypeResolver;
   CustomizeColors?: ICustomizeColorsTypeResolver;
+  AlbumWithOptions?: IAlbumWithOptionsTypeResolver;
   AlbumType?: IAlbumTypeTypeResolver;
   Custmize?: ICustmizeTypeResolver;
   font?: IfontTypeResolver;
@@ -773,6 +788,71 @@ export interface CustomizeColorsToTertiaryResolver<
   TParent = any,
   TResult = any
 > {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface IAlbumWithOptionsTypeResolver<TParent = any> {
+  href?: AlbumWithOptionsToHrefResolver<TParent>;
+  limit?: AlbumWithOptionsToLimitResolver<TParent>;
+  next?: AlbumWithOptionsToNextResolver<TParent>;
+  offset?: AlbumWithOptionsToOffsetResolver<TParent>;
+  previous?: AlbumWithOptionsToPreviousResolver<TParent>;
+  page?: AlbumWithOptionsToPageResolver<TParent>;
+  total?: AlbumWithOptionsToTotalResolver<TParent>;
+  hasNextPage?: AlbumWithOptionsToHasNextPageResolver<TParent>;
+  hasPreviousPage?: AlbumWithOptionsToHasPreviousPageResolver<TParent>;
+  items?: AlbumWithOptionsToItemsResolver<TParent>;
+}
+
+export interface AlbumWithOptionsToHrefResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToLimitResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToNextResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToOffsetResolver<
+  TParent = any,
+  TResult = any
+> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToPreviousResolver<
+  TParent = any,
+  TResult = any
+> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToPageResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToTotalResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToHasNextPageResolver<
+  TParent = any,
+  TResult = any
+> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToHasPreviousPageResolver<
+  TParent = any,
+  TResult = any
+> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AlbumWithOptionsToItemsResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 

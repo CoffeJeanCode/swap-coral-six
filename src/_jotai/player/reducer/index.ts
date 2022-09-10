@@ -49,7 +49,13 @@ const typesReducers: typesReducers = {
   SET_TRACK: (STATE, PAYLOAD) => ({
     ...STATE,
     currentTrack: PAYLOAD.currentTrack,
-    context: PAYLOAD.context
+    context: PAYLOAD.context?.sort(function (a, b) {
+      if (b.track_number) {
+        if ((a.track_number as number) > b.track_number) return 1;
+        if ((a.track_number as number) < b.track_number) return -1;
+      }
+      return 0;
+    })
   }),
   CHANGE_TRACK: (STATE, PAYLOAD) => {
     const TRACKNUMBER = PAYLOAD?.currentTrack?.track_number as number;
@@ -59,9 +65,15 @@ const typesReducers: typesReducers = {
     if (isValidTrackNumber) {
       return {
         ...STATE,
-        currentTrack: STATE?.context?.find(
-          (item) => item.track_number === TRACKNUMBER
-        )
+        currentTrack: STATE?.context
+          ?.sort(function (a, b) {
+            if (b.track_number) {
+              if ((a.track_number as number) > b.track_number) return 1;
+              if ((a.track_number as number) < b.track_number) return -1;
+            }
+            return 0;
+          })
+          ?.find((item) => item.track_number === TRACKNUMBER)
       };
     }
     if (TRACKNUMBER <= 0) {

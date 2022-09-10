@@ -487,7 +487,7 @@ const AtomPlayerIframe: FC = () => {
             onClick={() => {
               router.asPath.includes('/queue')
                 ? router.back()
-                : router.push('/swap/queue').then(() => {
+                : router.push('/public/queue').then(() => {
                     document?.getElementById('view')?.scroll({
                       top: 0,
                       behavior: 'smooth'

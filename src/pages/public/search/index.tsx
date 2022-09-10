@@ -6,9 +6,10 @@ import AtomLoader from '@Components/@atoms/AtomLoader';
 import { AtomText } from '@Components/@atoms/AtomText';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
-import useTimer from '@Hooks/useTimer';
+import { COLORS_ATOM } from '@Hooks/useColor';
+import useTimer, { loadTimerAtom } from '@Hooks/useTimer';
 import { IQueryFilter } from '@Types/index';
-import { atom, useAtom } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
 import { NextPageFCProps } from 'next';
 import { useRouter } from 'next/router';
 
@@ -17,7 +18,9 @@ const limitAtom = atom(10);
 const wordAtom = atom('');
 
 const SearchPage: NextPageFCProps = () => {
+  const colors = useAtomValue(COLORS_ATOM);
   const [search, setSearch] = useAtom(searchAtom);
+  const loadWriting = useAtomValue(loadTimerAtom);
   const [limit, setLimit] = useAtom(limitAtom);
   const [word, setword] = useAtom(wordAtom);
   const router = useRouter();
@@ -59,17 +62,58 @@ const SearchPage: NextPageFCProps = () => {
               grid-template-columns: 1fr auto;
             `}
           >
-            <AtomInput
-              type="text"
-              id="search"
+            <AtomWrapper
+              gap="20px"
               customCSS={css`
-                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr auto;
               `}
-              onChange={(e) => {
-                setTimer(0);
-                setword(e.target.value);
-              }}
-            />
+            >
+              <AtomInput
+                type="text"
+                id="search"
+                placeholder="Search your favorite Artist, Album, Playlist..."
+                customCSS={css`
+                  width: 100%;
+                `}
+                onChange={(e) => {
+                  setTimer(0);
+                  setword(e.target.value);
+                }}
+              />
+              {!loadWriting && (
+                <AtomWrapper
+                  customCSS={css`
+                    border: 4px solid #f3f3f3;
+                    border-radius: 50%;
+                    border-top: 4px solid ${colors?.[0]?.hex};
+                    width: 30px;
+                    height: 30px;
+                    -webkit-animation: spin 2s linear infinite; /* Safari */
+                    animation: spin 2s linear infinite;
+
+                    /* Safari */
+                    @-webkit-keyframes spin {
+                      0% {
+                        -webkit-transform: rotate(0deg);
+                      }
+                      100% {
+                        -webkit-transform: rotate(360deg);
+                      }
+                    }
+
+                    @keyframes spin {
+                      0% {
+                        transform: rotate(0deg);
+                      }
+                      100% {
+                        transform: rotate(360deg);
+                      }
+                    }
+                  `}
+                />
+              )}
+            </AtomWrapper>
             <select
               onChange={(e) => setLimit(Number(e.target.value))}
               value={limit}

@@ -45,8 +45,6 @@ const resolverTracks = {
         return track;
       }
       if (track) {
-        console.log('ExistTrack');
-
         await spotifyAPIToken();
         const trackBySpotify = await (
           await CONFIG_SPOTIFY.SPOTIFY_API.getTrack(id)

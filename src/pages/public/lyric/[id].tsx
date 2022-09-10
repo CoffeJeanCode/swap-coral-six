@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useQuery } from '@apollo/client';
 import client from '@Apollo/client/notWSS';
 import { LYRICBYTRACKID } from '@Apollo/client/query/lyricById';
@@ -108,7 +109,9 @@ export async function getServerSideProps(context: NextPageContext) {
         }
       }
     })
-    ?.then((res) => res.data?.lyricByTrackId);
+    ?.then((res) => res.data?.lyricByTrackId)
+    .catch((res) => console.log(res));
+
   LyricByID.SEO = {
     title: `${lyric?.name} - ${lyric?.artists
       ?.map((item) => item?.name)

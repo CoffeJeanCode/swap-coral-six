@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { LISTBYTYPE } from '@Apollo/client/query/listByType';
+import AtomButton from '@Components/@atoms/AtomButton';
 import AtomCard from '@Components/@atoms/AtomCard';
 import AtomLoader from '@Components/@atoms/AtomLoader';
 import { AtomText } from '@Components/@atoms/AtomText';
@@ -8,13 +9,19 @@ import { css } from '@emotion/react';
 import { IQueryFilter } from '@Types/index';
 import { NextPageFCProps } from 'next';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const Public: NextPageFCProps = () => {
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { data, loading } = useQuery<IQueryFilter<'listByType'>>(LISTBYTYPE, {
+  const { data, refetch } = useQuery<IQueryFilter<'listByType'>>(LISTBYTYPE, {
+    fetchPolicy: 'cache-and-network',
     variables: {
       type: ['artists', 'albums', 'playlist', 'tracks'],
       limit: 24
+    },
+    onCompleted: () => {
+      setLoading(false);
     }
   });
 
@@ -34,6 +41,14 @@ const Public: NextPageFCProps = () => {
           <AtomLoader type="small" isLoading colorLoading="white" />
         ) : (
           <>
+            <AtomButton
+              onClick={() => {
+                refetch();
+                setLoading(true);
+              }}
+            >
+              Get More Data
+            </AtomButton>
             {typeSearch?.map((item) => (
               <>
                 <AtomText color="white" fontWeight="bold">

@@ -4,14 +4,13 @@ import { COLORS_ATOM } from '@Hooks/useColor';
 import useTimer, { timerAtom } from '@Hooks/useTimerTrack';
 import convertToSecondsAndMinutes from '@Utils/convertToSecontsAndMinutes';
 import useIframe from '@Utils/useRefIframe';
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 import AtomButton from '../AtomButton';
 import AtomIcon from '../AtomIcon';
 import AtomInput from '../AtomInput';
-import { SHOWPLAYERIFRAME_ATOM } from '../AtomPlayer';
 import { AtomText } from '../AtomText';
 import AtomWrapper from '../Atomwrapper';
 
@@ -19,7 +18,6 @@ export const PLAY_IFRAME_ATOM = atom(false);
 
 const AtomPlayerIframe: FC = () => {
   const [playIFRAME, setPlayIFRAME] = useAtom(PLAY_IFRAME_ATOM);
-  const setSpotify = useSetAtom(SHOWPLAYERIFRAME_ATOM);
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const [currentTime, setCurrentTime] = useAtom(timerAtom);
   const colors = useAtomValue(COLORS_ATOM);
@@ -51,6 +49,7 @@ const AtomPlayerIframe: FC = () => {
       }
     }
   });
+
   return (
     <>
       <AtomWrapper
@@ -512,28 +511,6 @@ const AtomPlayerIframe: FC = () => {
                 }
               `}
             />
-          </AtomButton>
-          <AtomButton
-            backgroundColor="transparent"
-            padding="0px"
-            onClick={() => {
-              setSpotify(false);
-            }}
-          >
-            <AtomIcon
-              icon="https://res.cloudinary.com/whil/image/upload/v1661924056/spotify_white_ih7an5.svg"
-              width="22px"
-              height="22px"
-              color="default"
-              customCSS={css`
-                svg {
-                  path {
-                    fill: #1ed760;
-                  }
-                }
-              `}
-            />
-            Go back
           </AtomButton>
         </AtomWrapper>
       </AtomWrapper>

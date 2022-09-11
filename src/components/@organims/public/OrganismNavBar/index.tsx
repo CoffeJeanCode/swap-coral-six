@@ -17,12 +17,6 @@ const Sections = [
   },
   {
     id: uuidv4(),
-    name: 'Recommended',
-    path: '/public/recommended',
-    icon: 'https://res.cloudinary.com/whil/image/upload/v1661403453/like_n69iyx.svg'
-  },
-  {
-    id: uuidv4(),
     name: 'Search',
     path: '/public/search',
     icon: 'https://res.cloudinary.com/whil/image/upload/v1661401540/search-normal_afllai.svg'

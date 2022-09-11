@@ -14,7 +14,7 @@ const Public: NextPageFCProps = () => {
   const { data, loading } = useQuery<IQueryFilter<'listByType'>>(LISTBYTYPE, {
     variables: {
       type: ['artists', 'albums', 'playlist', 'tracks'],
-      limit: 25
+      limit: 24
     }
   });
 

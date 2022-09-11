@@ -76,7 +76,6 @@ const resolverLyric = {
                 notifies: []
               }))
           });
-          console.log(artistsByTrack);
 
           await newLyric.save();
           return newLyric;

@@ -48,7 +48,10 @@ const listArtistBySlug = async (
   for (const artist of artists ?? []) {
     const isExistArtist = await Artist.findOne({
       id: artist.id
-    });
+    })
+      .select('id')
+      .lean();
+
     if (isExistArtist === null) {
       const newArtist = new Artist(artist);
       await newArtist.save();

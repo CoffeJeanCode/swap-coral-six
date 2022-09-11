@@ -24,7 +24,10 @@ const resolvers = {
           await CONFIG_SPOTIFY.SPOTIFY_API.getArtistAlbums(id)
         ).body;
         for (const iterator of albumResponse?.items) {
-          const isExistAlbum = await Album.findOne({ id: iterator.id });
+          const isExistAlbum = await Album.findOne({ id: iterator.id })
+            .select('id')
+            .lean();
+
           if (isExistAlbum === null) {
             const newAlbum = await new Album({
               ...iterator

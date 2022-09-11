@@ -26,7 +26,10 @@ const listPlaylistsBySlug = async (
   for (const iterator of playlists || []) {
     const IsSave = await Playlist.find({
       id: iterator.id
-    });
+    })
+      .select('id')
+      .lean();
+
     if (!IsSave) {
       const newPlaylist = new Playlist({
         ...iterator,

@@ -61,6 +61,8 @@ const OrganismNavbar: FC = () => {
           <AtomButton
             padding="0px"
             backgroundColor="transparent"
+            flexDirection="row"
+            gap="15px"
             onClick={() =>
               router.push('/').then(() =>
                 document?.getElementById('view')?.scroll({
@@ -79,6 +81,14 @@ const OrganismNavbar: FC = () => {
               color="default"
               icon="https://res.cloudinary.com/whil/image/upload/v1661402006/Group_101_a4dcb6.svg"
             />
+            <AtomText
+              color="white"
+              font="Open Sans"
+              fontSize="18px"
+              fontWeight="bold"
+            >
+              Swap Coral Six
+            </AtomText>
           </AtomButton>
           {Sections?.map((section) => (
             <AtomButton

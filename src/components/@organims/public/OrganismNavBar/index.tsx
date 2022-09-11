@@ -64,7 +64,7 @@ const OrganismNavbar: FC = () => {
             flexDirection="row"
             gap="15px"
             onClick={() =>
-              router.push('/').then(() =>
+              router.push('/public/feed').then(() =>
                 document?.getElementById('view')?.scroll({
                   top: 0,
                   behavior: 'smooth'

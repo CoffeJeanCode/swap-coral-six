@@ -3,6 +3,7 @@ import { LISTBYTYPE } from '@Apollo/client/query/listByType';
 import AtomButton from '@Components/@atoms/AtomButton';
 import AtomCard from '@Components/@atoms/AtomCard';
 import AtomLoader from '@Components/@atoms/AtomLoader';
+import AtomSEO from '@Components/@atoms/AtomSeo';
 import { AtomText } from '@Components/@atoms/AtomText';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
@@ -27,6 +28,13 @@ const Public: NextPageFCProps = () => {
 
   return (
     <AtomWrapper width="100%">
+      <AtomSEO
+        title="Swap Coral Six"
+        page="Feed"
+        image="https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png"
+        keywords={['swapcoralsix', 'Feed']}
+        description={`Swap Coral Six - Feed is avaible now!`}
+      />
       <AtomWrapper
         padding="25px"
         maxWidth="1440px"

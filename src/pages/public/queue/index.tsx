@@ -86,6 +86,19 @@ const QueuePage: NextPageFCProps = () => {
     </AtomWrapper>
   );
 };
+export async function getServerSideProps() {
+  QueuePage.SEO = {
+    title: 'Queue',
+    image:
+      'https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png',
+    description: `Swap Coral Six - Queue is avaible now!`,
+    keywords: ['swapcoralsix', 'Queue']
+  };
+
+  return {
+    props: {}
+  };
+}
 QueuePage.Layout = 'public';
 
 export default QueuePage;

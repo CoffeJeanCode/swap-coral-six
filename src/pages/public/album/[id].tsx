@@ -3,12 +3,13 @@ import client from '@Apollo/client/notWSS';
 import { albumByID } from '@Apollo/client/query/albumByID';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
+import AtomPlayByAlbumPlaylist from '@Components/@atoms/AtomPlayByAlbum&Playlist';
 import AtomSEO from '@Components/@atoms/AtomSeo';
 
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
-import { IImage, IQueryFilter, ISong } from '@Types/index';
+import { IAlbumType, IImage, IQueryFilter, ISong } from '@Types/index';
 import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
@@ -36,6 +37,7 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
       ) : (
         <>
           <AtomBanner type="album" album={data?.albumById} />
+          <AtomPlayByAlbumPlaylist context={data?.albumById as IAlbumType} />
           <AtomWrapper
             padding="45px 90px"
             maxWidth="1440px"

@@ -17,6 +17,24 @@ const Sections = [
   },
   {
     id: uuidv4(),
+    name: 'Artists',
+    path: '/public/artists',
+    icon: 'https://res.cloudinary.com/whil/image/upload/v1663124150/user-square_x87nyq.svg'
+  },
+  {
+    id: uuidv4(),
+    name: 'Playlists',
+    path: '/public/playlists',
+    icon: 'https://res.cloudinary.com/whil/image/upload/v1661401537/music-dashboard_ivh8cq.svg'
+  },
+  {
+    id: uuidv4(),
+    name: 'Albums',
+    path: '/public/albums',
+    icon: 'https://res.cloudinary.com/whil/image/upload/v1663123474/music-library-2_m4xi2v.svg'
+  },
+  {
+    id: uuidv4(),
     name: 'Search',
     path: '/public/search',
     icon: 'https://res.cloudinary.com/whil/image/upload/v1661401540/search-normal_afllai.svg'
@@ -79,7 +97,7 @@ const OrganismNavbar: FC = () => {
                 grid-row: 1 / 2;
               `}
               color="default"
-              icon="https://res.cloudinary.com/whil/image/upload/v1661402006/Group_101_a4dcb6.svg"
+              icon="https://res.cloudinary.com/whil/image/upload/v1663120889/S_pcf0i0.svg"
             />
             <AtomText
               color="white"

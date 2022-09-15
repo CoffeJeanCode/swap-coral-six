@@ -3,11 +3,19 @@ import client from '@Apollo/client/notWSS';
 import { PLAYLISTBYID } from '@Apollo/client/query/playlistById';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
+import AtomPlayByAlbumPlaylist, {
+  getRandomTrack
+} from '@Components/@atoms/AtomPlayByAlbum&Playlist';
 import AtomSEO from '@Components/@atoms/AtomSeo';
 import AtomTrack from '@Components/@atoms/AtomTrack';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
-import { IImage, IQueryFilter, ISong } from '@Types/index';
+import {
+  IImage,
+  IlistPlaylistsBySlug,
+  IQueryFilter,
+  ISong
+} from '@Types/index';
 import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
@@ -38,6 +46,38 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
       ) : (
         <>
           <AtomBanner type="playlist" playlist={data?.playListById} />
+          <AtomPlayByAlbumPlaylist
+            context={data?.playListById as IlistPlaylistsBySlug}
+            type="playlist"
+            onDispatch={() => {
+              const randomTrack = getRandomTrack(
+                data?.playListById?.tracks?.items as ISong[]
+              );
+              dispatch({
+                type: 'SET_TRACK',
+                payload: {
+                  currentTrack: {
+                    ...randomTrack,
+                    // artists: data?.albumById?.artists,
+                    album: randomTrack?.album,
+                    images: randomTrack?.album?.images as IImage[],
+                    destination: {
+                      type: 'playlist',
+                      id: id
+                    }
+                  },
+                  context: data?.playListById?.tracks?.items?.map((item) => ({
+                    ...item,
+                    images: item?.album?.images as IImage[],
+                    destination: {
+                      type: 'playlist',
+                      id: id
+                    }
+                  }))
+                }
+              });
+            }}
+          />
           <AtomWrapper
             padding="45px 90px"
             maxWidth="1440px"

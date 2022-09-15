@@ -19,7 +19,15 @@ const ImageTypes = ['track', 'playlist', 'single', 'compilation', 'album'];
 const AtomCard: FC<Card> = (props) => {
   return (
     <AtomButton
-      onClick={props?.onClick}
+      onClick={() => {
+        if (props?.onClick) {
+          props?.onClick();
+        }
+        document?.getElementById('view')?.scroll({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }}
       customCSS={css`
         cursor: pointer;
         transition: all 0.3s ease;

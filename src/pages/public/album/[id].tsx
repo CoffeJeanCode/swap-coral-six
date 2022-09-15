@@ -3,7 +3,9 @@ import client from '@Apollo/client/notWSS';
 import { albumByID } from '@Apollo/client/query/albumByID';
 import AtomBanner from '@Components/@atoms/AtomBanner';
 import AtomLoader from '@Components/@atoms/AtomLoader';
-import AtomPlayByAlbumPlaylist from '@Components/@atoms/AtomPlayByAlbum&Playlist';
+import AtomPlayByAlbumPlaylist, {
+  getRandomTrack
+} from '@Components/@atoms/AtomPlayByAlbum&Playlist';
 import AtomSEO from '@Components/@atoms/AtomSeo';
 
 import AtomTrack from '@Components/@atoms/AtomTrack';
@@ -23,6 +25,7 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
       id: id
     }
   });
+
   return (
     <AtomWrapper width="100%">
       <AtomSEO
@@ -37,7 +40,51 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
       ) : (
         <>
           <AtomBanner type="album" album={data?.albumById} />
-          <AtomPlayByAlbumPlaylist context={data?.albumById as IAlbumType} />
+          <AtomPlayByAlbumPlaylist
+            context={data?.albumById as IAlbumType}
+            type="album"
+            onDispatch={() => {
+              const randomTrack = getRandomTrack(
+                data?.albumById?.tracks?.items as ISong[]
+              );
+              dispatch({
+                type: 'SET_TRACK',
+                payload: {
+                  currentTrack: {
+                    ...randomTrack,
+                    // artists: data?.albumById?.artists,
+                    images: data?.albumById?.images as IImage[],
+                    album: {
+                      ...data?.albumById,
+                      tracks: {
+                        ...data?.albumById?.tracks,
+                        items: []
+                      }
+                    },
+                    destination: {
+                      type: 'album',
+                      id: data?.albumById?.id as string
+                    }
+                  },
+                  context: data?.albumById?.tracks?.items?.map((item) => ({
+                    ...item,
+                    album: {
+                      ...data?.albumById,
+                      tracks: {
+                        ...data?.albumById?.tracks,
+                        items: []
+                      }
+                    },
+                    images: data?.albumById?.images as IImage[],
+                    destination: {
+                      type: 'album',
+                      id: data?.albumById?.id as string
+                    }
+                  }))
+                }
+              });
+            }}
+          />
           <AtomWrapper
             padding="45px 90px"
             maxWidth="1440px"

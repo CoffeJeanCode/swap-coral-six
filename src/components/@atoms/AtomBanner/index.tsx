@@ -300,6 +300,7 @@ const typeBanners = {
               flexDirection="row"
               gap="5px"
               customCSS={css`
+                align-items: center;
                 @media (max-width: 980px) {
                   justify-content: center;
                   align-items: center;

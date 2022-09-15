@@ -1,8 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useQuery } from '@apollo/client';
+import { ARTISTBYPLAYLISTANDALBUM } from '@Apollo/client/query/artistById';
 import { css } from '@emotion/react';
 import UseColor from '@Hooks/useColor';
 import useTime from '@Hooks/useTime';
-import { IAlbumType, IArtist, IlistPlaylistsBySlug, ISong } from '@Types/index';
+import {
+  IAlbumType,
+  IArtist,
+  IlistPlaylistsBySlug,
+  IQueryFilter,
+  ISong
+} from '@Types/index';
 import convertDateWithOptions from '@Utils/convertDateWithOptions';
 import convertWithCommas from '@Utils/numberWithCommas';
 import { useRouter } from 'next/router';
@@ -172,6 +180,17 @@ const typeBanners = {
   album: (props: AtomProps) => {
     const router = useRouter();
     const color = UseColor(props?.album?.images?.[0]?.url as string);
+
+    const { data: ArtistById, loading } = useQuery<IQueryFilter<'artistById'>>(
+      ARTISTBYPLAYLISTANDALBUM,
+      {
+        skip: !props?.album?.artists?.[0]?.id,
+        fetchPolicy: 'no-cache',
+        variables: {
+          id: props?.album?.artists?.[0]?.id
+        }
+      }
+    );
     return (
       <AtomWrapper
         id="background-dynamic-color"
@@ -288,7 +307,73 @@ const typeBanners = {
               `}
             >
               <AtomWrapper flexDirection="row">
-                {props?.album?.artists?.map((item, index) => (
+                {loading ? (
+                  <AtomWrapper
+                    customCSS={css`
+                      border: 4px solid #f3f3f3;
+                      border-radius: 50%;
+                      border-top: 4px solid ${color?.[0]?.hex};
+                      width: 30px;
+                      height: 30px;
+                      -webkit-animation: spin 2s linear infinite; /* Safari */
+                      animation: spin 2s linear infinite;
+
+                      /* Safari */
+                      @-webkit-keyframes spin {
+                        0% {
+                          -webkit-transform: rotate(0deg);
+                        }
+                        100% {
+                          -webkit-transform: rotate(360deg);
+                        }
+                      }
+
+                      @keyframes spin {
+                        0% {
+                          transform: rotate(0deg);
+                        }
+                        100% {
+                          transform: rotate(360deg);
+                        }
+                      }
+                    `}
+                  />
+                ) : (
+                  <AtomButton
+                    backgroundColor="transparent"
+                    padding="0px"
+                    fontSize="16px"
+                    fontWeight="bold"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    customCSS={css`
+                      gap: 5px;
+                      &:hover {
+                        text-decoration: underline;
+                      }
+                    `}
+                    onClick={() => {
+                      router.push({
+                        pathname: '/public/artist/[id]',
+                        query: {
+                          id: ArtistById?.artistById?.id
+                        }
+                      });
+                    }}
+                  >
+                    <AtomImage
+                      src={ArtistById?.artistById?.images?.[0]?.url as string}
+                      alt={ArtistById?.artistById?.name as string}
+                      width="35px"
+                      borderRadius="50%"
+                      height="35px"
+                    />
+                    {ArtistById?.artistById?.name}
+                  </AtomButton>
+                )}
+
+                {/* {props?.album?.artists?.map((item, index) => (
                   <AtomButton
                     key={item?.id}
                     backgroundColor="transparent"
@@ -311,7 +396,7 @@ const typeBanners = {
                   >
                     {index === 0 ? item?.name : `, ${item?.name}`}
                   </AtomButton>
-                ))}{' '}
+                ))}{' '} */}
               </AtomWrapper>
               <AtomText color="white" fontSize="16px">
                 -{' '}

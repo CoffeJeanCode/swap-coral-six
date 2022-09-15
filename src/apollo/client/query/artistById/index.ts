@@ -20,3 +20,19 @@ export const ARTISTBYID = gql`
     }
   }
 `;
+
+export const ARTISTBYPLAYLISTANDALBUM = gql`
+  query artistById($id: String!) {
+    artistById(id: $id) {
+      id
+      name
+      images {
+        url
+        height
+        width
+      }
+      uri
+      type
+    }
+  }
+`;

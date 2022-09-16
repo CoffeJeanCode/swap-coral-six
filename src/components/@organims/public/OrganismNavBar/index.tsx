@@ -1,7 +1,8 @@
 import AtomButton from '@Components/@atoms/AtomButton';
 import AtomIcon from '@Components/@atoms/AtomIcon';
+import AtomImage from '@Components/@atoms/AtomImage';
+import AtomLINK from '@Components/@atoms/AtomLink';
 import { AtomText } from '@Components/@atoms/AtomText';
-import AtomViewImageSidebar from '@Components/@atoms/AtomViewImageSidebar';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
@@ -38,6 +39,12 @@ const Sections = [
     name: 'Search',
     path: '/public/search',
     icon: 'https://res.cloudinary.com/whil/image/upload/v1661401540/search-normal_afllai.svg'
+  },
+  {
+    id: uuidv4(),
+    name: 'How Works?',
+    path: '/public/howworks',
+    icon: 'https://res.cloudinary.com/whil/image/upload/v1663363954/document-code_o8g9vx.svg'
   }
 ];
 
@@ -148,8 +155,22 @@ const OrganismNavbar: FC = () => {
               </AtomText>
             </AtomButton>
           ))}
+          <AtomWrapper flexDirection="row" alignItems="center" gap="5px">
+            <AtomImage
+              alt="whil"
+              width="25px"
+              height="25px"
+              src="https://res.cloudinary.com/whil/image/upload/v1663364528/whil_qc16xc.svg"
+            />
+            <AtomLINK
+              textDecoration="underline"
+              color="white"
+              href="https://www.linkedin.com/in/ivangarciawhil117/"
+            >
+              Whil Inc.
+            </AtomLINK>
+          </AtomWrapper>
         </AtomWrapper>
-        <AtomViewImageSidebar />
       </AtomWrapper>
     </AtomWrapper>
   );

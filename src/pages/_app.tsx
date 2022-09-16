@@ -33,6 +33,8 @@ const MyApp = ({
           description={SEO?.description}
         />
       )}
+      <ToastContainer />
+
       <Script
         src="https://open.spotify.com/embed-podcast/iframe-api/v1"
         async
@@ -46,7 +48,6 @@ const MyApp = ({
           <HeadComponent>
             <Layouts Layout={Component.Layout} SEO={SEO}>
               <Global styles={Normalize} />
-              <ToastContainer />
               <Component {...pageProps} />
             </Layouts>
           </HeadComponent>

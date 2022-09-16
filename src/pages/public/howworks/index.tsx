@@ -1,5 +1,6 @@
 import AtomImage from '@Components/@atoms/AtomImage';
 import AtomLINK from '@Components/@atoms/AtomLink';
+import AtomSEO from '@Components/@atoms/AtomSeo';
 import { AtomText } from '@Components/@atoms/AtomText';
 import AtomWrapper from '@Components/@atoms/Atomwrapper';
 import { css } from '@emotion/react';
@@ -9,6 +10,13 @@ import { v4 as uuidv4 } from 'uuid';
 const HowWorksPage: NextPageFCProps = () => {
   return (
     <AtomWrapper alignItems="flex-start" justifyContent="flex-start">
+      <AtomSEO
+        title="Swap Coral Six"
+        page="How Works?"
+        image="https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png"
+        keywords={['swapcoralsix', 'How Works?']}
+        description={`Swap Coral Six - How Works? is avaible now!`}
+      />
       <AtomWrapper
         padding="35px"
         maxWidth="1440px"

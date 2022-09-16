@@ -58,6 +58,19 @@ const HowWorksPage: NextPageFCProps = () => {
     </AtomWrapper>
   );
 };
+export async function getServerSideProps() {
+  HowWorksPage.SEO = {
+    title: 'How Works?',
+    image:
+      'https://res.cloudinary.com/whil/image/upload/v1662829817/swapcoralsix_s4th49.png',
+    description: `Swap Coral Six - How Works? is avaible now!`,
+    keywords: ['swapcoralsix', 'How Works?']
+  };
+
+  return {
+    props: {}
+  };
+}
 
 type STEPS_SPOTIFY = {
   id: string;

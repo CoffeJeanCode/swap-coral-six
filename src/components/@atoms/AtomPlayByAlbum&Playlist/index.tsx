@@ -27,9 +27,7 @@ const AtomPlayByAlbumPlaylist: FC<Props> = (props) => {
   const colors = useAtomValue(COLORS_ATOM);
   const controls = useAtomValue(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   const [playIFRAME, setPlayIFRAME] = useAtom(PLAY_IFRAME_ATOM);
-  const isValidContext =
-    controls?.currentTrack?.album?.id === props?.context?.id;
-
+  const isValidContext = controls?.origin?.query?.id === router.query?.id;
   const spotifyEmbedWindow = useIframe();
 
   return (

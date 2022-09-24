@@ -59,7 +59,7 @@ const typesReducers: typesReducers = {
       }
       return 0;
     }),
-    origin: PAYLOAD.origin
+    origin: PAYLOAD.origin ?? STATE.origin
   }),
   CHANGE_TRACK: (STATE, PAYLOAD) => {
     const TRACKNUMBER = PAYLOAD?.currentTrack?.track_number as number;

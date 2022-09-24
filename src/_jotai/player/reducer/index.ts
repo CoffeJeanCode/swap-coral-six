@@ -1,6 +1,7 @@
 import { IAlbumType, IImage, ISong } from '@Types/index';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
+import { NextRouter } from 'next/router';
 
 /* eslint-disable no-unused-vars */
 
@@ -21,6 +22,7 @@ export type InitialState = {
     repeatByOne: boolean;
   };
   context?: PropsWithTypes<ISong>[];
+  origin?: NextRouter;
 };
 
 export const initialState: InitialState = {
@@ -38,7 +40,8 @@ export const initialState: InitialState = {
     repeat: false,
     repeatByOne: false
   },
-  context: []
+  context: [],
+  origin: {} as NextRouter
 };
 
 type typesReducers = {
@@ -55,7 +58,8 @@ const typesReducers: typesReducers = {
         if ((a.track_number as number) < b.track_number) return -1;
       }
       return 0;
-    })
+    }),
+    origin: PAYLOAD.origin
   }),
   CHANGE_TRACK: (STATE, PAYLOAD) => {
     const TRACKNUMBER = PAYLOAD?.currentTrack?.track_number as number;

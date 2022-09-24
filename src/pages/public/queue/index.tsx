@@ -5,11 +5,9 @@ import { css } from '@emotion/react';
 import { IImage, ISong } from '@Types/index';
 import { useAtom } from 'jotai';
 import { NextPageFCProps } from 'next';
-import { useRouter } from 'next/router';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 
 const QueuePage: NextPageFCProps = () => {
-  const router = useRouter();
   const [controls, dispatch] = useAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
   return (
     <AtomWrapper width="100%">
@@ -38,8 +36,7 @@ const QueuePage: NextPageFCProps = () => {
                   currentTrack: {
                     ...controls?.currentTrack
                   },
-                  context: controls?.context,
-                  origin: router
+                  context: controls?.context
                 }
               });
             }}

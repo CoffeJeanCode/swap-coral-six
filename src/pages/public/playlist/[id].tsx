@@ -18,11 +18,12 @@ import {
 } from '@Types/index';
 import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
+import { useRouter } from 'next/router';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 
 const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
   const dispatch = useSetAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-
+  const router = useRouter();
   const { data, loading } = useQuery<IQueryFilter<'playListById'>>(
     PLAYLISTBYID,
     {
@@ -73,7 +74,8 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
                       type: 'playlist',
                       id: id
                     }
-                  }))
+                  })),
+                  origin: router
                 }
               });
             }}
@@ -117,7 +119,8 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
                             id: id
                           }
                         })
-                      )
+                      ),
+                      origin: router
                     }
                   });
                 }}

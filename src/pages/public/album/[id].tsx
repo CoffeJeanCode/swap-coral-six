@@ -14,11 +14,12 @@ import { css } from '@emotion/react';
 import { IAlbumType, IImage, IQueryFilter, ISong } from '@Types/index';
 import { useSetAtom } from 'jotai';
 import { NextPageContext, NextPageFC } from 'next';
+import { useRouter } from 'next/router';
 import CONTROLS_PLAYER_WITH_REDUCER_ATOM from '_jotai/player/reducer';
 
 const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
   const dispatch = useSetAtom(CONTROLS_PLAYER_WITH_REDUCER_ATOM);
-
+  const router = useRouter();
   const { data, loading } = useQuery<IQueryFilter<'albumById'>>(albumByID, {
     skip: !id,
     variables: {
@@ -80,7 +81,8 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
                       type: 'album',
                       id: data?.albumById?.id as string
                     }
-                  }))
+                  })),
+                  origin: router
                 }
               });
             }}
@@ -123,7 +125,8 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
                           type: 'album',
                           id: id
                         }
-                      }))
+                      })),
+                      origin: router
                     }
                   });
                 }}

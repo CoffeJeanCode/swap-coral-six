@@ -22,6 +22,7 @@ const AlbumPublic: NextPageFC<{ id: string }> = ({ id }) => {
   const router = useRouter();
   const { data, loading } = useQuery<IQueryFilter<'albumById'>>(albumByID, {
     skip: !id,
+    fetchPolicy: 'no-cache',
     variables: {
       id: id
     }

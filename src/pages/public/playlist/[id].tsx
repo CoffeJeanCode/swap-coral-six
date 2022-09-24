@@ -28,6 +28,7 @@ const PlaylistPublic: NextPageFC<{ id: string }> = ({ id }) => {
     PLAYLISTBYID,
     {
       skip: !id,
+      fetchPolicy: 'no-cache',
       variables: {
         id: id
       }

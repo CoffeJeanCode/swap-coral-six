@@ -55,7 +55,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
         }
       `}
     >
-      {inValidTrackId && !validateContext ? (
+      {inValidTrackId && (
         <AtomText
           as="p"
           color="white"
@@ -73,47 +73,25 @@ const AtomPlayTrack: FC<Props> = (props) => {
         >
           {props?.trackNumber as number}
         </AtomText>
-      ) : (
-        <>
-          {inValidTrackId && (
-            <AtomText
-              as="p"
-              color="white"
-              customCSS={css`
-                margin: 0;
-                padding: 0;
-                font-size: 16px;
-                font-weight: 600;
-                opacity: 1;
-                &:hover {
-                  display: none;
-                  opacity: 0;
-                }
-              `}
-            >
-              {props?.trackNumber as number}
-            </AtomText>
-          )}
-          {validTrackId && !validateContext && (
-            <AtomText
-              as="p"
-              color="white"
-              customCSS={css`
-                margin: 0;
-                padding: 0;
-                font-size: 16px;
-                font-weight: 600;
-                opacity: 1;
-                &:hover {
-                  display: none;
-                  opacity: 0;
-                }
-              `}
-            >
-              {props?.trackNumber as number}
-            </AtomText>
-          )}
-        </>
+      )}
+      {validTrackId && !validateContext && (
+        <AtomText
+          as="p"
+          color="white"
+          customCSS={css`
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            font-weight: 600;
+            opacity: 1;
+            &:hover {
+              display: none;
+              opacity: 0;
+            }
+          `}
+        >
+          {props?.trackNumber as number}
+        </AtomText>
       )}
 
       {validTrackId && validateContext && (

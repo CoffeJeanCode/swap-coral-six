@@ -7,6 +7,7 @@ export interface AtomButtonTypes {
   width?: string;
   height?: string;
   loading?: boolean;
+  className?: string;
   type?: `button` | `submit` | `reset`;
   children?: React.ReactNode;
   disabled?: boolean;

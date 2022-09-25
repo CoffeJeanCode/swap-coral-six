@@ -10,6 +10,7 @@ export interface AtomIconTypes extends MotionProps {
   width?: string;
   height?: string;
   customCSS?: SerializedStyles;
+  className?: string;
   onPointerDown?: PointerEventHandler<HTMLDivElement>;
 }
 
@@ -65,7 +66,7 @@ const AtomIcon: FC<AtomIconTypes> = (props) => {
       }}
     />
   ) : (
-    <PlaceholderIcon />
+    <PlaceholderIcon {...props} />
   );
 };
 

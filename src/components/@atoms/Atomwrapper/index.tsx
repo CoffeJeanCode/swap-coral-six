@@ -9,6 +9,7 @@ export interface AtomWrapperTypes extends MotionProps {
   gap?: string;
   backgroundImage?: string;
   maxHeight?: string;
+  className?: string;
   alignItems?: 'center' | 'flex-start' | 'flex-end';
   flexDirection?: 'column' | 'row' | 'row-reverse' | 'column-reverse';
   justifyContent?:

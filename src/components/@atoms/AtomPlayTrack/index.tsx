@@ -36,8 +36,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
           props?.onPlay && props?.onPlay();
           setPlayIFRAME((prev) => !prev);
           spotifyEmbedWindow.postMessage({ command: 'toggle' }, '*');
-        }
-        if (inValidTrackId && validateContext) {
+        } else {
           props?.onPlay && props?.onPlay();
           setPlayIFRAME(true);
         }

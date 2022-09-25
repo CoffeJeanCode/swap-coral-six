@@ -37,6 +37,28 @@ const typeTracks = {
           @media (max-width: 980px) {
             grid-template-columns: 1fr;
           }
+          .hoverPlay {
+            text-align: center;
+            height: 0;
+            opacity: 0;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 180%;
+            line-height: 120%;
+            transition: all 0.3s ease-in-out;
+          }
+          :hover {
+            .hoverPlay {
+              /* margin: 5px 0px 15px 0px; */
+              height: max-content;
+              opacity: 1;
+              transition: all 0.3s ease-in-out;
+            }
+            .onHide {
+              display: none;
+            }
+          }
         `}
         key={props?.album?.id}
         // onClick={props?.onPlay}

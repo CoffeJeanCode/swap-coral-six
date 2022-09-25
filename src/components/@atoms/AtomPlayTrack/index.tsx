@@ -57,6 +57,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
       {inValidTrackId && (
         <AtomText
           as="p"
+          className="onHide"
           color="white"
           customCSS={css`
             margin: 0;
@@ -75,6 +76,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
       )}
       {validTrackId && !validateContext && (
         <AtomText
+          className="onHide"
           as="p"
           color="white"
           customCSS={css`
@@ -95,6 +97,7 @@ const AtomPlayTrack: FC<Props> = (props) => {
 
       {validTrackId && validateContext && (
         <AtomWrapper
+          className="onHide"
           width="25px"
           height="25px"
           alignItems="center"
@@ -124,27 +127,20 @@ const AtomPlayTrack: FC<Props> = (props) => {
       )}
       <AtomWrapper
         width="30px"
+        className="hoverPlay"
         height="30px"
         alignItems="center"
         justifyContent="center"
         customCSS={css`
-          background-color: #121216;
+          background-color: transparent;
           position: absolute;
-          opacity: 0;
-          &:hover {
-            background-color: #222229;
-            opacity: 1;
-          }
+          /* opacity: 0; */
         `}
       >
         <AtomIcon
           customCSS={css`
-            background-color: #121216;
-            opacity: 0;
-            &:hover {
-              background-color: #222229;
-              opacity: 1;
-            }
+            background-color: transparent;
+            /* opacity: 0; */
           `}
           width="30px"
           height="30px"
